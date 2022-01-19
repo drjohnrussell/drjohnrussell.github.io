@@ -15,7 +15,7 @@ author: John Russell
 
 navbar-links:
   About Me: "aboutme"
-  Resources:
+  My Homes:
     - Beautiful Jekyll: "https://beautifuljekyll.com"
     - Learn markdown: "https://www.markdowntutorial.com/"
   Author's home: "https://deanattali.com"
