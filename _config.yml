@@ -62,8 +62,8 @@ social-network-links:
 #  telegram: yourname
 #  calendly: yourname
 #  mastodon: instance.url/@username
-ORCID: https://orcid.org/0000-0002-9232-8390
-google-scholar: https://scholar.google.com/citations?user=DRuHUAkAAAAJ&hl=en
+   ORCID: https://orcid.org/0000-0002-9232-8390
+   google-scholar: https://scholar.google.com/citations?user=DRuHUAkAAAAJ&hl=en
 #  discord: invite/invite_code or users/userid 
 
 # If you want your website to generate an RSS feed, provide a description
@@ -102,7 +102,7 @@ post_search: true
 
 # Personalize the colours in your website. Colour values can be any valid CSS colour
 
-navbar-col: "#EAEAEA"
+navbar-col: "#F2DCDB"
 navbar-text-col: "#404040"
 navbar-border-col: "#DDDDDD"
 page-col: "#FFFFFF"
