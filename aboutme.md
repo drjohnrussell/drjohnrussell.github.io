@@ -1,16 +1,20 @@
 ---
 layout: page
 title: About me
-subtitle: Why you'd want to go on a date with me
+subtitle: Who is this person, anyway
 ---
 
-My name is Inigo Montoya. I have the following qualities:
+I'm a Senior Education Researcher at Math for America, where I draw upon my ten years in the classroom to help support NYC public STEM teachers. I also teach preservice Earth Science teachers at the American Museum of Natural History.
 
-- I rock a great mustache
-- I'm extremely loyal to my family
+I'm massively into the following avenues of research:
+* Science Education
+* Teacher Education
+* Design-Based Research
+* Social Network Analysis
+I draw from a few frameworks in my research, including situated learning and communities of practice. I believe that the methodology follows the question, and evaluate the initiatives I design and support using Qualtrics, R, and NVivo, as the need desires. 
 
-What else do you need?
+### When I'm not doing this
 
-### My story
+I am either spending time with my wife and son, or paddling along the Hudson River
 
-To be honest, I'm having some trouble remembering right now, so why don't you just watch [my movie](https://en.wikipedia.org/wiki/The_Princess_Bride_%28film%29) and it will answer **all** your questions.
+![]("/assets/img/IMG_20171209_112558.jpg")
