@@ -18,4 +18,4 @@ I draw from a few frameworks in my research, including situated learning and com
 
 I am either spending time with my wife and son, or paddling along the Hudson River
 
-![kayaking]("https://uc5e82893958d5d900409c5ebc56.dl.dropboxusercontent.com/cd/0/inline/BeGxp5fefAUgbvfQxce9O8xatYW7vcWyFB_mYvUmETmb-kYt_ChGRZj1-jtXQPtvgrbeQufccqCXlBhU3-5VHuVbyrh_ZSAC4-K6lkQvILQWg4hourxrsLUkZHlc8sdrKmxB_1DsBjC-xYMpLn1__cmf/file#"){: .mx-auto.d-block :}
+![kayaking]("https://www.dropbox.com/s/bnwhswl7ct7k2zd/IMG_20171209_112558-edited.jpg?raw=1")
