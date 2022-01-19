@@ -6,7 +6,7 @@
 # --- Required options --- #
 
 # Name of website
-title: Explorations in Data
+title: R Explorations
 
 # Your name to show in the footer
 author: John Russell
@@ -15,11 +15,10 @@ author: John Russell
 
 navbar-links:
   About Me: "aboutme"
-  My Homes: 
-    - Math for America: "http://www.mathforamerica.org"
-    - American Museum of Natural History: "http://www.amnh.org"
-    - Inwood Canoe Club: "http://inwoodcanoenyc.org"
-  Link Tree: "https://linktr.ee/JohnRussell"
+  Resources:
+    - Beautiful Jekyll: "https://beautifuljekyll.com"
+    - Learn markdown: "https://www.markdowntutorial.com/"
+  Author's home: "https://deanattali.com"
 
 # --- Logo --- #
 
@@ -62,8 +61,8 @@ social-network-links:
 #  telegram: yourname
 #  calendly: yourname
 #  mastodon: instance.url/@username
-   ORCID: https://orcid.org/0000-0002-9232-8390
-   google-scholar: https://scholar.google.com/citations?user=DRuHUAkAAAAJ&hl=en
+ORCID: https://orcid.org/0000-0002-9232-8390
+google-scholar: https://scholar.google.com/citations?user=DRuHUAkAAAAJ&hl=en
 #  discord: invite/invite_code or users/userid 
 
 # If you want your website to generate an RSS feed, provide a description
@@ -102,14 +101,14 @@ post_search: true
 
 # Personalize the colours in your website. Colour values can be any valid CSS colour
 
-navbar-col: "#F2DCDB"
+navbar-col: "#EAEAEA"
 navbar-text-col: "#404040"
 navbar-border-col: "#DDDDDD"
 page-col: "#FFFFFF"
 text-col: "#404040"
 link-col: "#008AFF"
 hover-col: "#0085A1"
-footer-col: "#F2DCDB"
+footer-col: "#EAEAEA"
 footer-text-col: "#777777"
 footer-link-col: "#404040"
 footer-hover-col: "#0085A1"
@@ -255,4 +254,3 @@ plugins:
 
 # Beautiful Jekyll / Dean Attali
 # 2fc73a3a967e97599c9763d05e564189
-
