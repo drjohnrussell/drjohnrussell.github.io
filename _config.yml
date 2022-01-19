@@ -6,7 +6,7 @@
 # --- Required options --- #
 
 # Name of website
-title: R Explorations
+title: Explorations in Data
 
 # Your name to show in the footer
 author: John Russell
@@ -15,10 +15,11 @@ author: John Russell
 
 navbar-links:
   About Me: "aboutme"
-  Resources:
-    - Beautiful Jekyll: "https://beautifuljekyll.com"
-    - Learn markdown: "https://www.markdowntutorial.com/"
-  Author's home: "https://deanattali.com"
+  My Homes:
+    - Math for America: "http://www.mathforamerica.org"
+    - American Museum of Natural History: "http://www.amnh.org"
+    - Inwood Canoe Club: "http://inwoodcanoenyc.org"
+  Link Tree: "https://linktr.ee/JohnRussell"
 
 # --- Logo --- #
 
@@ -61,8 +62,8 @@ social-network-links:
 #  telegram: yourname
 #  calendly: yourname
 #  mastodon: instance.url/@username
-ORCID: https://orcid.org/0000-0002-9232-8390
-google-scholar: https://scholar.google.com/citations?user=DRuHUAkAAAAJ&hl=en
+   ORCID: https://orcid.org/0000-0002-9232-8390
+   google-scholar: https://scholar.google.com/citations?user=DRuHUAkAAAAJ&hl=en
 #  discord: invite/invite_code or users/userid 
 
 # If you want your website to generate an RSS feed, provide a description
