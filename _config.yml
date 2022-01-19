@@ -16,9 +16,9 @@ author: John Russell
 navbar-links:
   About Me: "aboutme"
   My Homes:
-    - Beautiful Jekyll: "https://beautifuljekyll.com"
-    - Learn markdown: "https://www.markdowntutorial.com/"
-  Author's home: "https://deanattali.com"
+    - Math for America: "https://www.mathforamerica.org/"
+    - American Museum of Natural History: "https://www.amnh.org/"
+  My Link Tree (non-R work): "https://linktr.ee/johnrussell"
 
 # --- Logo --- #
 
