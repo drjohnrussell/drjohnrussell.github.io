@@ -80,32 +80,31 @@ You can see some really interesting things that come up in the graph, done using
 
 ![GraphofTeachers](/assets/img/EVu29wuXQAIr1IU.jpeg)
 
-Here are a number of noticings that are made possible through this data analysis and visualization:
+There are a few things that I noticed in this graph:
 
-- The "Inquiry, Practice and Leadership" and CS courses serve as a sort of mixing ground; that is, they have people in them who are co-enrolled in mathematics and science courses. They seem to be a necessary part of a course catalog that encourages mingling, and it would be interesting to look at the comparative audiences.
+- The "Inquiry, Practice and Leadership" and CS courses serve as a sort of mixing ground; that is, they have people in them who are co-enrolled in mathematics and science courses. They seem to be a necessary part of a course catalog that encourages mingling, and it would be interesting to look at the comparative audiences. 
 - Mini-Courses are more central than Professional Learning Teams. This makes sense; they usually enroll more teachers, so there are more opportunities for co-enrollments with other classes. However, they seem to serve magnified importance in allowing teachers to see others.
+- A fun next step would be to use R's `sna` package in order to find the betweenness of the Nodes. Betweenness is a measure of how well a node acts as a bridge between neighborhoods, and it would be interesting to see which courses act as the bridges on the graph between pure mathematics and pure science courses.
 
-This is a really interesting way of using the tools of network analysis 
+As you can see, this method allows you to take something that is not naturally a network graph (bipartite data) and start to think about it using a network mindset.
 
-This is enough to answer the question above. We'll use the space below to walk through the code so you can do something similar with bipartite data that you have!
+This is enough to start to answer the question above. We'll use the space below to walk through the code so you can do something similar with bipartite data that you have!
 
 #### Walking through the Code
 
-We'll be using graphs from the tidyverse package, as well as Matrix in order to allow matrix multiplication
+We'll be using graphs from the tidyverse package, as well as Matrix in order to allow matrix multiplication.
 
 ```R
 library(igraph)
-library(tidyverse)
-library(tidygraph)
 library(ggraph)
 library(Matrix)
 ```
 
 You'll need to load up three different data sets:
 
-- Your main dataset, which should have two columns (like the example above). For the code below, we will call this `Data`
-- A dataset that has extra information about your column A, which we'll call `NodeA`
-- A data set that has extra information about your column B, which we'll call `NodeB`
+- Your main dataset. For the code below, we will call this `Data`
+- A dataset that has extra information about your first column of interest A, which we'll call `NodeA`
+- A data set that has extra information about your second columd of interest B, which we'll call `NodeB`
 
 The next thing you'll need to do is convert Data into an incidence matrix, which means that every enrollment will become a 1 at the intersection of the rows (which will be column A) and columns (which will be column B).
 
@@ -134,6 +133,8 @@ teachers <- set_edge_attr(teachers, "weight", value=E(edgeA)$weight)
 ```
 
 Now you have an igraph object ready to graph. In the graph above, `V(teachers)$shape` was defined by the type of course, and `V(teachers)$color` was set to the content of the course. `E(teachers)$weight` was also multiplied, so that larger co-enrollments stuck out.
+
+
 
 #### To learn more
 
