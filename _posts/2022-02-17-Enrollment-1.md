@@ -50,6 +50,7 @@ In matrix multiplication, order matters! Depending upon whether you multiply the
 | **Y** | 3    | 0    | 3    |
 | **Z** | 2    | 3    | 0    |
 
+
 |       | A    | B    | C    | D    | E    |
 | ----- | ---- | ---- | ---- | ---- | ---- |
 | **A** | 0    | 2    | 1    | 1    | 2    |
