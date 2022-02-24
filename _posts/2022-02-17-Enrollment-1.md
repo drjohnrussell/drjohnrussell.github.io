@@ -2,8 +2,8 @@
 layout: post
 title: A bipartite case (part 1)
 subtitle: Looking at course enrollments
-thumbnail-img: /assets/img/bipartiteRplot.jpeg
-share-img: /assets/img/bipartiteRplot.jpeg
+thumbnail-img: /assets/img/EVu29wuXQAIr1IU.jpeg
+share-img: /assets/img/EVu29wuXQAIr1IU.jpeg
 tags: [bipartite, course enrollment]
 comments: true
 ---
