@@ -67,7 +67,7 @@ For our course enrollment data, this is perfect; we can now create a matrix and 
 - A graph of teachers where every edge represents courses that they took together
 - A graph of courses where every edge represents teachers that were co-enrolled in these courses
 
-For this particular, let's look at the graph of courses.
+For this particular post, let's look at the graph of courses.
 
 #### Graph, and Observations
 
