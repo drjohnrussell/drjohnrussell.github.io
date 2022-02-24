@@ -48,8 +48,7 @@ In matrix multiplication, order matters! Depending upon whether you multiply the
 | ----- | ---- | ---- | ---- |
 | **X** | 0    | 3    | 2    |
 | **Y** | 3    | 0    | 3    |
-| **Z** | 2    | 3    | 0    |
-
+| **Z** | 2    | 3    | 0    |  
 
 |       | A    | B    | C    | D    | E    |
 | ----- | ---- | ---- | ---- | ---- | ---- |
