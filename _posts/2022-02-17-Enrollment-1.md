@@ -8,9 +8,7 @@ tags: [bipartite, course enrollment]
 comments: true
 ---
 
-## Problem: 
-
-### Do STEM teachers across disciplines within a fellowship program get the opportunity to meet through the courses they take?
+### Problem: *Do STEM teachers across disciplines within a fellowship program get the opportunity to meet through the courses they take?*
 
 This problem is incredibly important for the organization, as a part of their mission is to build a community of practice among their teachers. If science teachers and mathematics teachers don't have a way to interact, then there isn't a way for information to flow among the community through the courses they are in together.
 
@@ -133,7 +131,7 @@ teachers <- graph_from_data_frame(edgeA2, vertices=nodesA, directed=FALSE)
 teachers <- set_edge_attr(teachers, "weight", value=E(edgeA)$weight)
 ```
 
-Now you have an igraph object ready to graph. In the graph above, V(teachers)$shape was defined by the type of course, and V(teachers)$color was set to the content of the course. E(teachers)$weight was also multiplied, so that larger co-enrollments stuck out.
+Now you have an igraph object ready to graph. In the graph above, `V(teachers)$shape` was defined by the type of course, and `V(teachers)$color` was set to the content of the course. `E(teachers)$weight` was also multiplied, so that larger co-enrollments stuck out.
 
 #### To learn more
 
