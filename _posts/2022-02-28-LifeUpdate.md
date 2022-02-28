@@ -10,7 +10,7 @@ comments: true
 
 ### My time at MƒA
 
-As it will be announced in the coming weeks, due to a desire for research to be an external and not internal initiative at MƒA , it is the desire of the board and leadership to cut my department, meaning I will be leaving the organization in the coming months, thankfully with the support of my directors in the job search.
+As it will be announced in the next week, due to a desire for research to be an external and not internal initiative at MƒA , it is the desire of the board and leadership to cut my department, meaning I will be leaving the organization in the coming months, thankfully with the support of my directors in the job search.
 
 I have grown each of the programs I have been a part of, and while it is time to look for opportunities to grow elsewhere, I also wanted to use this place to reflect on the impact that I have been able to have in my seven years here, and the impact it has had on me.
 
