@@ -2,8 +2,8 @@
 layout: post
 title: My time at MƒA
 subtitle: Growth over seven years
-thumbnail-img: /assets/img/AIMTRU.jpeg
-share-img: /assets/img/AIMTRU.jpeg
+thumbnail-img: /assets/img/PDTeam.gif
+share-img: /assets/img/PDTeam.gif
 tags: [animation, MƒA]
 comments: true
 ---
