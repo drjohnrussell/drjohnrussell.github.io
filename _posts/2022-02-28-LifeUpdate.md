@@ -1,7 +1,7 @@
 ---
 layout: post
 title: My time at MƒA
-subtitle: Last seven years in a couple of charts
+subtitle: Growth over seven years
 thumbnail-img: /assets/img/AIMTRU.jpeg
 share-img: /assets/img/AIMTRU.jpeg
 tags: [animation, MƒA]
