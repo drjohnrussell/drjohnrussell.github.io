@@ -25,7 +25,7 @@ In order to set up R to create the adjacency matrix for a one-mode projection of
 AdjacencyB <- t(Incidence) %*% Incidence
 ```
 
-Everything else is the same as in the first posting. I also don't like that triangle is not a shape that you can define for your nodes (circle and square are), so I ended up writing a function that creates triangle as an option in your plots. Code for that below:
+Everything else is the same as in the first posting. I also don't like that triangle is not a shape that you can define for your nodes (circle and square are), so I ended up finding a function that creates triangle as an option in your plots. Code for that below:
 
 ```R
 mytriangle <- function(coords, v=NULL, params) {
