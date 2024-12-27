@@ -1,0 +1,100 @@
+---
+title: "John Russell"
+image: "img/IMG_20171209_112558.jpg"
+toc: false
+lightbox: true
+execute: 
+  warning: false
+  echo: false
+about:
+  template: trestles
+  id: hero-heading
+  image-width: 18em
+  image-shape: round
+  image-title: "Winter Day on the Hudson River"
+  image-alt: "Picture of John on a snowy day by kayak"
+  links:
+    - text: "{{< fa brands bluesky >}} Bluesky"
+      href: https://bsky.app/profile/thejohnrussell.com
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/drjrussell/
+    - icon: github
+      text: Github
+      href: https://github.com/drjohnrussell
+---
+:::{#hero-heading}
+
+## Education
+
+Teachers College at Columbia University | New York, NY  
+EdD in Science Education | May 2018
+
+Pace College | New York, NY  
+MA in Education | June 2007
+
+Washington University in St. Louis | St. Louis, MO  
+BS in Earth & Planetary Sciences (minor: Physics) | May 2014
+
+
+## Experience
+
+EL Education | Director of Internal Research  
+July 2022 - present
+
+Math for America | Program Officer, Education Researcher  
+August 2015 - July 2022 
+
+NYC Public Schools | Science Teacher  
+Sept 2005 - August 2015
+  
+:::
+  
+:::{.column-body}
+
+## My Journey from Classroom to Research
+
+### {{< fa flask title="Science as a calling" >}}
+
+I am a scientist by training; I worked in seismology and geochemistry labs through college, majored in Earth and Planetary Sciences, and even in my later years as a teacher, I would take coursework in the evening on sedimentary geology and spend summers working in a climate lab to keep my skills fresh.  I was always drawn to the geosciences, in large part for the ways in which they sought to make sense of the world around us, and in particular the ways in which it could be done with a quantitative bent. In spite of pursuing a doctorate in education, my elective courses were entirely in upper level geochemistry and statistics.
+
+```{r}
+library(here)
+```
+:::{.column-margin}
+```{r}
+#| echo: false
+#| fig-alt: "Picture with rock hammer"
+#| fig-cap: "Photo with outcrop for Sedimentary Geology course"
+knitr::include_graphics(here("img/IMG_6284.JPG"))
+```
+:::
+
+### {{< fa person-chalkboard title="Teaching as a calling" >}}
+
+I have taught for nearly the entirety of my pre-teen and adult life, as a swimming instructor in high school, a tutor of students with autism in college, and during my gap year, I struggled to convince myself that science was my calling. In the end, I applied for and became a Teach for America teacher, being placed in the South Bronx. A two year commitment became a ten year calling; I helped found a middle school in Harlem, where I taught Regents Earth Science to 8th graders and was certified to teach a College Geology class to upperclassmen. During this time, I started to dabble in expanding my impact outside of the classroom by designing and facilitating professional development, which became my next calling.
+
+:::{.column-margin}
+```{r}
+#| echo: false
+#| fig-cap: "Receiving American Geoscience Institute's award for excellence in Earth Science Education."
+knitr::include_graphics(here("img/IMG_1330.JPG"))
+```
+:::
+
+### {{< fa user-group title="Expanding impact" >}}
+
+I left the classroom as an organization's first Program Officer for Science Education, responsible for building partnerships and designing opportunities for over one thousand public school STEM teachers in NYC. In order to meet the needs for a diverse community, it was also at this point that I started leveraging data science, the Salesforce infrastructure that we were working in, and surveys to best tailor the catalog to the audience that existed. I finished my doctorate at Teachers College, and applied that by starting the organization's first Research Department, where we won our first research grant (a DRK-12 grant on the intersection of curricular materials, video cases and professional development in mathematics). I loved the opportunity to build from scratch, and to also start working within R.
+
+:::{.column-margin}
+```{r}
+#| echo: false
+#| fig-alt: "Picture with rock hammer"
+#| fig-cap: "The course catalog at the organization immediately increased upon my hire."
+knitr::include_graphics(here("img/MfA.jpg"))
+```
+:::
+
+### {{< fa binoculars title="Expanding impact" >}}
+I was really fortunate to be given a long runway at Math for America when they decided to find external evaluators to continue the work I had started, and I used that time to look into a few organizations before ending up at EL Education, a nonprofit that takes a full school approach to student achievement reflective of their founding as a collaboration between Outward Bound and Harvard Graduate School of Education. Here, I do work in internal program evaluation and in improvement science, helping provide informal and formal data tools (measurement and analysis) that align with our mission. It is also here that my work in R has flourished, a big reason I wanted to start this blog up again.
+:::

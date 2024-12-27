@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="John Russell">
+<meta name="dcterms.date" content="2022-03-16">
+<meta name="description" content="Looking at course enrollments from a teacher perspective">
 
-<title>John Russell</title>
+<title>John Russell - A bipartite case (part 2)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,26 +23,59 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
-<link href="site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -69,20 +105,20 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./img/1929137_507378143002_6354_n.jpg" alt="" class="navbar-logo">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../img/1929137_507378143002_6354_n.jpg" alt="" class="navbar-logo">
     </a>
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">John Russell</span>
     </a>
   </div>
@@ -93,15 +129,15 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About me</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./posts.html"> 
+    <a class="nav-link" href="../../posts.html"> 
 <span class="menu-text">My Blog</span></a>
   </li>  
 </ul>
@@ -133,22 +169,160 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">A bipartite case (part 2)</h1>
+                  <div>
+        <div class="description">
+          Looking at course enrollments from a teacher perspective
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">Social Network Analysis</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div class="quarto-title-meta-author">
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-heading">Affiliation</div>
+    
+      <div class="quarto-title-meta-contents">
+      <p class="author"><a href="https://www.thejohnrussell.com/">John Russell</a> <a href="https://orcid.org/0000-0002-9232-8390" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
+    </div>
+    <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              <a href="https://www.eleducation.org">
+              EL Education &amp; American Museum of Natural History
+              </a>
+            </p>
+        </div>
+    </div>
+
+  <div class="quarto-title-meta">
+
+        
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 16, 2022</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#problem-do-stem-teachers-across-disciplines-within-a-fellowship-program-get-the-opportunity-to-meet-through-the-courses-they-take-part-2" id="toc-problem-do-stem-teachers-across-disciplines-within-a-fellowship-program-get-the-opportunity-to-meet-through-the-courses-they-take-part-2" class="nav-link active" data-scroll-target="#problem-do-stem-teachers-across-disciplines-within-a-fellowship-program-get-the-opportunity-to-meet-through-the-courses-they-take-part-2">Problem: <em>Do STEM teachers across disciplines within a fellowship program get the opportunity to meet through the courses they take?</em> (Part 2)</a>
+  <ul class="collapse">
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data:</a></li>
+  <li><a href="#solution-and-code" id="toc-solution-and-code" class="nav-link" data-scroll-target="#solution-and-code">Solution and Code</a></li>
+  <li><a href="#graphs-and-observations" id="toc-graphs-and-observations" class="nav-link" data-scroll-target="#graphs-and-observations">Graphs, and Observations</a></li>
+  <li><a href="#to-learn-more" id="toc-to-learn-more" class="nav-link" data-scroll-target="#to-learn-more">To learn more</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<div class="quarto-about-jolla content">
-  <img src="img/1929137_507378143002_6354_n.jpg" alt="Alternative picture of John" class="about-image
-  rounded " style="width: 15em;">
- <main class="content" id="quarto-document-content">
-<p>Hi there! I’m John Russell. In my work as a professor and education researcher, I love <strong>sensemaking in data, science and education</strong>, learning and implementing <strong>systems of professional learning</strong>, and the spaces that support the ways in which these pursuits support each other. Outside of work, I’m a <strong>kayaker</strong>, a lover of <strong>board games</strong>, and an explorer (mostly via my bicycle) of <strong>New York City</strong>, where I live. Please explore to learn more <a href="./about.html">about me</a> and my work!</p>
-<p><a href="https://www.linkedin.com/in/drjrussell/" target="_blank"><i class="fa-brands fa-linkedin fa-2x" title="linkedin" aria-label="linkedin"></i></a> &nbsp; <a href="https://bsky.app/profile/thejohnrussell.com" target="_blank"><i class="fa-brands fa-bluesky fa-2x" title="bluesky" aria-label="bluesky"></i></a> &nbsp;<a href="https://github.com/drjohnrussell" target="_blank"><i class="fa-brands fa-github fa-2x" title="github" aria-label="github"></i></a> &nbsp; <a href="mailto:dr.jrussell@protonmail.com"><i class="fa-solid fa-envelope fa-2x" title="envelope" aria-label="envelope"></i></a></p>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
-</main>  
+
+
+
+<blockquote class="blockquote">
+<p><em>Note</em> - this post was done before my work at EL Education, where Quarto and R are utilized not just for analysis, but for communication as well. Future posts will center code blocks and be easier for others to work with.</p>
+</blockquote>
+<section id="problem-do-stem-teachers-across-disciplines-within-a-fellowship-program-get-the-opportunity-to-meet-through-the-courses-they-take-part-2" class="level2">
+<h2 class="anchored" data-anchor-id="problem-do-stem-teachers-across-disciplines-within-a-fellowship-program-get-the-opportunity-to-meet-through-the-courses-they-take-part-2">Problem: <em>Do STEM teachers across disciplines within a fellowship program get the opportunity to meet through the courses they take?</em> (Part 2)</h2>
+<section id="data" class="level3">
+<h3 class="anchored" data-anchor-id="data">Data:</h3>
+<p>The data provided to explore this problem was course enrollment data, specifically looking at the enrollment within courses with multiple workshops over the course of a semester.</p>
+</section>
+<section id="solution-and-code" class="level3">
+<h3 class="anchored" data-anchor-id="solution-and-code">Solution and Code</h3>
+<p>I walked through the Solution to this problem <a href="https://www.thejohnrussell.com/2022-02-17-bipartite-case-i/">a month ago</a>, but I wanted to return to it because it looked at this from a course perspective, instead of from a teacher perspective.</p>
+<p>In order to set up R to create the adjacency matrix for a one-mode projection of the second column of bipartite data, you would just multiply by the transpose first:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>AdjacencyB <span class="ot">&lt;-</span> <span class="fu">t</span>(Incidence) <span class="sc">%*%</span> Incidence</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Everything else is the same as in the first posting. I also don’t like that triangle is not a shape that you can define for your nodes (circle and square are), so I ended up finding a function that creates triangle as an option in your plots. Code for that below:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mytriangle <span class="ot">&lt;-</span> <span class="cf">function</span>(coords, <span class="at">v=</span><span class="cn">NULL</span>, params) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  vertex.color <span class="ot">&lt;-</span> <span class="fu">params</span>(<span class="st">"vertex"</span>, <span class="st">"color"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(vertex.color) <span class="sc">!=</span> <span class="dv">1</span> <span class="sc">&amp;&amp;</span> <span class="sc">!</span><span class="fu">is.null</span>(v)) {</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    vertex.color <span class="ot">&lt;-</span> vertex.color[v]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  vertex.size <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">200</span> <span class="sc">*</span> <span class="fu">params</span>(<span class="st">"vertex"</span>, <span class="st">"size"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(vertex.size) <span class="sc">!=</span> <span class="dv">1</span> <span class="sc">&amp;&amp;</span> <span class="sc">!</span><span class="fu">is.null</span>(v)) {</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    vertex.size <span class="ot">&lt;-</span> vertex.size[v]</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">symbols</span>(<span class="at">x=</span>coords[,<span class="dv">1</span>], <span class="at">y=</span>coords[,<span class="dv">2</span>], <span class="at">bg=</span>vertex.color,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">stars=</span><span class="fu">cbind</span>(vertex.size, vertex.size, vertex.size),</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>          <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">inches=</span><span class="cn">FALSE</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">add_shape</span>(<span class="st">"triangle"</span>, <span class="at">clip=</span><span class="fu">shapes</span>(<span class="st">"circle"</span>)<span class="sc">$</span>clip,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>                 <span class="at">plot=</span>mytriangle)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="graphs-and-observations" class="level3">
+<h3 class="anchored" data-anchor-id="graphs-and-observations">Graphs, and Observations</h3>
+<p>Teachers can generally be organized in two buckets:</p>
+<ul>
+<li>What they teach</li>
+<li>Where they teach</li>
+</ul>
+<p>There are other parts of their identities that you could graph, but for those, I’d rather use common measures of homophily that are in the <code>netseg</code> package to see if there is anything out of the ordinary.</p>
+<p>Finally, I chose to omit edges with a weight of one by defining their color as <code>NA</code>. That is, each edge in these graphs represents a time that a teacher saw another teacher in multiple courses, giving them a greater change of having a meaningful meeting with each other.</p>
+<p>In the first graph, content is the lens through which I created my plot.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/image003.png" class="img-fluid figure-img"></p>
+<figcaption>TeachersByContent</figcaption>
+</figure>
 </div>
- <!-- /main -->
+<p>While the courses graphs from the first posting show that there are places where teachers of differing content get a chance to meet each other, this graph shows that, for the most part, the greater majority of teachers see other teachers who teach the same content that they do.</p>
+<p>All things considered, this is a simple fact of life - teachers choose courses that help them teach the content that they teach - so of course they see other teachers of the same content who make, for the most part, the same decision.</p>
+<p>A different perspective comes up when you fold in borough.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/image005.png" class="img-fluid figure-img"></p>
+<figcaption>TeachersByBorough</figcaption>
+</figure>
+</div>
+<p>While teachers are taking courses for the most part with teachers who teach the same content as them, they are seeing a diversity of the schools that they come from. This is a greater argument for the power of a community - that great ideas can diffuse across the city of New York.</p>
+</section>
+<section id="to-learn-more" class="level3">
+<h3 class="anchored" data-anchor-id="to-learn-more">To learn more</h3>
+<p>The following links helped me think through this problem:</p>
+<ul>
+<li><a href="https://kateto.net/network-visualization">Network Visualization in R</a> by Katya Ognyanova</li>
+<li><a href="https://solomonmg.github.io/post/working-with-bipartite-affiliation-network-data-in-r/">Working with Bipartite/Affiliation Network Data in R</a> by Sol Messing</li>
+<li><a href="https://rdrr.io/bioc/FELLA/src/R/plotGraph.R">Creating a triangle for network graphs</a>, borrowed from the <code>FELLA</code> package</li>
+</ul>
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{russell2022,
+  author = {Russell, John},
+  title = {A Bipartite Case (Part 2)},
+  date = {2022-03-16},
+  url = {https://drjohnrussell.github.io/posts/2022-03-16-bipartite-case-ii/},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-russell2022" class="csl-entry quarto-appendix-citeas" role="listitem">
+Russell, John. 2022. <span>“A Bipartite Case (Part 2).”</span> March 16,
+2022. <a href="https://drjohnrussell.github.io/posts/2022-03-16-bipartite-case-ii/">https://drjohnrussell.github.io/posts/2022-03-16-bipartite-case-ii/</a>.
+</div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -169,6 +343,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
   const isCodeAnnotation = (el) => {
     for (const clz of el.classList) {
       if (clz.startsWith('code-annotation-')) {                     

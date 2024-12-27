@@ -1,0 +1,13 @@
+---
+image: img/1929137_507378143002_6354_n.jpg
+toc: false
+about: 
+  template: jolla
+  image-shape: rounded
+  image-width: 15em
+  image-alt: "Alternative picture of John"
+---
+Hi there! I'm John Russell. In my work as a professor and education researcher, I love **sensemaking in data, science and education**, learning and implementing **systems of professional learning**, and the spaces that support the ways in which these pursuits support each other. Outside of work, I'm a **kayaker**, a lover of **board games**, and an explorer (mostly via my bicycle) of **New York City**, where I live. Please explore to learn more [about me](about.qmd) and my work!  
+  
+  
+[{{< fa brands linkedin title="linkedin" size=2x >}}](https://www.linkedin.com/in/drjrussell/){target="_blank"} &nbsp; [{{< fa brands bluesky title="bluesky" size=2x >}}](https://bsky.app/profile/thejohnrussell.com){target="_blank"} &nbsp;[{{< fa brands github title="github" size=2x >}}](https://github.com/drjohnrussell){target="_blank"} &nbsp; [{{< fa envelope title="envelope" size=2x >}}](mailto:dr.jrussell@protonmail.com)

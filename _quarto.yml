@@ -1,0 +1,30 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "John Russell"
+  navbar:
+    logo: "img/1929137_507378143002_6354_n.jpg"
+    left:
+      - href: index.qmd
+        text: Home
+      - href: about.qmd
+        text: About me
+      - posts.qmd
+    right:
+      - text: "Affiliations"
+        menu:
+          - text: EL Education
+            href: https://www.eleducation.org
+          - text: American Museum of Natural History
+            href: https://www.amnh.org
+          - text: Harvard Strategic Data Fellowship
+            href: https://sdp.cepr.harvard.edu/
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
