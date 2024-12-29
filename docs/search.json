@@ -102,6 +102,20 @@
     "href": "posts/2024-12-28-getting-back-online/index.html",
     "title": "Getting back into blogging",
     "section": "",
-    "text": "Small things.\n\n\n\nCitationBibTeX citation:@online{russell2024,\n  author = {Russell, John},\n  title = {Getting Back into Blogging},\n  date = {2024-12-28},\n  url = {https://drjohnrussell.github.io/posts/2024-12-28-getting-back-online/},\n  langid = {en}\n}\nFor attribution, please cite this work as:\nRussell, John. 2024. “Getting Back into Blogging.” December\n28, 2024. https://drjohnrussell.github.io/posts/2024-12-28-getting-back-online/."
+    "text": "In one of my last posts 2 years ago, I mentioned that I would be looking for work and leaving MƒA. I ended up doubling down on my research background and becoming a part of EL Education’s Research Team, where I have taken an improvement science perspective on the many different programs that they offer schools and districts in line with their vision for a more full definition of student achievement where you don’t measure a student merely on test scores, but on the measure of their work and their character."
+  },
+  {
+    "objectID": "posts/2024-12-28-getting-back-online/index.html#time-since-mƒa",
+    "href": "posts/2024-12-28-getting-back-online/index.html#time-since-mƒa",
+    "title": "Getting back into blogging",
+    "section": "",
+    "text": "In one of my last posts 2 years ago, I mentioned that I would be looking for work and leaving MƒA. I ended up doubling down on my research background and becoming a part of EL Education’s Research Team, where I have taken an improvement science perspective on the many different programs that they offer schools and districts in line with their vision for a more full definition of student achievement where you don’t measure a student merely on test scores, but on the measure of their work and their character."
+  },
+  {
+    "objectID": "posts/2024-12-28-getting-back-online/index.html#my-work-at-el-education",
+    "href": "posts/2024-12-28-getting-back-online/index.html#my-work-at-el-education",
+    "title": "Getting back into blogging",
+    "section": "My work at EL Education",
+    "text": "My work at EL Education\nMuch of that work has been about positioning EL Education around a data infrastructure that allows them to understand their partners and the impact of their work. This has involved projects that mirror many parts of the data science cycle:\n\n\n\nR For Data Science Cycle (Wickham & Grolemund)\n\n\n\nImporting Data from disparate sources, including federal databases such as NCES, state systems that hold accountability data, our own data within Salesforce, and the data our partners hold\nTidying Data, which involves not only making the data more rectangular, but also making sure that there is a common language of identifiers such that the data can be easily merged and used as filters for each other through inclusive and filtering joins\nAnalyzing the Data, which involves everything from the design of additional instruments to give a qualitative bent to the quantitative data, doing explanatory work to see how different subgroups of students and schools compare, doing modeling work to see how those comparisons relate to each other, and further to understand the story we wish to tell\nCommunication, which has involved dashboards, paramaterized reports, presentations, and other forms of data visualization. This work has gotten extensive enough to merit creating an EL Education Data Visualization guide to make sure that everyone doing this work is on the same page.\n\nThis work has been completely done in R and a combination of R Markdown (before) and Quarto (now). My expertise has grown, which has merited taking a look at my old blog, which was done primarily in Markdown, and redoing it in Quarto. This way, I can house the code for the work I’m doing and the explanation within one document, as I do in my work at EL Education.\nI hope to use this blog to talk through and showcase some of that work."
   }
 ]
