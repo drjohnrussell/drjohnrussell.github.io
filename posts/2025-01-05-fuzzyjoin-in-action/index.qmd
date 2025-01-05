@@ -1,0 +1,17 @@
+---
+title: "My time at MƒA"
+description: "Growth over seven years"
+date: 02-28-2022
+categories: [R] # self-defined categories
+citation: 
+  url: https://drjohnrussell.github.io/posts/2022-02-28-time-at-mfa/ 
+image: img/PDTeam.gif
+draft: true # setting this to `true` will prevent your post from appearing on your listing page until you're ready!
+---
+
+```{r}
+library(tidyverse)
+library(fuzzyjoin)
+load("G:/Shared drives/EL Research Team Drive/07_Data Projects/Enrollment Data/SY2023-24/NCES Data/2024NCESMasterfiles.RData")
+
+```
