@@ -1,0 +1,15 @@
+{
+  "hash": "708d5bd8dcdb6216dd50db42241a8d5f",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"My time at MƒA\"\ndescription: \"Growth over seven years\"\ndate: 02-28-2022\ncategories: [R] # self-defined categories\ncitation: \n  url: https://drjohnrussell.github.io/posts/2022-02-28-time-at-mfa/ \nimage: img/PDTeam.gif\ndraft: true # setting this to `true` will prevent your post from appearing on your listing page until you're ready!\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.1     ✔ tibble    3.2.1\n✔ lubridate 1.9.4     ✔ tidyr     1.3.1\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors\n```\n\n\n:::\n\n```{.r .cell-code}\nlibrary(fuzzyjoin)\nlibrary(gt)\nVI <- read_csv(\"https://github.com/drjohnrussell/drjohnrussell.github.io/raw/refs/heads/master/posts/2025-01-05-fuzzyjoin-in-action/data/VIschools.csv\")\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\nRows: 20 Columns: 8\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr (6): schoolname, district, address, state, low_grade, hi_grade\ndbl (2): nces, total\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n```\n\n\n:::\n\n```{.r .cell-code}\nsample <- read_csv(\"https://github.com/drjohnrussell/drjohnrussell.github.io/raw/refs/heads/master/posts/2025-01-05-fuzzyjoin-in-action/data/sample.csv\")\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\nRows: 3 Columns: 2\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr (2): schoolname, state\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n```\n\n\n:::\n:::",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

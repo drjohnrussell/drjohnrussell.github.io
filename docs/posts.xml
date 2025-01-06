@@ -1,0 +1,1527 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>John Russell</title>
+<link>https://www.drjohnrussell.com/posts.html</link>
+<atom:link href="https://www.drjohnrussell.com/posts.xml" rel="self" type="application/rss+xml"/>
+<description>John Russell&#39;s Data Science Blog</description>
+<generator>quarto-1.4.551</generator>
+<lastBuildDate>Sat, 28 Dec 2024 05:00:00 GMT</lastBuildDate>
+<item>
+  <title>Getting back into blogging</title>
+  <dc:creator>John Russell</dc:creator>
+  <link>https://www.drjohnrussell.com/posts/2024-12-28-getting-back-online/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="time-since-mƒa" class="level2">
+<h2 class="anchored" data-anchor-id="time-since-mƒa">Time since MƒA</h2>
+<p>In one of my <a href="https://drjohnrussell.github.io/posts/2022-02-28-time-at-mfa/">last posts 2 years ago</a>, I mentioned that I would be looking for work and leaving MƒA. I ended up doubling down on my research background and becoming a part of <a href="https://www.eleducation.org">EL Education’s</a> Research Team, where I have taken an improvement science perspective on the many different programs that they offer schools and districts in line with their vision for a more full definition of student achievement where you don’t measure a student merely on test scores, but on the measure of their work and their character.</p>
+</section>
+<section id="my-work-at-el-education" class="level2">
+<h2 class="anchored" data-anchor-id="my-work-at-el-education">My work at EL Education</h2>
+<p>Much of that work has been about positioning EL Education around a data infrastructure that allows them to understand their partners and the impact of their work. This has involved projects that mirror many parts of the data science cycle:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://d33wubrfki0l68.cloudfront.net/571b056757d68e6df81a3e3853f54d3c76ad6efc/32d37/diagrams/data-science.png" class="img-fluid figure-img"></p>
+<figcaption>R For Data Science Cycle (Wickham &amp; Grolemund)</figcaption>
+</figure>
+</div>
+<ul>
+<li><p><strong><em>Importing Data from disparate sources</em></strong>, including federal databases such as NCES, state systems that hold accountability data, our own data within Salesforce, and the data our partners hold</p></li>
+<li><p><strong><em>Tidying Data</em></strong>, which involves not only making the data more rectangular, but also making sure that there is a common language of identifiers such that the data can be easily merged and used as filters for each other through inclusive and filtering joins</p></li>
+<li><p><strong><em>Analyzing the Data</em></strong>, which involves everything from the design of additional instruments to give a qualitative bent to the quantitative data, doing explanatory work to see how different subgroups of students and schools compare, doing modeling work to see how those comparisons relate to each other, and further to understand the story we wish to tell</p></li>
+<li><p><strong><em>Communication</em></strong>, which has involved dashboards, paramaterized reports, presentations, and other forms of data visualization. This work has gotten extensive enough to merit creating an <a href="https://el-education.github.io">EL Education Data Visualization</a> guide to make sure that everyone doing this work is on the same page.</p></li>
+</ul>
+<p>This work has been completely done in R and a combination of R Markdown (before) and Quarto (now). My expertise has grown, which has merited taking a look at my old blog, which was done primarily in Markdown, and redoing it in Quarto. This way, I can house the code for the work I’m doing and the explanation within one document, as I do in my work at EL Education.</p>
+<p>I hope to use this blog to talk through and showcase some of that work.</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{russell2024,
+  author = {Russell, John},
+  title = {Getting Back into Blogging},
+  date = {2024-12-28},
+  url = {https://drjohnrussell.github.io/posts/2024-12-28-getting-back-online/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-russell2024" class="csl-entry quarto-appendix-citeas">
+Russell, John. 2024. <span>“Getting Back into Blogging.”</span> December
+28, 2024. <a href="https://drjohnrussell.github.io/posts/2024-12-28-getting-back-online/">https://drjohnrussell.github.io/posts/2024-12-28-getting-back-online/</a>.
+</div></div></section></div> ]]></description>
+  <category>Quarto</category>
+  <category>R</category>
+  <guid>https://www.drjohnrussell.com/posts/2024-12-28-getting-back-online/</guid>
+  <pubDate>Sat, 28 Dec 2024 05:00:00 GMT</pubDate>
+  <media:content url="https://www.drjohnrussell.com/posts/2024-12-28-getting-back-online/img/logo-quarto.png" medium="image" type="image/png" height="166" width="144"/>
+</item>
+<item>
+  <title>Understanding Diversity in Baseball</title>
+  <dc:creator>John Russell</dc:creator>
+  <link>https://www.drjohnrussell.com/posts/2022-03-22-diversity-baseball/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<blockquote class="blockquote">
+<p><em>Note</em> - this post was done before my work at EL Education, where Quarto and R are utilized not just for analysis, but for communication as well. Future posts will center code blocks and be easier for others to work with.</p>
+</blockquote>
+<section id="problem-how-do-we-demonstrate-the-growth-of-mlb-as-an-international-sport" class="level2">
+<h2 class="anchored" data-anchor-id="problem-how-do-we-demonstrate-the-growth-of-mlb-as-an-international-sport">Problem: <em>How do we demonstrate the growth of MLB as an international sport?</em></h2>
+<p>I finished the truly excellent <a href="https://www.routledge.com/Analyzing-Baseball-Data-with-R-Second-Edition/Marchi-Albert-Marchi-Albert-Baumer/p/book/9780815353515">Analyzing Baseball Data with R</a>, and wanted to think about the opportunities that the different databases afforded that perhaps were not covered in the book. One of those opportunities was in thinking about where MLB has moved as a sport that pulls players from across the world.</p>
+<section id="data" class="level3">
+<h3 class="anchored" data-anchor-id="data">Data:</h3>
+<p><a href="https://www.seanlahman.com/">Sean Lahman</a> is an investigate reporter and sabermatrician who keeps an open source database with complete batting and pitching statistics for the major leagues from 1871 through 2021. In R, you can access this database by installing the <a href="https://cran.r-project.org/web/packages/Lahman/index.html">Lahman</a> package.</p>
+<p>One tiny issue you have to overcome, however, is that it keeps discrete databases of <code>Batting</code> statistics, <code>Pitching</code> statistics and a Master list (called <code>Player</code>). The Master list, which gives the country of birth, does not give which seasons a player played.</p>
+<p>In addition, a bar graph which shows every single country that a player was born in will get more than a little bit messy. That graph is shown here.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.drjohnrussell.com/posts/2022-03-22-diversity-baseball/img/Countries.jpeg" class="img-fluid figure-img"></p>
+<figcaption>Countries</figcaption>
+</figure>
+</div>
+<p>In the end, it would be nice to have a graphical representation of just the top countries, and to also think of a better visualization to show the greater diversity present in the game today.</p>
+<section id="solution" class="level4">
+<h4 class="anchored" data-anchor-id="solution">Solution</h4>
+<p>The issues above can be solved in a few different ways:</p>
+<ul>
+<li>Use <code>rbind</code>, <code>left_join</code> and <code>distinct</code> to pull together players from the Batting and Pitching databases, add their birth country, and then eliminate duplicates.</li>
+<li>Create a ‘decade’ variable that lets you separate players into the decades that they played (allowing a player to show up multiple times across decades).</li>
+<li>Take advantage of <code>group_by</code> to count players in different countries, or to visualize players by their name.</li>
+<li>Experiment with <code>slice</code> to make column graphs with only the top 10 countries, and with the <code>wordcloud</code> package to visualize diversity through the names of the players themselves.</li>
+</ul>
+</section>
+<section id="graphs-and-observations" class="level4">
+<h4 class="anchored" data-anchor-id="graphs-and-observations">Graphs, and Observations</h4>
+<p>I started out being interested in the countries that players came from. Here are three graphs, showing the top 10 countries for foreign players in the 1930s, 1970s (which was only one decade after all teams were <a href="https://en.wikipedia.org/wiki/Baseball_color_line">integrated</a>), and the 2010s.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.drjohnrussell.com/posts/2022-03-22-diversity-baseball/img/1930sColumn.jpeg" class="img-fluid figure-img"></p>
+<figcaption>1930sColumn</figcaption>
+</figure>
+</div>
+<p>With 8 players representing Canada, it’s pretty easy to see that MLB was not drawing international players in the 1930s.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.drjohnrussell.com/posts/2022-03-22-diversity-baseball/img/1970sColumn.jpeg" class="img-fluid figure-img"></p>
+<figcaption>1970sColumn</figcaption>
+</figure>
+</div>
+<p>The influence of Latin American players is well underway by the 1970s, with Puerto Rico leading the way.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.drjohnrussell.com/posts/2022-03-22-diversity-baseball/img/2010sColumn.jpeg" class="img-fluid figure-img"></p>
+<figcaption>2010sColumn</figcaption>
+</figure>
+</div>
+<p>The y-axis definitely gives it away! It also made me want to understand the Cuban players in the 1930s, or how Venezuela became a pipeline for players (and it explains in part why so many play in the Venezuelan league in the off-season).</p>
+<p>Really, though, I wanted a better representation of this diversity; something that put names to the players. So I defined a diversity variable, loosely defined as the percentage of players with a given name who were born out of the country, and then created word clouds of most common names in baseball. What follows are those word clouds for the 1970s and 2010s.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.drjohnrussell.com/posts/2022-03-22-diversity-baseball/img/1970sMLB.png" class="img-fluid figure-img"></p>
+<figcaption>1970sMLB</figcaption>
+</figure>
+</div>
+<p>In this word cloud, Jim and Mike are the most common names in baseball, with players named Jim and Bob being the most likely to be born within the United States.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.drjohnrussell.com/posts/2022-03-22-diversity-baseball/img/2010sMLB.png" class="img-fluid figure-img"></p>
+<figcaption>2010sMLB</figcaption>
+</figure>
+</div>
+<p>For the 2010s, there is a greater diversity of names and a greater diversity of players born outside of the country. This word cloud (of the 400 most common names) allows one to see that diversity in a way that a column graph cannot do.</p>
+</section>
+</section>
+<section id="walking-through-the-code" class="level3">
+<h3 class="anchored" data-anchor-id="walking-through-the-code">Walking through the Code</h3>
+<p>We’ll be using graphs and wordclouds from the <code>tidyverse</code> and <code>wordcloud</code> package, and we’ll also load the <code>Lahman</code> package for our data. I like using <code>RColorBrewer</code> for palettes.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(Lahman)</span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(RColorBrewer)</span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(wordcloud)</span></code></pre></div>
+<p>Using rbind, mutate and left_join allows us to create a list of batters and pitchers, complete with their birth country, for each decade that the dataset allows.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">DecadeList <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbind</span>(Batting[,<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"playerID"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"yearID"</span>)],Pitching[,<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"playerID"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"yearID"</span>)])</span>
+<span id="cb2-2">DecadeList <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> DecadeList <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">decade=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">floor</span>(yearID<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>))</span>
+<span id="cb2-3">DecadeList <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">distinct</span>(DecadeList,playerID,decade,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.keep_all=</span><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb2-4">DecadeList <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">left_join</span>(DecadeList[,<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"playerID"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"decade"</span>)],People[,<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"playerID"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"birthCountry"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"nameFirst"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"nameLast"</span>)],<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"playerID"</span>)</span>
+<span id="cb2-5">DecadeList <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">drop_na</span>(DecadeList)</span></code></pre></div>
+<p>In order to create our word cloud, we will need a new variable, which will let us know whether someone was born in the United States, or not. From this variable, we can group the dataset by first name and decade, and then find the average of everyone in those groups.</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">DecadeList <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(DecadeList,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">homegrown=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.integer</span>(birthCountry<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"USA"</span>))</span>
+<span id="cb3-2">Means <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> DecadeList <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(nameFirst,decade) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summarize</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Average=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mean</span>(homegrown))</span>
+<span id="cb3-3">DecadeList <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">left_join</span>(DecadeList,Means,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"nameFirst"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"decade"</span>))</span></code></pre></div>
+<p>Now we have everything for our column graphs! Using dplyr, we can group the data by country, find a count, and then ungroup them to graph. Code below only for 1970, but this could be done for any decade.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">Decade1970 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> DecadeList[DecadeList<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>decade<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1970</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&amp;</span>DecadeList<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>birthCountry<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"USA"</span>,]</span>
+<span id="cb4-2">Decade1970USA <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> DecadeList[DecadeList<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>decade<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1970</span>,]</span>
+<span id="cb4-3">Decade1970 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(birthCountry) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">count</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sort =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ungroup</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">slice</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span>birthCountry,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span>n))<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_col</span>()<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>()<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"none"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">axis.title.x=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>(),<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.title=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">hjust =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>))<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Top 10 countries for foreign players in MLB, 1970s"</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Number of players"</span>)</span></code></pre></div>
+<p>Creating the word cloud requires us to bring back the Means database, and to find a way to shorten the database to just the names in a decade, the number of people with that name, and the percentage of those people born in the United States. By ordering the data, we can be sure that they are colored correctly in the cloud as well.</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">Decade1970count <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> Decade1970USA <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(nameFirst) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">count</span>()</span>
+<span id="cb5-2">Means1970 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> Means[Means<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>decade<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1970</span>,]</span>
+<span id="cb5-3">Decade1970count <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">left_join</span>(Decade1970count,Means1970,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"nameFirst"</span>)</span>
+<span id="cb5-4">Decade1970count <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> Decade1970count[<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">order</span>(Decade1970count<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Average),]</span>
+<span id="cb5-5">color_range_number <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">length</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unique</span>(Decade1970count<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Average))</span>
+<span id="cb5-6"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">wordcloud</span>(Decade1970count<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>nameFirst,Decade1970count<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">max.words=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">300</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">random.order=</span><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ordered.colors=</span><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colors=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">colorRampPalette</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">brewer.pal</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"RdBu"</span>))(color_range_number)[<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(Decade1970count<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Average)])</span></code></pre></div>
+<p>And there you have it! A note - wordclouds are not like other graphs that you create, in that they are straight image files. This means that, to give them a title and a legend, it’s easiest just to import them into an image editor (I use <a href="https://inkscape.org/">Inkscape</a>) and deal with it there.</p>
+<section id="to-learn-more" class="level4">
+<h4 class="anchored" data-anchor-id="to-learn-more">To learn more</h4>
+<p>The following links helped me think through this problem. In particular, figuring out how to create a word cloud that was colored by another variable was a tricky problem to figure out:</p>
+<ul>
+<li><a href="https://stackoverflow.com/questions/43894416/wordcloud-showing-colour-based-on-continous-metadata-in-r">Stack Overflow Post on Wordclouds</a></li>
+<li><a href="https://towardsdatascience.com/create-a-word-cloud-with-r-bde3e7422e8a">A tutorial I used when first learning wordcloud</a> by Céline Van den Rul</li>
+</ul>
+
+
+</section>
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{russell2022,
+  author = {Russell, John},
+  title = {Understanding {Diversity} in {Baseball}},
+  date = {2022-03-22},
+  url = {https://drjohnrussell.github.io/posts/2022-03-22-diversity-baseball/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-russell2022" class="csl-entry quarto-appendix-citeas">
+Russell, John. 2022. <span>“Understanding Diversity in Baseball.”</span>
+March 22, 2022. <a href="https://drjohnrussell.github.io/posts/2022-03-22-diversity-baseball/">https://drjohnrussell.github.io/posts/2022-03-22-diversity-baseball/</a>.
+</div></div></section></div> ]]></description>
+  <category>R</category>
+  <category>Baseball</category>
+  <guid>https://www.drjohnrussell.com/posts/2022-03-22-diversity-baseball/</guid>
+  <pubDate>Tue, 22 Mar 2022 04:00:00 GMT</pubDate>
+  <media:content url="https://www.drjohnrussell.com/posts/2022-03-22-diversity-baseball/img/1970sMLB.png" medium="image" type="image/png" height="128" width="144"/>
+</item>
+<item>
+  <title>A bipartite case (part 2)</title>
+  <dc:creator>John Russell</dc:creator>
+  <link>https://www.drjohnrussell.com/posts/2022-03-16-bipartite-case-ii/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<blockquote class="blockquote">
+<p><em>Note</em> - this post was done before my work at EL Education, where Quarto and R are utilized not just for analysis, but for communication as well. Future posts will center code blocks and be easier for others to work with.</p>
+</blockquote>
+<section id="problem-do-stem-teachers-across-disciplines-within-a-fellowship-program-get-the-opportunity-to-meet-through-the-courses-they-take-part-2" class="level2">
+<h2 class="anchored" data-anchor-id="problem-do-stem-teachers-across-disciplines-within-a-fellowship-program-get-the-opportunity-to-meet-through-the-courses-they-take-part-2">Problem: <em>Do STEM teachers across disciplines within a fellowship program get the opportunity to meet through the courses they take?</em> (Part 2)</h2>
+<section id="data" class="level3">
+<h3 class="anchored" data-anchor-id="data">Data:</h3>
+<p>The data provided to explore this problem was course enrollment data, specifically looking at the enrollment within courses with multiple workshops over the course of a semester.</p>
+</section>
+<section id="solution-and-code" class="level3">
+<h3 class="anchored" data-anchor-id="solution-and-code">Solution and Code</h3>
+<p>I walked through the Solution to this problem <a href="https://www.thejohnrussell.com/2022-02-17-bipartite-case-i/">a month ago</a>, but I wanted to return to it because it looked at this from a course perspective, instead of from a teacher perspective.</p>
+<p>In order to set up R to create the adjacency matrix for a one-mode projection of the second column of bipartite data, you would just multiply by the transpose first:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">AdjacencyB <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">t</span>(Incidence) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%*%</span> Incidence</span></code></pre></div>
+<p>Everything else is the same as in the first posting. I also don’t like that triangle is not a shape that you can define for your nodes (circle and square are), so I ended up finding a function that creates triangle as an option in your plots. Code for that below:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">mytriangle <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(coords, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">v=</span><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span>, params) {</span>
+<span id="cb2-2">  vertex.color <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">params</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"vertex"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"color"</span>)</span>
+<span id="cb2-3">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">length</span>(vertex.color) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&amp;&amp;</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">is.null</span>(v)) {</span>
+<span id="cb2-4">    vertex.color <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> vertex.color[v]</span>
+<span id="cb2-5">  }</span>
+<span id="cb2-6">  vertex.size <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">200</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">params</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"vertex"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"size"</span>)</span>
+<span id="cb2-7">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">length</span>(vertex.size) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&amp;&amp;</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">is.null</span>(v)) {</span>
+<span id="cb2-8">    vertex.size <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> vertex.size[v]</span>
+<span id="cb2-9">  }</span>
+<span id="cb2-10"></span>
+<span id="cb2-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">symbols</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span>coords[,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span>coords[,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">bg=</span>vertex.color,</span>
+<span id="cb2-12">          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">stars=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cbind</span>(vertex.size, vertex.size, vertex.size),</span>
+<span id="cb2-13">          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">add=</span><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">inches=</span><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>)</span>
+<span id="cb2-14">}</span>
+<span id="cb2-15"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_shape</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"triangle"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">clip=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">shapes</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"circle"</span>)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>clip,</span>
+<span id="cb2-16">                 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot=</span>mytriangle)</span></code></pre></div>
+</section>
+<section id="graphs-and-observations" class="level3">
+<h3 class="anchored" data-anchor-id="graphs-and-observations">Graphs, and Observations</h3>
+<p>Teachers can generally be organized in two buckets:</p>
+<ul>
+<li>What they teach</li>
+<li>Where they teach</li>
+</ul>
+<p>There are other parts of their identities that you could graph, but for those, I’d rather use common measures of homophily that are in the <code>netseg</code> package to see if there is anything out of the ordinary.</p>
+<p>Finally, I chose to omit edges with a weight of one by defining their color as <code>NA</code>. That is, each edge in these graphs represents a time that a teacher saw another teacher in multiple courses, giving them a greater change of having a meaningful meeting with each other.</p>
+<p>In the first graph, content is the lens through which I created my plot.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.drjohnrussell.com/posts/2022-03-16-bipartite-case-ii/img/image003.png" class="img-fluid figure-img"></p>
+<figcaption>TeachersByContent</figcaption>
+</figure>
+</div>
+<p>While the courses graphs from the first posting show that there are places where teachers of differing content get a chance to meet each other, this graph shows that, for the most part, the greater majority of teachers see other teachers who teach the same content that they do.</p>
+<p>All things considered, this is a simple fact of life - teachers choose courses that help them teach the content that they teach - so of course they see other teachers of the same content who make, for the most part, the same decision.</p>
+<p>A different perspective comes up when you fold in borough.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.drjohnrussell.com/posts/2022-03-16-bipartite-case-ii/img/image005.png" class="img-fluid figure-img"></p>
+<figcaption>TeachersByBorough</figcaption>
+</figure>
+</div>
+<p>While teachers are taking courses for the most part with teachers who teach the same content as them, they are seeing a diversity of the schools that they come from. This is a greater argument for the power of a community - that great ideas can diffuse across the city of New York.</p>
+</section>
+<section id="to-learn-more" class="level3">
+<h3 class="anchored" data-anchor-id="to-learn-more">To learn more</h3>
+<p>The following links helped me think through this problem:</p>
+<ul>
+<li><a href="https://kateto.net/network-visualization">Network Visualization in R</a> by Katya Ognyanova</li>
+<li><a href="https://solomonmg.github.io/post/working-with-bipartite-affiliation-network-data-in-r/">Working with Bipartite/Affiliation Network Data in R</a> by Sol Messing</li>
+<li><a href="https://rdrr.io/bioc/FELLA/src/R/plotGraph.R">Creating a triangle for network graphs</a>, borrowed from the <code>FELLA</code> package</li>
+</ul>
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{russell2022,
+  author = {Russell, John},
+  title = {A Bipartite Case (Part 2)},
+  date = {2022-03-16},
+  url = {https://drjohnrussell.github.io/posts/2022-03-16-bipartite-case-ii/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-russell2022" class="csl-entry quarto-appendix-citeas">
+Russell, John. 2022. <span>“A Bipartite Case (Part 2).”</span> March 16,
+2022. <a href="https://drjohnrussell.github.io/posts/2022-03-16-bipartite-case-ii/">https://drjohnrussell.github.io/posts/2022-03-16-bipartite-case-ii/</a>.
+</div></div></section></div> ]]></description>
+  <category>R</category>
+  <category>Social Network Analysis</category>
+  <guid>https://www.drjohnrussell.com/posts/2022-03-16-bipartite-case-ii/</guid>
+  <pubDate>Wed, 16 Mar 2022 04:00:00 GMT</pubDate>
+  <media:content url="https://www.drjohnrussell.com/posts/2022-03-16-bipartite-case-ii/img/image003.png" medium="image" type="image/png" height="135" width="144"/>
+</item>
+<item>
+  <title>My time at MƒA</title>
+  <dc:creator>John Russell</dc:creator>
+  <link>https://www.drjohnrussell.com/posts/2022-02-28-time-at-mfa/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<blockquote class="blockquote">
+<p><em>Note</em> - this post was done before my work at EL Education, where Quarto and R are utilized not just for analysis, but for communication as well. Future posts will center code blocks and be easier for others to work with.</p>
+</blockquote>
+<section id="my-time-at-mƒa" class="level2">
+<h2 class="anchored" data-anchor-id="my-time-at-mƒa">My time at MƒA</h2>
+<p>As it will be announced in the next week, due to a desire for research to be an external and not internal initiative at MƒA , it is the desire of the board and leadership to cut my department, meaning I will be leaving the organization in the coming months, thankfully with the support of my directors in the job search.</p>
+<p>I have grown each of the programs I have been a part of, and while it is time to look for opportunities to grow elsewhere, I also wanted to use this place to reflect on the impact that I have been able to have in my seven years here, and the impact it has had on me.</p>
+<p>Because this is a data and R programming blog, however, let me break each section into one chart.</p>
+<section id="program-officer-for-professional-development" class="level3">
+<h3 class="anchored" data-anchor-id="program-officer-for-professional-development">Program Officer for Professional Development</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.drjohnrussell.com/posts/2022-02-28-time-at-mfa/img/PDTeam.gif" class="img-fluid figure-img"></p>
+<figcaption>PDTeam</figcaption>
+</figure>
+</div>
+<p>While I was doing some part-time and summer work, this was my first full-time job out of the classroom. In fact, leaving the classroom was so hard that I volunteered to do an elective at my school in my first year, just so that I could still see my students.</p>
+<p>I was the first Program Officer for science, and in some ways, it showed. Many of the content courses at MƒA were given by postdocs with very little teaching experience, and in particular, ideas around how to form effective professional learning communities where teachers of the same content could learn from each other were incredibly naïve.</p>
+<p>In my time as a Program Officer, and with the help of incredible colleagues, we increased the <em>quality</em> and the <em>quantity</em> (graphed above) of courses offered. We started programs like Scopes for Schools, where amateur astronomers would come to schools on Family Science nights with telescopes. We were able to better sustain partnerships that already existed, and form new ones with government organizations such as the NYS Department of Environmental Conversation and university programs such as Columbia University’s Frontiers of Science. Registration day each semester came with such joy, as teachers logged on at exactly 4 PM and chose the courses that you had set up.</p>
+<p>I also worked on my dissertation, on the supports teacher leaders require to effectively lead professional learning communities, which aided in the creation of multiple tools, many of which are now featured on MƒA’s <a href="https://www.mathforamerica.org/teacher-learning">Teaching and Learning Resources</a>.</p>
+</section>
+<section id="research-associate" class="level3">
+<h3 class="anchored" data-anchor-id="research-associate">Research Associate</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.drjohnrussell.com/posts/2022-02-28-time-at-mfa/img/AIMTRU.jpeg" class="img-fluid figure-img"></p>
+<figcaption>AIMTRU</figcaption>
+</figure>
+</div>
+<p>After three years as a Program Officer, I spent the final year of my dissertation as a Research Associate. In this position, I worked to advocate for models of teacher leadership by supporting initiatives within and outside of New York City. In particular, I helped with the formation and successful evaluation of the <a href="https://www.innovatestemnj.org/">NJ STEM Innovation Fellowship</a>, and with piloting a <a href="https://tle.soe.umich.edu/MFA">professional learning model</a> centered on high quality instructional materials that was awarded an NSF DRK-12 grant.</p>
+<p>The success of each of these initiatives was no small feat; our evaluator on NJ STEM actually passed away in the middle of the first year of the fellowship, and I took over their work on top of my own. NSF grants are rarely given to people on their first application, and it was in large part due to the data we were able to provide on its early success that convinced them this was worthwhile. The chart above, from the first year after we received the grant, shows pre/post testing on the knowledge that teachers had of the high quality instructional materials that were at the center of the model (Formative Assessment Lessons, or FALs) as well as the framework for powerful teaching that they were based on (the Teaching for Robust Understanding framework, or TRU).</p>
+<p>While building the course catalog as a program officer was a collaborative process with the rest of the team, the work on these initiatives as an associate felt like true partnerships, where we each brought our expertise to bear, and I learned a lot about my strengths as a design-based researcher translating ideas to products, and the things I needed to work on to make sure that everyone felt supported in these processes.</p>
+</section>
+<section id="senior-education-researcher" class="level3">
+<h3 class="anchored" data-anchor-id="senior-education-researcher">Senior Education Researcher</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.drjohnrussell.com/posts/2022-02-28-time-at-mfa/img/EVu29wuXQAIr1IU.jpeg" class="img-fluid figure-img"></p>
+<figcaption>EVu29wuXQAIr1IU</figcaption>
+</figure>
+</div>
+<p>Building on the success of these initiatives, I was promoted to a senior researcher, able to be a part in the design, implementation, and evaluation of entire programs of research. I have been able to return to my dissertation in some ways, extending the TRU framework from classroom practice to the professional learning sphere in order to support PD leaders. I have also taken to the tools of social network analysis, understanding how we can think of communities of practice as places where knowledge flows. Hopefully, I’ll be able to use some of this space to talk more about this work in the near future.</p>
+<p>It has been a pleasure to be a part of MƒA. My skills in professional development, research, and analyzing data have grown over my time here, in large part because I was provided so many opportunities to try something out and to learn from the process; it’s something that I won’t take for granted, wherever I end up.</p>
+</section>
+<section id="walking-through-the-code" class="level3">
+<h3 class="anchored" data-anchor-id="walking-through-the-code">Walking through the Code</h3>
+<p>For the first graph, I take advantage of <code>gganimate</code> and <code>gifski</code>, which allows you to render gifs easily in the R space. I’m also doing some piping and color work, so I’ll be loading <code>dplyr</code>, <code>tidyverse</code>, and <code>RColorBrewer</code>.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggplot2)</span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(gganimate)</span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(gifski)</span>
+<span id="cb1-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(RColorBrewer)</span>
+<span id="cb1-6"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(dplyr)</span></code></pre></div>
+<p>Unfortunately, the data, as it was downloaded from Salesforce, used Winter/Spring as opposed to Spring, which is far too much text for a graph. After loading my dataset, I ran a <code>recode</code> on the Semester variable, and then factored so that the order was correct.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">Courses <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> Courses <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Semester =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">recode</span>(Semester, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Winter/Spring 2013"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Spring 2013"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Winter/Spring 2014"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Spring 2014"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Winter/Spring 2015"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Spring 2015"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Winter/Spring 2016"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Spring 2016"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Winter/Spring 2017"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Spring 2017"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Winter/Spring 2018"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Spring 2018"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Winter/Spring 2019"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Spring 2019"</span>))</span>
+<span id="cb2-2">Courses<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Semester <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(Courses<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Semester, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">levels =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Fall 2012"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Spring 2013"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Fall 2013"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Spring 2014"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Fall 2014"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Spring 2015"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Fall 2015"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Spring 2016"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Fall 2016"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Spring 2017"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Fall 2017"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Spring 2018"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Fall 2018"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Spring 2019"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Fall 2019"</span>))</span></code></pre></div>
+<p>After this, it’s just a matter of setting up the graph highlighting the semesters I was there using <code>fill</code> and then using <code>transition_states</code> to slow down the gif created using <code>animate</code>.</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">p <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(Courses,<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span>Semester,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ifelse</span>((Semester<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Fall 2015"</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> Semester<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Spring 2016"</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> Semester<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Fall 2016"</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> Semester<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Spring 2017"</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> Semester<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Fall 2017"</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> Semester<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Spring 2018"</span>), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Highlighted"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Normal"</span>)))</span>
+<span id="cb3-2">p <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> p <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_bar</span>()<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_x_discrete</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labels=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">label_wrap</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>))<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>()<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"none"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.title=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">hjust=</span>.<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">axis.title.x=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>(), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">axis.title.y=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>())<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"My time as a Program Officer at MƒA"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subtitle=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Courses for Credit in the Catalog"</span>)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">transition_states</span>(Semester, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">wrap=</span><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">transition_length=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">shadow_mark</span>()</span>
+<span id="cb3-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">animate</span>(p, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">renderer =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">gifski_renderer</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">loop=</span><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>))</span></code></pre></div>
+<p>An excellent introduction to gganimate can be found <a href="https://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/">here</a>.</p>
+<p>For the second plot, using the data from AIMTRU, the biggest changes from your standard plot were using <code>RColorBrewer</code> library and the <code>scale_fill_brewer</code> function to set the palette to red-yellow-green, and <code>facet_grid</code> to separate the plots by the Test variable (indicating Pre/Post) as well as the Question variable. Factoring is again used to make sure that the levels are correct.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">AIMTRU<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Answer <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(AIMTRU<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Answer, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">levels =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"5"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"4"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"3"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"1"</span>))</span>
+<span id="cb4-2">AIMTRU<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Question <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(AIMTRU<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Question, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">levels =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Knowledge of FAL"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Knowledge of TRU"</span>))</span>
+<span id="cb4-3">AIMTRU<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Test <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(AIMTRU<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Test, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">levels =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Pre"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Post"</span>))</span>
+<span id="cb4-4">p <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(AIMTRU, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span>Answer, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span>Answer))</span>
+<span id="cb4-5">p <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_bar</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_x_discrete</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">drop=</span><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_test</span>()<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_brewer</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">palette =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"RdYlGn"</span>)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"none"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">axis.title.x=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>(), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">axis.title.y=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>())<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">facet_grid</span>(Question <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> Test)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Pre/post testing from first year evaluation of AIM-TRU initiative"</span>)</span></code></pre></div>
+<p>For the third plot, I refer you to this <a href="https://www.thejohnrussell.com/2022-02-17-bipartite-case-i/">posting</a> I did last week, which goes into far more detail into how matrix algebra is used to tease apart bipartite data in order to make it more network-friendly.</p>
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{russell2022,
+  author = {Russell, John},
+  title = {My Time at {MƒA}},
+  date = {2022-02-28},
+  url = {https://drjohnrussell.github.io/posts/2022-02-28-time-at-mfa/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-russell2022" class="csl-entry quarto-appendix-citeas">
+Russell, John. 2022. <span>“My Time at MƒA.”</span> February 28, 2022.
+<a href="https://drjohnrussell.github.io/posts/2022-02-28-time-at-mfa/">https://drjohnrussell.github.io/posts/2022-02-28-time-at-mfa/</a>.
+</div></div></section></div> ]]></description>
+  <category>R</category>
+  <guid>https://www.drjohnrussell.com/posts/2022-02-28-time-at-mfa/</guid>
+  <pubDate>Mon, 28 Feb 2022 05:00:00 GMT</pubDate>
+  <media:content url="https://www.drjohnrussell.com/posts/2022-02-28-time-at-mfa/img/PDTeam.gif" medium="image" type="image/gif"/>
+</item>
+<item>
+  <title>A bipartite case (part 1)</title>
+  <dc:creator>John Russell</dc:creator>
+  <link>https://www.drjohnrussell.com/posts/2022-02-17-bipartite-case-i/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<blockquote class="blockquote">
+<p><em>Note</em> - this post was done before my work at EL Education, where Quarto and R are utilized not just for analysis, but for communication as well. Future posts will center code blocks and be easier for others to work with.</p>
+</blockquote>
+<section id="problem-do-stem-teachers-across-disciplines-within-a-fellowship-program-get-the-opportunity-to-meet-through-the-courses-they-take" class="level2">
+<h2 class="anchored" data-anchor-id="problem-do-stem-teachers-across-disciplines-within-a-fellowship-program-get-the-opportunity-to-meet-through-the-courses-they-take">Problem: <em>Do STEM teachers across disciplines within a fellowship program get the opportunity to meet through the courses they take?</em></h2>
+<p>This problem is incredibly important for the organization, as a part of their mission is to build a community of practice among their teachers. If science teachers and mathematics teachers don’t have a way to interact, then there isn’t a way for information to flow among the community through the courses they are in together.</p>
+<section id="data" class="level3">
+<h3 class="anchored" data-anchor-id="data">Data:</h3>
+<p>The data provided to explore this problem was course enrollment data, specifically looking at the enrollment within courses with multiple workshops over the course of a semester.</p>
+</section>
+<section id="solution" class="level3">
+<h3 class="anchored" data-anchor-id="solution">Solution</h3>
+<p>Course enrollment data are what is known as bipartite data - that is, the data can be divided into two independent sets. It is typically graphed as a bipartite graph.</p>
+<p>Let’s use the following sample table and its associated graph</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Group 1</th>
+<th>Group 2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>X</td>
+<td>A</td>
+</tr>
+<tr class="even">
+<td>X</td>
+<td>B</td>
+</tr>
+<tr class="odd">
+<td>X</td>
+<td>C</td>
+</tr>
+<tr class="even">
+<td>X</td>
+<td>E</td>
+</tr>
+<tr class="odd">
+<td>Y</td>
+<td>A</td>
+</tr>
+<tr class="even">
+<td>Y</td>
+<td>B</td>
+</tr>
+<tr class="odd">
+<td>Y</td>
+<td>D</td>
+</tr>
+<tr class="even">
+<td>Y</td>
+<td>E</td>
+</tr>
+<tr class="odd">
+<td>Z</td>
+<td>B</td>
+</tr>
+<tr class="even">
+<td>Z</td>
+<td>D</td>
+</tr>
+<tr class="odd">
+<td>Z</td>
+<td>E</td>
+</tr>
+</tbody>
+</table>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.drjohnrussell.com/posts/2022-02-17-bipartite-case-i/img/bipartiteRplot.jpeg" class="img-fluid figure-img"></p>
+<figcaption>bipartitegraph</figcaption>
+</figure>
+</div>
+<p>While this type of graph is useful at a glance to notice connections, what we are interested in is co-enrollments; that is, who is in a course with whom, and in particular, whether there are courses that act as bridges among mathematics and science teachers.</p>
+<p>We can do this with a little bit of matrix algebra. If you multiply an incidence matrix by its transpose, then you convert a two-mode matrix into a one mode incidence matrix. R is particularly suitable for converting incidence matrices into an igraph object, which you can plot and even pull interesting centrality measures from.</p>
+<p>In matrix multiplication, order matters! Depending upon whether you multiply the transpose first or second, you would get the following adjacency matrices.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th>X</th>
+<th>Y</th>
+<th>Z</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>X</strong></td>
+<td>0</td>
+<td>3</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td><strong>Y</strong></td>
+<td>3</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td><strong>Z</strong></td>
+<td>2</td>
+<td>3</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>in one form, or alternatively,</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+<th>E</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>A</strong></td>
+<td>0</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td><strong>B</strong></td>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td><strong>C</strong></td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td><strong>D</strong></td>
+<td>1</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td><strong>E</strong></td>
+<td>2</td>
+<td>3</td>
+<td>1</td>
+<td>2</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>These matrices tell you how many shared destinations there are. For instance, A and C share one common destination (X).</p>
+<p>For our course enrollment data, this is perfect; we can now create a matrix and plot igraph objects in two different perspectives:</p>
+<ul>
+<li>A graph of teachers where every edge represents courses that they took together</li>
+<li>A graph of courses where every edge represents teachers that were co-enrolled in these courses</li>
+</ul>
+<p>For this particular post, let’s look at the graph of courses.</p>
+</section>
+<section id="graph-and-observations" class="level3">
+<h3 class="anchored" data-anchor-id="graph-and-observations">Graph, and Observations</h3>
+<p>Within the fellowship program, courses are generally organized by two principles:</p>
+<ul>
+<li>Content (Math, Science, CS, and Inquiry)</li>
+<li>Type (Professional Learning Teams, Mini-Courses and Extended Length Courses)</li>
+</ul>
+<p>You can see some really interesting things that come up in the graph, done using the <code>igraph</code> package and the Fruchterman-Reingold layout, which attempts to organize the data with greater centrality nodes at the center:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.drjohnrussell.com/posts/2022-02-17-bipartite-case-i/img/EVu29wuXQAIr1IU.jpeg" class="img-fluid figure-img"></p>
+<figcaption>GraphofTeachers</figcaption>
+</figure>
+</div>
+<p>There are a few things that I noticed in this graph:</p>
+<ul>
+<li>The “Inquiry, Practice and Leadership” and CS courses serve as a sort of mixing ground; that is, they have people in them who are co-enrolled in mathematics and science courses. They seem to be a necessary part of a course catalog that encourages mingling, and it would be interesting to look at the comparative audiences.</li>
+<li>Mini-Courses are more central than Professional Learning Teams. This makes sense; they usually enroll more teachers, so there are more opportunities for co-enrollments with other classes. However, they seem to serve magnified importance in allowing teachers to see others.</li>
+<li>A fun next step would be to use R’s <code>sna</code> package in order to find the betweenness of the Nodes. Betweenness is a measure of how well a node acts as a bridge between neighborhoods, and it would be interesting to see which courses act as the bridges on the graph between pure mathematics and pure science courses.</li>
+</ul>
+<p>As you can see, this method allows you to take something that is not naturally a network graph (bipartite data) and start to think about it using a network mindset.</p>
+<p>This is enough to start to answer the question above. We’ll use the space below to walk through the code so you can do something similar with bipartite data that you have!</p>
+</section>
+<section id="walking-through-the-code" class="level3">
+<h3 class="anchored" data-anchor-id="walking-through-the-code">Walking through the Code</h3>
+<p>We’ll be using graphs from the tidyverse package, as well as Matrix in order to allow matrix multiplication.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(igraph)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggraph)</span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(Matrix)</span></code></pre></div>
+<p>You’ll need to load up three different data sets:</p>
+<ul>
+<li>Your main dataset. For the code below, we will call this <code>Data</code></li>
+<li>A dataset that has extra information about your first column of interest A, which we’ll call <code>NodeA</code></li>
+<li>A data set that has extra information about your second columd of interest B, which we’ll call <code>NodeB</code></li>
+</ul>
+<p>The next thing you’ll need to do is convert Data into an incidence matrix, which means that every enrollment will become a 1 at the intersection of the rows (which will be column A) and columns (which will be column B).</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">Incidence <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">spMatrix</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">nrow=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">length</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unique</span>(Data<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>A)),</span>
+<span id="cb2-2"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ncol=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">length</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unique</span>(Data<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>B)),</span>
+<span id="cb2-3"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">i=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(Data<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>A)),</span>
+<span id="cb2-4"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">j=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(Data<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>B)),<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rep</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">length</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(Data<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>A))))</span></code></pre></div>
+<p>The incidence matrix is now ready to be converted into an adjacency matrix. Depending upon whether you are interested in the first column or second column, it will define the order in which you do the matrix multiplication. In this case, we are interested in the adjacency matrix for the first column. Note that we signify the multiplication using <code>%*%</code></p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">AdjacencyA <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> Incidence <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%*%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">t</span>(Incidence)</span></code></pre></div>
+<p>Now we can create an igraph object. However, we will then decompose it to an edge list, so that we can recreate the igraph object, adding back in the weights and involving the background data for the nodes that we wish. If you just wish to graph this with no information on the nodes, you can skip a few steps here. I’m naming my igraph object teachers.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">edgeA <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">graph.adjacency</span>(AdjacencyA, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mode=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"undirected"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">weighted=</span><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">diag=</span><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>)</span>
+<span id="cb4-2"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">##this is where you lose weight</span></span>
+<span id="cb4-3">edgeA2 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as_data_frame</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">get.edgelist</span>(edgeA))</span>
+<span id="cb4-4"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">##need to get it back and form the new igraph object with my nodes</span></span>
+<span id="cb4-5">teachers <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">graph_from_data_frame</span>(edgeA2, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">vertices=</span>nodesA, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">directed=</span><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>)</span>
+<span id="cb4-6">teachers <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set_edge_attr</span>(teachers, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"weight"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">value=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">E</span>(edgeA)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>weight)</span></code></pre></div>
+<p>Now you have an igraph object ready to graph. In the graph above, <code>V(teachers)$shape</code> was defined by the type of course, and <code>V(teachers)$color</code> was set to the content of the course. <code>E(teachers)$weight</code> was also multiplied, so that larger co-enrollments stuck out.</p>
+<section id="to-learn-more" class="level4">
+<h4 class="anchored" data-anchor-id="to-learn-more">To learn more</h4>
+<p>The following links helped me think through this problem:</p>
+<ul>
+<li><a href="https://kateto.net/network-visualization">Network Visualization in R</a> by Katya Ognyanova</li>
+<li><a href="https://solomonmg.github.io/post/working-with-bipartite-affiliation-network-data-in-r/">Working with Bipartite/Affiliation Network Data in R</a> by Sol Messing</li>
+</ul>
+
+
+</section>
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{russell2022,
+  author = {Russell, John},
+  title = {A Bipartite Case (Part 1)},
+  date = {2022-02-17},
+  url = {https://drjohnrussell.github.io/posts/2022-02-17-bipartite-case-i/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-russell2022" class="csl-entry quarto-appendix-citeas">
+Russell, John. 2022. <span>“A Bipartite Case (Part 1).”</span> February
+17, 2022. <a href="https://drjohnrussell.github.io/posts/2022-02-17-bipartite-case-i/">https://drjohnrussell.github.io/posts/2022-02-17-bipartite-case-i/</a>.
+</div></div></section></div> ]]></description>
+  <category>R</category>
+  <category>Social Network Analysis</category>
+  <guid>https://www.drjohnrussell.com/posts/2022-02-17-bipartite-case-i/</guid>
+  <pubDate>Thu, 17 Feb 2022 05:00:00 GMT</pubDate>
+  <media:content url="https://www.drjohnrussell.com/posts/2022-02-17-bipartite-case-i/img/EVu29wuXQAIr1IU.jpeg" medium="image" type="image/jpeg"/>
+</item>
+</channel>
+</rss>

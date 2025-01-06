@@ -12,6 +12,8 @@ draft: true # setting this to `true` will prevent your post from appearing on yo
 ```{r}
 library(tidyverse)
 library(fuzzyjoin)
-load("G:/Shared drives/EL Research Team Drive/07_Data Projects/Enrollment Data/SY2023-24/NCES Data/2024NCESMasterfiles.RData")
+library(gt)
+VI <- read_csv("https://github.com/drjohnrussell/drjohnrussell.github.io/raw/refs/heads/master/posts/2025-01-05-fuzzyjoin-in-action/data/VIschools.csv")
+sample <- read_csv("https://github.com/drjohnrussell/drjohnrussell.github.io/raw/refs/heads/master/posts/2025-01-05-fuzzyjoin-in-action/data/sample.csv")
 
 ```

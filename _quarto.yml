@@ -4,6 +4,8 @@ project:
 
 website:
   title: "John Russell"
+  site-url: https://www.drjohnrussell.com/
+  description: "John Russell's Data Science Blog"
   navbar:
     logo: "img/1929137_507378143002_6354_n.jpg"
     left:
