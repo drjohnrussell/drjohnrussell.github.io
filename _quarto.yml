@@ -13,7 +13,8 @@ website:
         text: Home
       - href: about.qmd
         text: About me
-      - posts.qmd
+      - href: posts.qmd
+        text: Applications of Learning
     right:
       - text: "Affiliations"
         menu:
