@@ -1,0 +1,272 @@
+---
+title: "Using gganimate and ggflags to look at democratic progress"
+description: "Using a TidyTuesday dataset to experiment with gif packages"
+date: 01-13-2025
+categories: [Quarto, R, Geography] # self-defined categories
+format:
+  html:
+    code-fold: show
+    code-summary: "Code in R"
+    toc: TRUE
+    toc_float: TRUE
+execute:
+  warning: false
+citation: 
+  url: https://drjohnrussell.github.io/posts/2024-01-13-gganimate-ggflag/ 
+image: img/Europe.png
+draft: false # setting this to `true` will prevent your post from appearing on your listing page until you're ready!
+---
+
+## Loading and Exploring a Tidy Tuesday Dataset
+
+One of my New Year's resolutions was to become less of a lurker and more of a doer within the Tidy Tuesday community. There had been one dataset that I was super interested in exploring, based on [Democracy and Dictatorship](https://github.com/rfordatascience/tidytuesday/blob/main/data/2024/2024-11-05/readme.md). Loaded the dataset and a few packages.
+
+```{r}
+library(tidytuesdayR)
+library(tidyverse)
+library(countrycode) #this package looks up ISO codes, which can be useful
+library(ggflags) #pulls flags
+library(gganimate) #animations
+
+dat <- tidytuesdayR::tt_load(2024, week = 45)
+democracy <- dat$democracy_data
+
+head(democracy)
+```
+
+This dataset shows, for every year from 1950 to 2000, classifications for countries around the world. In the spirit of January 6th, I chose to focus on whether countries have free and fair elections, here shown as `has_free_and_fair_election`.
+
+In the interest of this exploration, I'm not interested in colonies, which are shown as `NA` in the `regime_category_index`.
+
+```{r}
+democracy <- democracy |> 
+  ## removing colonies as much as possible to get down to countries
+  filter(!is.na(regime_category_index),
+         ## British Virgin Islands oddly keeps showing up in spite of status as colony
+         country_code!="VGB") 
+```
+
+### First exploration - understanding areas with democratic changes
+
+My first inclination in the dataset was to take out the countries that only had free and fair elections or a lack thereof, in order to understand places that had democratic progress and democratic backsliding. This required setting up a filter for this work. `tabyl` from the janitor package is well set up for this, as it will quickly come up with cross counts.
+
+```{r}
+democracyfilter <- democracy |> 
+  janitor::tabyl(country_name,has_free_and_fair_election) |> 
+  filter(`TRUE` > 0 & `FALSE` > 0)
+```
+
+This gives a nice filter for this work. In order to use the [ggflags](https://github.com/jimjam-slam/ggflags) package, you need for the countries to be spelled out in iso2c format. Fortunately, the amazing [countrycodes](https://github.com/vincentarelbundock/countrycode) package will do that for you, and in addition, it can provide the continent for you as well, for additional explorations.
+
+```{r}
+democraticchanges <- democracy |> 
+  inner_join(democracyfilter) |> 
+  mutate(iso2=countrycode(country_name,"country.name","iso2c"),
+         continent = countrycode(iso2, "iso2c", "continent")) |> 
+  arrange(continent,`FALSE`) |> 
+         mutate(country_name=fct_inorder(country_name))
+```
+Now we are ready to plot this with the help of the `ggflags` package. Let's look at Europe and Africa, two continents associated with democratic progress and backsliding.
+
+There is one big issue - we would like for this to show up as continuous bars, which your typical geoms will not do. However, we can think of the bars as parts of a rectangle, that extend from the beginning to end of each year. If we factor the countries, we can then plot them and rename the y axis at the end.
+
+```{r}
+## Let's create the y-labels for later on
+y_lab <- democraticchanges |> 
+  distinct(country_name,iso2,continent)  |> 
+  mutate(y_mid = as.numeric(country_name),
+         name=country_name)
+## For Africa
+Africa <- democraticchanges |> 
+  filter(continent=="Africa") |> 
+  ggplot(aes(xmin=year, #left boundary of the rectangle
+             xmax=year+1, #right boundary of the rectangle
+             ymin=as.numeric(country_name)-.3, #lower boundary of the rectangle
+             ymax=as.numeric(country_name)+.3, #upper boundary of the rectangle
+             fill=has_free_and_fair_election)) +
+  geom_rect() +
+  # now let's plot flags between the rectangles and the y axis
+  ggflags::geom_flag(data=y_lab |> 
+                       filter(continent=="Africa"),
+                     mapping=aes(y=y_mid,
+                                 country=tolower(iso2), #ggflags needs lowercase iso2 to work
+                                 x=1945),
+                     inherit.aes=FALSE) + #we want this to be individual to this layer
+                     #now to rename the y axis
+  scale_y_continuous(breaks=y_lab$y_mid,labels=y_lab$country_name) +
+  theme_minimal() +
+  theme(legend.position="bottom",
+        legend.text=element_text(size=7),
+        legend.title=element_text(size=7)) +
+  labs(x="",
+       y="",
+       fill="Has Free and Fair Elections") +
+  scale_fill_brewer(palette="Set1") +
+  facet_wrap(~continent,ncol=1,scales="free",strip.position="right")
+
+Europe <- democraticchanges |> 
+  filter(continent=="Europe") |> 
+  ggplot(aes(xmin=year,
+             xmax=year+1,
+             ymin=as.numeric(country_name)-.3,
+             ymax=as.numeric(country_name)+.3,
+             fill=has_free_and_fair_election)) +
+  geom_rect() +
+  ggflags::geom_flag(data=y_lab |> 
+                       filter(continent=="Europe"),
+                     mapping=aes(y=y_mid,country=tolower(iso2),x=1945),inherit.aes=FALSE) +
+  scale_y_continuous(breaks=y_lab$y_mid,labels=y_lab$country_name) +
+  theme_minimal() +
+  theme(legend.position="bottom",
+        legend.text=element_text(size=7),
+        legend.title=element_text(size=7)) +
+  labs(x="",
+       y="",
+       fill="Has Free and Fair Elections") +
+  scale_fill_brewer(palette="Set1") +
+  facet_wrap(~continent,ncol=1,scales="free",strip.position="right")
+
+## Let's take advantage of patchwork to plot these graphs next to each other with a common legend
+library(patchwork)
+Europe + Africa + plot_layout(guides = 'collect') & theme(legend.position = 'bottom')
+```
+
+This is fun! Let's make a map and animate it.
+
+### gganimation for a map to show progress/backsliding
+
+One can see at a glance that, in Europe, there appears to be a democratic progression. Similarly, in Africa, there is a progression, but there is also backsliding. It would also be really useful to see this as a map - moreover, it would be really interesting to see as an animated map.
+
+`rnaturalearth` is a package that allows you to easily download map borders. [Patrice Ferlet](https://gist.github.com/metal3d) keeps a dataset of the centroid for countries that we can plot the flags on as well.
+
+```{r}
+library(rnaturalearth)
+
+world <- ne_countries(type="countries",returnclass="sf")
+
+coord <- read_csv("https://gist.github.com/metal3d/5b925077e66194551df949de64e910f6/raw/c5f20a037409d96958553e2eb6b8251265c6fd63/country-coord.csv") |> 
+  mutate(`Alpha-2 code`=replace_na(`Alpha-2 code`,"NA")) |> 
+  rename(code=`Alpha-2 code`,
+         lat=`Latitude (average)`,
+         lon=`Longitude (average)`)
+```
+
+Now let's take the democracy dataset from earlier, and `left_join` the dataset to the lat/long dataset as well as the world dataset
+```{r}
+democracymap <- democracy |> 
+  mutate(iso2=countrycode(country_name,"country.name","iso2c"),
+         continent = countrycode(iso2, "iso2c", "continent")) |> 
+  select(country_name,year,has_free_and_fair_election,iso2,continent) |> 
+  left_join(coord |>
+              select(code,lat,lon),by=c("iso2"="code"))
+
+democracymap <- democracymap |> 
+  select(country_name,year,has_free_and_fair_election,iso2,lat,lon) |> 
+  left_join(world, by=c("iso2"="iso_a2_eh")) |> 
+  filter(!is.na(geometry)) |> 
+  mutate(year=as.integer(year)) #this is necessary for the animation to progress frame by frame
+```
+
+We build this layer by layer. We want a base map of current boundaries, so we can take the current dataset and bring in one year's worth of data.
+```{r}
+#| fig-cap: "World Map"
+map <- democracymap |> 
+  filter(year==2020, !is.na(geometry)) |> 
+  select(-year)
+
+map |> 
+  ggplot() + geom_sf(aes(geometry=geometry))
+```
+
+Then we can layer this map easily. Notice that the latitude and longitude signs are not typical of a map - the excellent [metR](https://github.com/eliocamp/metR) package includes helpful themes and scales for meteorological data, which applies to maps as well!
+
+```{r}
+#| fig-cap: "A facet of the world"
+democracymap2 <- democracymap |> 
+  filter(has_free_and_fair_election==TRUE)
+
+library(metR)
+
+map |> 
+  ggplot() +
+  geom_sf(mapping=aes(geometry=geometry),fill="white",color="black") +
+  geom_sf(data=democracymap2,
+          mapping=aes(geometry=geometry),color=NA,fill="blue",
+          show.legend=FALSE)+
+  scale_x_longitude() +
+  scale_y_latitude() +
+  facet_wrap(~year) +
+  theme_bw() +
+  theme(axis.text=element_blank(),
+        axis.ticks=element_blank(),
+        strip.text=element_text(size=8,
+                                margin = margin(0,0,0,0, "cm")))
+
+```
+
+This map is a bit overwhelming, let's use `gganimate` and focus on Europe and Africa. Comments below to walk through the European one. Because it's tough to render, I saved it locally and then loaded it up on the website. Hooray!
+
+```{r}
+#Europe
+#First a base layer
+Europe2 <- map |> 
+  filter(continent=="Europe") |> 
+  ggplot() +
+  # note that fill is the inside and color is the border in geom_sf
+  geom_sf(mapping=aes(geometry=geometry),fill="white",color="black") +
+#Then the democracy data
+  geom_sf(data=democracymap2 |> 
+            filter(continent=="Europe"),
+          mapping=aes(geometry=geometry),
+          color="black",
+          show.legend=FALSE) +
+  ggflags::geom_flag(data=democracymap2 |> 
+                       filter(continent=="Europe",
+                              has_free_and_fair_election==TRUE),
+                     mapping=aes(y=lat,x=lon,country=tolower(iso2)),
+                     inherit.aes=FALSE) +
+  # gganimate allows you to use {closest_state} to fill in the transition label
+  labs(title= 'Year: {closest_state}') +
+  #metR scales
+  scale_x_longitude() +
+  scale_y_latitude() +
+  #gganimate transitions for the gif
+  transition_states(year) +
+  theme_bw() +
+  coord_sf(xlim=c(-20,40),
+           ylim=c(30,70),
+           default_crs=sf::st_crs(4326))
+
+#anim_save(filename="img/Europe.gif",animation=Europe2)
+```
+
+![Free and Fair Elections in Europe](img/Europe.gif)
+
+```{r}
+
+#Africa
+Africa2 <- map |> 
+  filter(continent=="Africa") |> 
+  ggplot() +
+  geom_sf(mapping=aes(geometry=geometry),fill="white",color="black") +
+  geom_sf(data=democracymap2 |> 
+            filter(continent=="Africa"),
+          mapping=aes(geometry=geometry),color="black",
+          show.legend=FALSE) +
+  scale_x_longitude() +
+  scale_y_latitude() +
+  ggflags::geom_flag(data=democracymap2 |> 
+                       filter(continent=="Africa",
+                              has_free_and_fair_election==TRUE),
+                     mapping=aes(y=lat,x=lon,
+                                 country=tolower(iso2)),
+                     inherit.aes=FALSE) +
+  labs(title = 'Year: {closest_state}') +
+  theme_bw() +
+  transition_states(year) +
+  coord_sf(default_crs=sf::st_crs(4326))
+
+#anim_save(filename="img/Africa.gif",animation=Africa2)
+```
+
+![Free and Fair Elections in Africa](img/Africa.gif)
