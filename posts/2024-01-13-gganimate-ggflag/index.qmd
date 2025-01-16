@@ -2,7 +2,7 @@
 title: "Using gganimate and ggflags to look at democratic progress"
 description: "Using a TidyTuesday dataset to experiment with gif packages"
 date: 01-13-2025
-categories: [Quarto, R, Geography] # self-defined categories
+categories: [Quarto, R, Geography, Tidy Tuesday] # self-defined categories
 format:
   html:
     code-fold: show

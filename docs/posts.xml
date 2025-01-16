@@ -9,7 +9,7 @@
 <link>https://www.drjohnrussell.com/posts.html</link>
 <atom:link href="https://www.drjohnrussell.com/posts.xml" rel="self" type="application/rss+xml"/>
 <description>John Russell&#39;s Data Science Blog</description>
-<generator>quarto-1.4.551</generator>
+<generator>quarto-1.5.57</generator>
 <lastBuildDate>Mon, 13 Jan 2025 05:00:00 GMT</lastBuildDate>
 <item>
   <title>Using gganimate and ggflags to look at democratic progress</title>
@@ -1459,6 +1459,7 @@ Democratic Progress.”</span> January 13, 2025. <a href="https://drjohnrussell.
   <category>Quarto</category>
   <category>R</category>
   <category>Geography</category>
+  <category>Tidy Tuesday</category>
   <guid>https://www.drjohnrussell.com/posts/2024-01-13-gganimate-ggflag/</guid>
   <pubDate>Mon, 13 Jan 2025 05:00:00 GMT</pubDate>
   <media:content url="https://www.drjohnrussell.com/posts/2024-01-13-gganimate-ggflag/img/Europe.png" medium="image" type="image/png" height="144" width="144"/>
@@ -1976,6 +1977,7 @@ font-style: inherit;">%*%</span> Incidence</span></code></pre></div>
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(coords, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">v=</span><span class="cn" style="color: #8f5902;
@@ -1992,6 +1994,7 @@ background-color: null;
 font-style: inherit;">"color"</span>)</span>
 <span id="cb2-3">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> (<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">length</span>(vertex.color) <span class="sc" style="color: #5E5E5E;
@@ -2028,6 +2031,7 @@ background-color: null;
 font-style: inherit;">"size"</span>)</span>
 <span id="cb2-7">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> (<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">length</span>(vertex.size) <span class="sc" style="color: #5E5E5E;
