@@ -32,7 +32,7 @@
 <p>What you need is a way to join data that is a little bit fuzzy. Enter <a href="https://github.com/dgrtwo/fuzzyjoin">David Robinson</a>’s excellent <code>fuzzyjoin</code> package.</p>
 <section id="introducing-an-example---schools-in-the-virgin-islands" class="level2">
 <h2 class="anchored" data-anchor-id="introducing-an-example---schools-in-the-virgin-islands">Introducing an example - schools in the Virgin Islands</h2>
-<p>There are 20 schools listed in the public school database for the <a href="https://nces.ed.gov/ccd/schoolsearch/">National Center for Education Statistics</a> in the Virgin Islands. I’ve downloaded the dataset and you can pull it from my github repo through the code below. A scrollable <code>DT</code> table to explore below (disabling a lot of features just to see the table):</p>
+<p>There are 20 schools listed in the public school database for the <a href="https://nces.ed.gov/ccd/schoolsearch/">National Center for Education Statistics</a> in the Virgin Islands. I’ve downloaded the dataset and you can pull it from my github repo through the code below. A scrollable <code>kableExtra</code> table to explore below (disabling a lot of features just to see the table):</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code in R</summary>
@@ -735,7 +735,7 @@ font-style: inherit;">kable_paper</span>()</span></code></pre></div>
 
 </div>
 </div>
-<p>What is nice about this is that, in review, you can see easily through the distance_col variable where the changes were found. For instance, maybe you want the join to include state, but you want to excluse this example because you know that schools in other states may have the same name; it would just be as simple as adding a <code>filter</code> at the end to take out stringdist.state &gt; 0.</p>
+<p>What is nice about this is that, in review, you can see easily through the distance_col variable where the changes were found. For instance, maybe you want the join to include state, but you want to exclude this example because you know that schools in other states may have the same name; it would just be as simple as adding a <code>filter</code> at the end to take out stringdist.state &gt; 0.</p>
 <section id="other-notes" class="level3">
 <h3 class="anchored" data-anchor-id="other-notes">Other notes</h3>
 <p>Others have used <code>fuzzyjoin</code> to great effect - I am inspired reading <a href="https://rpubs.com/hellojohncruz/fuzzyjoin">this vignette</a> in particular on geo_joins</p>
@@ -757,6 +757,7 @@ Russell, John. 2025. <span>“Using Fuzzyjoin to Work with NCES
 Data.”</span> January 17, 2025. <a href="https://drjohnrussell.github.io/posts/2025-01-17-fuzzyjoin-in-action/">https://drjohnrussell.github.io/posts/2025-01-17-fuzzyjoin-in-action/</a>.
 </div></div></section></div> ]]></description>
   <category>R</category>
+  <category>Data Wrangling</category>
   <guid>https://www.drjohnrussell.com/posts/2025-01-17-fuzzyjoin-in-action/</guid>
   <pubDate>Fri, 17 Jan 2025 05:00:00 GMT</pubDate>
   <media:content url="https://www.drjohnrussell.com/posts/2025-01-17-fuzzyjoin-in-action/img/Virgin_Islands.svg" medium="image" type="image/svg+xml"/>

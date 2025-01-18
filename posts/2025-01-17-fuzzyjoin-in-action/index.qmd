@@ -2,7 +2,7 @@
 title: "Using fuzzyjoin to work with NCES data"
 description: "Demonstrating how fuzzyjoin can help you with messy data through an example using school names within the Virgin Islands"
 date: 01-17-2025
-categories: [R] # self-defined categories
+categories: [R, Data Wrangling] # self-defined categories
 format:
   html:
     code-fold: show
@@ -30,7 +30,7 @@ What you need is a way to join data that is a little bit fuzzy. Enter [David Rob
 
 ## Introducing an example - schools in the Virgin Islands
 
-There are 20 schools listed in the public school database for the [National Center for Education Statistics](https://nces.ed.gov/ccd/schoolsearch/) in the Virgin Islands. I've downloaded the dataset and you can pull it from my github repo through the code below. A scrollable `DT` table to explore below (disabling a lot of features just to see the table):
+There are 20 schools listed in the public school database for the [National Center for Education Statistics](https://nces.ed.gov/ccd/schoolsearch/) in the Virgin Islands. I've downloaded the dataset and you can pull it from my github repo through the code below. A scrollable `kableExtra` table to explore below (disabling a lot of features just to see the table):
 
 ```{r}
 #| tbl-cap: "Public Schools of Virgin Islands"
@@ -133,7 +133,7 @@ sample[3,] |>
   kable_paper()
 ```
 
-What is nice about this is that, in review, you can see easily through the distance_col variable where the changes were found. For instance, maybe you want the join to include state, but you want to excluse this example because you know that schools in other states may have the same name; it would just be as simple as adding a `filter` at the end to take out stringdist.state > 0.
+What is nice about this is that, in review, you can see easily through the distance_col variable where the changes were found. For instance, maybe you want the join to include state, but you want to exclude this example because you know that schools in other states may have the same name; it would just be as simple as adding a `filter` at the end to take out stringdist.state > 0.
 
 ### Other notes
 
