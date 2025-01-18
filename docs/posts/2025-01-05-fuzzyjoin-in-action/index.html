@@ -2,15 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.551">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="John Russell">
 <meta name="dcterms.date" content="2022-02-28">
-<meta name="description" content="Growth over seven years">
+<meta name="description" content="Demonstrating how fuzzyjoin can help you with messy data through an example using school names within the Virgin Islands">
 
-<title>John Russell - My time at MƒA</title>
+<title>Using fuzzyjoin to work with NCES data – John Russell</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -36,7 +36,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -76,6 +76,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -103,6 +105,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+
+<link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+<meta name="quarto:status" content="draft">
 
 
 </head>
@@ -110,7 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
@@ -122,7 +129,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -137,12 +144,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../posts.html"> 
-<span class="menu-text">Blog</span></a>
+<span class="menu-text">Applications of Learning</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-affiliations" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-affiliations" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Affiliations</span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-affiliations">    
@@ -160,9 +167,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
     </ul>
   </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.r-bloggers.com/"> 
+<span class="menu-text">R-Bloggers</span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -171,10 +182,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">My time at MƒA</h1>
+      <h1 class="title">Using fuzzyjoin to work with NCES data</h1>
                   <div>
         <div class="description">
-          Growth over seven years
+          Demonstrating how fuzzyjoin can help you with messy data through an example using school names within the Virgin Islands
         </div>
       </div>
                           <div class="quarto-categories">
@@ -217,7 +228,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#tidy-data-structure-messy-data" id="toc-tidy-data-structure-messy-data" class="nav-link active" data-scroll-target="#tidy-data-structure-messy-data">Tidy data structure, messy data</a>
+  <ul class="collapse">
+  <li><a href="#introducing-an-example---schools-in-the-virgin-islands" id="toc-introducing-an-example---schools-in-the-virgin-islands" class="nav-link" data-scroll-target="#introducing-an-example---schools-in-the-virgin-islands">Introducing an example - schools in the Virgin Islands</a></li>
+  <li><a href="#joins-that-ignore-case" id="toc-joins-that-ignore-case" class="nav-link" data-scroll-target="#joins-that-ignore-case">Joins that ignore case</a></li>
+  <li><a href="#joins-that-take-advantage-of-string-distance" id="toc-joins-that-take-advantage-of-string-distance" class="nav-link" data-scroll-target="#joins-that-take-advantage-of-string-distance">Joins that take advantage of string distance</a></li>
+  <li><a href="#matching-off-of-multiple-columns" id="toc-matching-off-of-multiple-columns" class="nav-link" data-scroll-target="#matching-off-of-multiple-columns">Matching off of multiple columns</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
@@ -226,57 +249,546 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
+<section id="tidy-data-structure-messy-data" class="level1">
+<h1>Tidy data structure, messy data</h1>
+<blockquote class="blockquote">
+<p>Like families, tidy datasets are all alike but every messy dataset is messy in its own way. - <em>Hadley Wickham</em></p>
+</blockquote>
+<p>We often work with datasets where there is a unique identifier that can be used to link or filter the data, typically involving some type of a <a href="https://r4ds.hadley.nz/joins.html">join</a>.</p>
+<p>However, sometimes the identifiers that we wish to use to join are <em>near</em> matches. For instance, maybe you are joining a dataset by names, where one dataset has <strong>John</strong>, and the dataset you are joining has <strong>john</strong>. Or maybe there are text entry errors and it is instead <strong>Jon</strong>.</p>
+<p>What you need is a way to join data that is a little bit fuzzy. Enter (David Robinson)[https://github.com/dgrtwo/fuzzyjoin]’s excellent <code>fuzzyjoin</code> package.</p>
+<section id="introducing-an-example---schools-in-the-virgin-islands" class="level2">
+<h2 class="anchored" data-anchor-id="introducing-an-example---schools-in-the-virgin-islands">Introducing an example - schools in the Virgin Islands</h2>
+<p>There are 20 schools listed in the public school database for the <a href="https://nces.ed.gov/ccd/schoolsearch/">National Center for Education Statistics</a> in the Virgin Islands. I’ve downloaded the dataset and you can pull it from my github repo through the code below. A scrollable <code>DT</code> table to explore below (disabling a lot of features just to see the table):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.1     ✔ tibble    3.2.1
-✔ lubridate 1.9.4     ✔ tidyr     1.3.1
-✔ purrr     1.0.2     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fuzzyjoin)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>VI <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://github.com/drjohnrussell/drjohnrussell.github.io/raw/refs/heads/master/posts/2025-01-05-fuzzyjoin-in-action/data/VIschools.csv"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>VI <span class="sc">|&gt;</span> </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>() <span class="sc">|&gt;</span> <span class="do">##nice theme</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">height =</span> <span class="st">"200px"</span>) <span class="do">##adds scrolling</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; ">
+<table class="lightable-paper table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Public Schools of Virgin Islands</caption>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">schoolname</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">nces</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">district</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">address</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">state</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">low_grade</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">hi_grade</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Alfredo Andrews Elementary School</td>
+<td style="text-align: right;">780000200002</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">RFD 1 KINGSHILL</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">06</td>
+<td style="text-align: right;">495</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Claude O. Markoe Elementary School</td>
+<td style="text-align: right;">780000200006</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">PLOTS 71 75 MARS HILL</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">06</td>
+<td style="text-align: right;">403</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Eulalie Rivera</td>
+<td style="text-align: right;">780000200011</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">ROUTE 1 GROVE PLACE</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">08</td>
+<td style="text-align: right;">645</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">St. Croix Educational Complex High School</td>
+<td style="text-align: right;">780000200013</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">RR2 KINGSHILL</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">09</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: right;">893</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Juanita Gardine</td>
+<td style="text-align: right;">780000200021</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">ESTATE RICHMOND</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">08</td>
+<td style="text-align: right;">305</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Lew Muckle Elementary School</td>
+<td style="text-align: right;">780000200023</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">317 SION FARM</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">06</td>
+<td style="text-align: right;">339</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Pearl B. Larsen</td>
+<td style="text-align: right;">780000200028</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">ESTATE ST PETERS</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">08</td>
+<td style="text-align: right;">432</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ricardo Richards Elementary School</td>
+<td style="text-align: right;">780000200029</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">491 BARREN SPOT</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">06</td>
+<td style="text-align: right;">392</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">St. Croix Central High School</td>
+<td style="text-align: right;">780000200030</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">RSD 2 KINGSHILL</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">09</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: right;">717</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">John H. Woodson Junior High School</td>
+<td style="text-align: right;">780000200037</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">RURAL ROUTE 1 KINGSHILL</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">07</td>
+<td style="text-align: left;">08</td>
+<td style="text-align: right;">461</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Charlotte Amalie High School</td>
+<td style="text-align: right;">780003000005</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">8 and 9 ESTATE THOMAS</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">09</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: right;">1076</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ivanna Eudora Kean High School</td>
+<td style="text-align: right;">780003000015</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">1 and 2 ESTate NAZARETH</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">09</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: right;">738</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Jane E. Tuitt Elementary School</td>
+<td style="text-align: right;">780003000018</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">19 LEVOKI STRAEDE</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">KG</td>
+<td style="text-align: left;">04</td>
+<td style="text-align: right;">154</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Joseph Gomez Elementary School</td>
+<td style="text-align: right;">780003000019</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">142 ANNAS RETREAT</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">05</td>
+<td style="text-align: right;">462</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Joseph Sibilly Elementary School</td>
+<td style="text-align: right;">780003000020</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">14 15 16 ESTATE ELIZABETH</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">05</td>
+<td style="text-align: right;">226</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Julius E. Sprauve School</td>
+<td style="text-align: right;">780003000022</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">14 18 ESTATE ENIGHED</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">08</td>
+<td style="text-align: right;">225</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lockhart Elementary School</td>
+<td style="text-align: right;">780003000024</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">41 ESTATE THOMAS</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">KG</td>
+<td style="text-align: left;">08</td>
+<td style="text-align: right;">977</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ulla F. Muller Elementary School</td>
+<td style="text-align: right;">780003000026</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">7B ESTATE CONTANT</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">05</td>
+<td style="text-align: right;">401</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Yvonne E. Milliner-Bowsky Elementary School</td>
+<td style="text-align: right;">780003000027</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">15B and 16 ESTATE MANDAHL</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">05</td>
+<td style="text-align: right;">433</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bertha C. Boschulte Middle School</td>
+<td style="text-align: right;">780003000034</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">9 1 and 12A BOVONI</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">06</td>
+<td style="text-align: left;">08</td>
+<td style="text-align: right;">538</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fuzzyjoin)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>VI <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://github.com/drjohnrussell/drjohnrussell.github.io/raw/refs/heads/master/posts/2025-01-05-fuzzyjoin-in-action/data/VIschools.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 20 Columns: 8
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (6): schoolname, district, address, state, low_grade, hi_grade
-dbl (2): nces, total
 
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://github.com/drjohnrussell/drjohnrussell.github.io/raw/refs/heads/master/posts/2025-01-05-fuzzyjoin-in-action/data/sample.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 3 Columns: 2
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (2): schoolname, state
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
 </div>
+<p>Let’s say we have a dataset with the following names of schools, and we want to pull in information from NCES.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://github.com/drjohnrussell/drjohnrussell.github.io/raw/refs/heads/master/posts/2025-01-05-fuzzyjoin-in-action/data/sample.csv"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>sample <span class="sc">|&gt;</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="lightable-paper caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Dataset to join</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">schoolname</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">state</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">eulalie rivera</td>
+<td style="text-align: left;">VI</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Joseph Elementary School</td>
+<td style="text-align: left;">VI</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Alfredo Andrews Elementary School</td>
+<td style="text-align: left;">NY</td>
+</tr>
+</tbody>
+</table>
 
 
+</div>
+</div>
+<p>Enter the <code>fuzzyjoin</code> package, which allows the data to be messy in many ways, depending on what you need. Some of the ways to join outlined in the package are as follows:</p>
+<ul>
+<li><a href="http://varianceexplained.org/fuzzyjoin/reference/difference_join.html">difference_join</a> - joins that are numeric and within a specified distance</li>
+<li><a href="http://varianceexplained.org/fuzzyjoin/reference/geo_join.html">geo_join</a> - joins that use distances based on latitude and longitude</li>
+<li><a href="http://varianceexplained.org/fuzzyjoin/reference/regex_join.html">regex_join</a> - joins that look for common regex patterns (text and position)</li>
+<li><a href="http://varianceexplained.org/fuzzyjoin/reference/stringdist_join.html">stringdist_join</a> - joins that take into account small differences in the string</li>
+</ul>
+<p>Let’s focus on <code>stringdist_join</code> for special case uses.</p>
+</section>
+<section id="joins-that-ignore-case" class="level2">
+<h2 class="anchored" data-anchor-id="joins-that-ignore-case">Joins that ignore case</h2>
+<p>Joins that ignore case, where you don’t have to mutate using something like the stringr str_to_lower on the data to change it is a big win. We can use it to match <em>eulalie rivera</em>.</p>
+<p>This is what would happen as is:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sample[<span class="dv">1</span>,<span class="dv">1</span>] <span class="sc">|&gt;</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(VI,<span class="at">by=</span><span class="fu">c</span>(<span class="st">"schoolname"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="lightable-paper caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>An empty inner join</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">schoolname</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">nces</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">district</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">address</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">state</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">low_grade</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">hi_grade</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>On the other hand, we can use the <code>stringdist_join</code> and set <code>ignore_case</code> to equal TRUE.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sample[<span class="dv">1</span>,<span class="dv">1</span>] <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stringdist_join</span>(VI,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">by=</span><span class="fu">c</span>(<span class="st">"schoolname"</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">max_dist=</span><span class="dv">0</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">mode=</span><span class="st">"inner"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">ignore_case=</span><span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="lightable-paper caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>A successful join</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">schoolname.x</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">schoolname.y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">nces</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">district</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">address</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">state</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">low_grade</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">hi_grade</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">eulalie rivera</td>
+<td style="text-align: left;">Eulalie Rivera</td>
+<td style="text-align: right;">780000200011</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">ROUTE 1 GROVE PLACE</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">08</td>
+<td style="text-align: right;">645</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="joins-that-take-advantage-of-string-distance" class="level2">
+<h2 class="anchored" data-anchor-id="joins-that-take-advantage-of-string-distance">Joins that take advantage of string distance</h2>
+<p>The way that I’ve taken advantage of this is in dealing with typos or data where someone may have subtly different names for a school (e.g., one has the word <em>school</em> while the other drops it). What is nice about the <code>fuzzyjoin</code> package is that you can do the join. What is less nice is that it requires you to do a line check afterwards, especially when you are loose with the distances.</p>
+<p>Let’s look at the second row, <em>Joseph Elementary School</em>, and have a <code>maximum distance</code> of 8.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sample[<span class="dv">2</span>,<span class="dv">1</span>] <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stringdist_join</span>(VI,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">by=</span><span class="st">"schoolname"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">max_dist=</span><span class="dv">8</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">mode=</span><span class="st">"inner"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">ignore_case=</span><span class="cn">TRUE</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">distance_col=</span><span class="st">"stringdistance"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="lightable-paper caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Multiple rows loosely match</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">schoolname.x</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">schoolname.y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">nces</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">district</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">address</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">state</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">low_grade</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">hi_grade</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">total</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">stringdistance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Joseph Elementary School</td>
+<td style="text-align: left;">Joseph Gomez Elementary School</td>
+<td style="text-align: right;">7.80003e+11</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">142 ANNAS RETREAT</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">05</td>
+<td style="text-align: right;">462</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Joseph Elementary School</td>
+<td style="text-align: left;">Joseph Sibilly Elementary School</td>
+<td style="text-align: right;">7.80003e+11</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">14 15 16 ESTATE ELIZABETH</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">05</td>
+<td style="text-align: right;">226</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Joseph Elementary School</td>
+<td style="text-align: left;">Lockhart Elementary School</td>
+<td style="text-align: right;">7.80003e+11</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">41 ESTATE THOMAS</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">KG</td>
+<td style="text-align: left;">08</td>
+<td style="text-align: right;">977</td>
+<td style="text-align: right;">7</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>You can see the power, and the danger, of the <code>fuzzyjoin</code> package here. It’s amazing that it picks up the two schools that also have Joseph in their name, but it also suggests that you could change a few letters in the beginning and form the name of another school.</p>
+<p>When we used fuzzyjoin, we would arrange the data by the school name and then the distance_col variable so that we could easily do a line check and choose the best match (if available).</p>
+</section>
+<section id="matching-off-of-multiple-columns" class="level2">
+<h2 class="anchored" data-anchor-id="matching-off-of-multiple-columns">Matching off of multiple columns</h2>
+<p>As a side note, it is nice to use the <code>fuzzyjoin</code> package for seeing errors in multiple columns. Here we can see how it works with the third row of the dataset.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sample[<span class="dv">3</span>,] <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stringdist_join</span>(VI,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">by=</span><span class="fu">c</span>(<span class="st">"schoolname"</span>,<span class="st">"state"</span>),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">mode=</span><span class="st">"inner"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">max_dist =</span> <span class="dv">4</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">ignore_case=</span><span class="cn">TRUE</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">distance_col=</span><span class="st">"stringdistance"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="lightable-paper caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">schoolname.x</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">state.x</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">schoolname.y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">nces</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">district</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">address</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">state.y</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">low_grade</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">hi_grade</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">total</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">schoolname.stringdistance</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">state.stringdistance</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">stringdistance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Alfredo Andrews Elementary School</td>
+<td style="text-align: left;">NY</td>
+<td style="text-align: left;">Alfredo Andrews Elementary School</td>
+<td style="text-align: right;">780000200002</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">RFD 1 KINGSHILL</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">06</td>
+<td style="text-align: right;">495</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">NA</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+
+
+</section>
+</section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{russell2022,
   author = {Russell, John},
-  title = {My Time at {MƒA}},
+  title = {Using Fuzzyjoin to Work with {NCES} Data},
   date = {2022-02-28},
   url = {https://drjohnrussell.github.io/posts/2022-02-28-time-at-mfa/},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-russell2022" class="csl-entry quarto-appendix-citeas" role="listitem">
-Russell, John. 2022. <span>“My Time at MƒA.”</span> February 28, 2022.
-<a href="https://drjohnrussell.github.io/posts/2022-02-28-time-at-mfa/">https://drjohnrussell.github.io/posts/2022-02-28-time-at-mfa/</a>.
+Russell, John. 2022. <span>“Using Fuzzyjoin to Work with NCES
+Data.”</span> February 28, 2022. <a href="https://drjohnrussell.github.io/posts/2022-02-28-time-at-mfa/">https://drjohnrussell.github.io/posts/2022-02-28-time-at-mfa/</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -313,18 +825,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -356,7 +857,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/www\.drjohnrussell\.com\/");
@@ -364,7 +887,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -688,6 +1211,19 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© John Russell</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>This website is built with <i class="fa-solid fa-heart" title="a heart" aria-label="heart"></i>, <a href="https://github.com/drjohnrussell/drjohnrussell.github.io" target="_blank"><i class="fa-brands fa-github" title="GitHub octocat logo" aria-label="github"></i></a>, <a href="https://www.r-project.org/about.html" target="_blank"><i class="fa-brands fa-r-project" title="R Project" aria-label="r-project"></i></a> and <a href="https://quarto.org/" target="_blank">Quarto</a></p>
+</div>
+  </div>
+</footer>
 
 
 

@@ -14,7 +14,7 @@
 <item>
   <title>Using gganimate and ggflags to look at democratic progress</title>
   <dc:creator>John Russell</dc:creator>
-  <link>https://www.drjohnrussell.com/posts/2024-01-13-gganimate-ggflag/</link>
+  <link>https://www.drjohnrussell.com/posts/2025-01-13-gganimate-ggflag/</link>
   <description><![CDATA[ 
 
 
@@ -671,7 +671,7 @@ font-style: inherit;">'bottom'</span>)</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://www.drjohnrussell.com/posts/2024-01-13-gganimate-ggflag/index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://www.drjohnrussell.com/posts/2025-01-13-gganimate-ggflag/index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -912,7 +912,7 @@ font-style: inherit;">geometry=</span>geometry))</span></code></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://www.drjohnrussell.com/posts/2024-01-13-gganimate-ggflag/index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://www.drjohnrussell.com/posts/2025-01-13-gganimate-ggflag/index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 <figcaption>World Map</figcaption>
 </figure>
 </div>
@@ -1055,7 +1055,7 @@ font-style: inherit;">"cm"</span>)))</span></code></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://www.drjohnrussell.com/posts/2024-01-13-gganimate-ggflag/index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://www.drjohnrussell.com/posts/2025-01-13-gganimate-ggflag/index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 <figcaption>A facet of the world</figcaption>
 </figure>
 </div>
@@ -1266,7 +1266,7 @@ font-style: inherit;">#anim_save(filename="img/Europe.gif",animation=Europe2)</s
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://www.drjohnrussell.com/posts/2024-01-13-gganimate-ggflag/img/Europe.gif" class="img-fluid figure-img"></p>
+<p><img src="https://www.drjohnrussell.com/posts/2025-01-13-gganimate-ggflag/img/Europe.gif" class="img-fluid figure-img"></p>
 <figcaption>Free and Fair Elections in Europe</figcaption>
 </figure>
 </div>
@@ -1436,7 +1436,7 @@ font-style: inherit;">#anim_save(filename="img/Africa.gif",animation=Africa2)</s
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://www.drjohnrussell.com/posts/2024-01-13-gganimate-ggflag/img/Africa.gif" class="img-fluid figure-img"></p>
+<p><img src="https://www.drjohnrussell.com/posts/2025-01-13-gganimate-ggflag/img/Africa.gif" class="img-fluid figure-img"></p>
 <figcaption>Free and Fair Elections in Africa</figcaption>
 </figure>
 </div>
@@ -1449,20 +1449,20 @@ font-style: inherit;">#anim_save(filename="img/Africa.gif",animation=Africa2)</s
   author = {Russell, John},
   title = {Using Gganimate and Ggflags to Look at Democratic Progress},
   date = {2025-01-13},
-  url = {https://drjohnrussell.github.io/posts/2024-01-13-gganimate-ggflag/},
+  url = {https://drjohnrussell.github.io/posts/2025-01-13-gganimate-ggflag/},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-russell2025" class="csl-entry quarto-appendix-citeas">
 Russell, John. 2025. <span>“Using Gganimate and Ggflags to Look at
-Democratic Progress.”</span> January 13, 2025. <a href="https://drjohnrussell.github.io/posts/2024-01-13-gganimate-ggflag/">https://drjohnrussell.github.io/posts/2024-01-13-gganimate-ggflag/</a>.
+Democratic Progress.”</span> January 13, 2025. <a href="https://drjohnrussell.github.io/posts/2025-01-13-gganimate-ggflag/">https://drjohnrussell.github.io/posts/2025-01-13-gganimate-ggflag/</a>.
 </div></div></section></div> ]]></description>
   <category>Quarto</category>
   <category>R</category>
   <category>Geography</category>
   <category>Tidy Tuesday</category>
-  <guid>https://www.drjohnrussell.com/posts/2024-01-13-gganimate-ggflag/</guid>
+  <guid>https://www.drjohnrussell.com/posts/2025-01-13-gganimate-ggflag/</guid>
   <pubDate>Mon, 13 Jan 2025 05:00:00 GMT</pubDate>
-  <media:content url="https://www.drjohnrussell.com/posts/2024-01-13-gganimate-ggflag/img/Europe.png" medium="image" type="image/png" height="144" width="144"/>
+  <media:content url="https://www.drjohnrussell.com/posts/2025-01-13-gganimate-ggflag/img/Europe.png" medium="image" type="image/png" height="144" width="144"/>
 </item>
 <item>
   <title>Getting back into blogging</title>

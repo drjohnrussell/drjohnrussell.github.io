@@ -12,7 +12,7 @@ format:
 execute:
   warning: false
 citation: 
-  url: https://drjohnrussell.github.io/posts/2024-01-13-gganimate-ggflag/ 
+  url: https://drjohnrussell.github.io/posts/2025-01-13-gganimate-ggflag/ 
 image: img/Europe.png
 draft: false # setting this to `true` will prevent your post from appearing on your listing page until you're ready!
 ---

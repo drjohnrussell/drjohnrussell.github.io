@@ -1,0 +1,137 @@
+---
+title: "Using fuzzyjoin to work with NCES data"
+description: "Demonstrating how fuzzyjoin can help you with messy data through an example using school names within the Virgin Islands"
+date: 01-17-2025
+categories: [R] # self-defined categories
+format:
+  html:
+    code-fold: show
+    code-summary: "Code in R"
+    toc: TRUE
+    toc_float: TRUE
+execute:
+  warning: false
+citation: 
+  url: https://drjohnrussell.github.io/posts/2025-01-17-fuzzyjoin-in-action/ 
+image: img/Virgin_Islands.svg
+draft: true # setting this to `true` will prevent your post from appearing on your listing page until you're ready!
+---
+
+# Tidy data structure, messy data
+
+> Like families, tidy datasets are all alike but every messy dataset is messy in its own way. - *Hadley Wickham*
+
+We often work with datasets where there is a unique identifier that can be used to link or filter the data, typically involving some type of a [join](https://r4ds.hadley.nz/joins.html).
+
+However, sometimes the identifiers that we wish to use to join are *near* matches. For instance, maybe you are joining a dataset by names, where one dataset has **John**, and the dataset you are joining has **john**. Or maybe there are text entry errors and it is instead **Jon**.
+
+What you need is a way to join data that is a little bit fuzzy. Enter (David Robinson)\[https://github.com/dgrtwo/fuzzyjoin\]'s excellent `fuzzyjoin` package.
+
+## Introducing an example - schools in the Virgin Islands
+
+There are 20 schools listed in the public school database for the [National Center for Education Statistics](https://nces.ed.gov/ccd/schoolsearch/) in the Virgin Islands. I've downloaded the dataset and you can pull it from my github repo through the code below. A scrollable `DT` table to explore below (disabling a lot of features just to see the table):
+
+```{r}
+#| tbl-cap: "Public Schools of Virgin Islands"
+library(tidyverse)
+library(fuzzyjoin)
+library(kableExtra)
+VI <- read_csv("https://github.com/drjohnrussell/drjohnrussell.github.io/raw/refs/heads/master/posts/2025-01-05-fuzzyjoin-in-action/data/VIschools.csv")
+
+VI |> 
+  kbl() |> 
+  kable_paper() |> ##nice theme
+  kable_styling(bootstrap_options = c("striped", "hover")) |> 
+  scroll_box(height = "200px") ##adds scrolling
+
+```
+
+Let's say we have a dataset with the following names of schools, and we want to pull in information from NCES.
+
+```{r}
+#| tbl-cap: "Dataset to join"
+sample <- read_csv("https://github.com/drjohnrussell/drjohnrussell.github.io/raw/refs/heads/master/posts/2025-01-05-fuzzyjoin-in-action/data/sample.csv")
+
+sample |> 
+  kbl() |> 
+  kable_paper()
+```
+
+Enter the `fuzzyjoin` package, which allows the data to be messy in many ways, depending on what you need. Some of the ways to join outlined in the package are as follows:
+
+-   [difference_join](http://varianceexplained.org/fuzzyjoin/reference/difference_join.html) - joins that are numeric and within a specified distance
+-   [geo_join](http://varianceexplained.org/fuzzyjoin/reference/geo_join.html) - joins that use distances based on latitude and longitude
+-   [regex_join](http://varianceexplained.org/fuzzyjoin/reference/regex_join.html) - joins that look for common regex patterns (text and position)
+-   [stringdist_join](http://varianceexplained.org/fuzzyjoin/reference/stringdist_join.html) - joins that take into account small differences in the string
+
+Let's focus on `stringdist_join` for special case uses.
+
+## Joins that ignore case
+Joins that ignore case, where you don't have to mutate using something like the stringr str_to_lower on the data to change it is a big win. We can use it to match *eulalie rivera*.
+
+This is what would happen as is:
+
+```{r}
+#| tbl-cap: "An empty inner join"
+sample[1,1] |> 
+  inner_join(VI,by=c("schoolname")) |> 
+  kbl() |> 
+  kable_paper()
+
+```
+
+On the other hand, we can use the `stringdist_join` and set `ignore_case` to equal TRUE.
+
+```{r}
+#| tbl-cap: "A successful join"
+sample[1,1] |> 
+  stringdist_join(VI,
+                  by=c("schoolname"),
+                  max_dist=0,
+                  mode="inner",
+                  ignore_case=TRUE) |> 
+  kbl() |> 
+  kable_paper()
+```
+
+## Joins that take advantage of string distance
+The way that I've taken advantage of this is in dealing with typos or data where someone may have subtly different names for a school (e.g., one has the word *school* while the other drops it). What is nice about the `fuzzyjoin` package is that you can do the join. What is less nice is that it requires you to do a line check afterwards, especially when you are loose with the distances.
+
+Let's look at the second row, *Joseph Elementary School*, and have a `maximum distance` of 8.
+
+```{r}
+#| tbl-cap: "Multiple rows loosely match"
+sample[2,1] |> 
+  stringdist_join(VI,
+                   by="schoolname",
+                   max_dist=8,
+                   mode="inner",
+                   ignore_case=TRUE,
+                  distance_col="stringdistance") |> 
+  kbl() |> 
+  kable_paper()
+```
+
+You can see the power, and the danger, of the `fuzzyjoin` package here. It's amazing that it picks up the two schools that also have Joseph in their name, but it also suggests that you could change a few letters in the beginning and form the name of another school.
+
+When we used fuzzyjoin, we would arrange the data by the school name and then the distance_col variable so that we could easily do a line check and choose the best match (if available).
+
+## Matching off of multiple columns
+
+As a side note, it is nice to use the `fuzzyjoin` package for seeing errors in multiple columns. Here we can see how it works with the third row of the dataset.
+
+```{r}
+sample[3,] |> 
+  stringdist_join(VI,
+                  by=c("schoolname","state"),
+                  mode="inner",
+                  max_dist = 4,
+                  ignore_case=TRUE,
+                  distance_col="stringdistance") |> 
+  kbl() |> 
+  kable_paper()
+```
+
+What is nice about this is that, in review, you can see easily through the distance_col variable where the changes were found.
+
+Others have used `fuzzyjoin` to great effect - I am inspired reading [this vignette](https://rpubs.com/hellojohncruz/fuzzyjoin) in particular on geo_joins
