@@ -26,7 +26,7 @@ We often work with datasets where there is a unique identifier that can be used 
 
 However, sometimes the identifiers that we wish to use to join are *near* matches. For instance, maybe you are joining a dataset by names, where one dataset has **John**, and the dataset you are joining has **john**. Or maybe there are text entry errors and it is instead **Jon**.
 
-What you need is a way to join data that is a little bit fuzzy. Enter (David Robinson)\[https://github.com/dgrtwo/fuzzyjoin\]'s excellent `fuzzyjoin` package.
+What you need is a way to join data that is a little bit fuzzy. Enter [David Robinson](https://github.com/dgrtwo/fuzzyjoin)'s excellent `fuzzyjoin` package.
 
 ## Introducing an example - schools in the Virgin Islands
 

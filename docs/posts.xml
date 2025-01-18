@@ -29,7 +29,7 @@
 </blockquote>
 <p>We often work with datasets where there is a unique identifier that can be used to link or filter the data, typically involving some type of a <a href="https://r4ds.hadley.nz/joins.html">join</a>.</p>
 <p>However, sometimes the identifiers that we wish to use to join are <em>near</em> matches. For instance, maybe you are joining a dataset by names, where one dataset has <strong>John</strong>, and the dataset you are joining has <strong>john</strong>. Or maybe there are text entry errors and it is instead <strong>Jon</strong>.</p>
-<p>What you need is a way to join data that is a little bit fuzzy. Enter (David Robinson)[https://github.com/dgrtwo/fuzzyjoin]’s excellent <code>fuzzyjoin</code> package.</p>
+<p>What you need is a way to join data that is a little bit fuzzy. Enter <a href="https://github.com/dgrtwo/fuzzyjoin">David Robinson</a>’s excellent <code>fuzzyjoin</code> package.</p>
 <section id="introducing-an-example---schools-in-the-virgin-islands" class="level2">
 <h2 class="anchored" data-anchor-id="introducing-an-example---schools-in-the-virgin-islands">Introducing an example - schools in the Virgin Islands</h2>
 <p>There are 20 schools listed in the public school database for the <a href="https://nces.ed.gov/ccd/schoolsearch/">National Center for Education Statistics</a> in the Virgin Islands. I’ve downloaded the dataset and you can pull it from my github repo through the code below. A scrollable <code>DT</code> table to explore below (disabling a lot of features just to see the table):</p>
