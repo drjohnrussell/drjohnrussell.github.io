@@ -10,7 +10,753 @@
 <atom:link href="https://www.drjohnrussell.com/posts.xml" rel="self" type="application/rss+xml"/>
 <description>John Russell&#39;s Data Science Blog</description>
 <generator>quarto-1.5.57</generator>
-<lastBuildDate>Mon, 13 Jan 2025 05:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 17 Jan 2025 05:00:00 GMT</lastBuildDate>
+<item>
+  <title>Using fuzzyjoin to work with NCES data</title>
+  <dc:creator>John Russell</dc:creator>
+  <link>https://www.drjohnrussell.com/posts/2025-01-17-fuzzyjoin-in-action/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="tidy-data-structure-messy-data" class="level1">
+<h1>Tidy data structure, messy data</h1>
+<blockquote class="blockquote">
+<p>Like families, tidy datasets are all alike but every messy dataset is messy in its own way. - <em>Hadley Wickham</em></p>
+</blockquote>
+<p>We often work with datasets where there is a unique identifier that can be used to link or filter the data, typically involving some type of a <a href="https://r4ds.hadley.nz/joins.html">join</a>.</p>
+<p>However, sometimes the identifiers that we wish to use to join are <em>near</em> matches. For instance, maybe you are joining a dataset by names, where one dataset has <strong>John</strong>, and the dataset you are joining has <strong>john</strong>. Or maybe there are text entry errors and it is instead <strong>Jon</strong>.</p>
+<p>What you need is a way to join data that is a little bit fuzzy. Enter (David Robinson)[https://github.com/dgrtwo/fuzzyjoin]’s excellent <code>fuzzyjoin</code> package.</p>
+<section id="introducing-an-example---schools-in-the-virgin-islands" class="level2">
+<h2 class="anchored" data-anchor-id="introducing-an-example---schools-in-the-virgin-islands">Introducing an example - schools in the Virgin Islands</h2>
+<p>There are 20 schools listed in the public school database for the <a href="https://nces.ed.gov/ccd/schoolsearch/">National Center for Education Statistics</a> in the Virgin Islands. I’ve downloaded the dataset and you can pull it from my github repo through the code below. A scrollable <code>DT</code> table to explore below (disabling a lot of features just to see the table):</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(fuzzyjoin)</span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(kableExtra)</span>
+<span id="cb1-4">VI <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://github.com/drjohnrussell/drjohnrussell.github.io/raw/refs/heads/master/posts/2025-01-17-fuzzyjoin-in-action/data/VIschools.csv"</span>)</span>
+<span id="cb1-5"></span>
+<span id="cb1-6">VI <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb1-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">kbl</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb1-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">kable_paper</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> <span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">##nice theme</span></span>
+<span id="cb1-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">kable_styling</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">bootstrap_options =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"striped"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hover"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb1-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scroll_box</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">height =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"200px"</span>) <span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">##adds scrolling</span></span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; ">
+<table class="lightable-paper table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Public Schools of Virgin Islands</caption>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">schoolname</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">nces</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">district</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">address</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">state</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">low_grade</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">hi_grade</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Alfredo Andrews Elementary School</td>
+<td style="text-align: right;">780000200002</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">RFD 1 KINGSHILL</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">06</td>
+<td style="text-align: right;">495</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Claude O. Markoe Elementary School</td>
+<td style="text-align: right;">780000200006</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">PLOTS 71 75 MARS HILL</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">06</td>
+<td style="text-align: right;">403</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Eulalie Rivera</td>
+<td style="text-align: right;">780000200011</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">ROUTE 1 GROVE PLACE</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">08</td>
+<td style="text-align: right;">645</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">St. Croix Educational Complex High School</td>
+<td style="text-align: right;">780000200013</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">RR2 KINGSHILL</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">09</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: right;">893</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Juanita Gardine</td>
+<td style="text-align: right;">780000200021</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">ESTATE RICHMOND</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">08</td>
+<td style="text-align: right;">305</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Lew Muckle Elementary School</td>
+<td style="text-align: right;">780000200023</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">317 SION FARM</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">06</td>
+<td style="text-align: right;">339</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Pearl B. Larsen</td>
+<td style="text-align: right;">780000200028</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">ESTATE ST PETERS</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">08</td>
+<td style="text-align: right;">432</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ricardo Richards Elementary School</td>
+<td style="text-align: right;">780000200029</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">491 BARREN SPOT</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">06</td>
+<td style="text-align: right;">392</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">St. Croix Central High School</td>
+<td style="text-align: right;">780000200030</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">RSD 2 KINGSHILL</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">09</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: right;">717</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">John H. Woodson Junior High School</td>
+<td style="text-align: right;">780000200037</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">RURAL ROUTE 1 KINGSHILL</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">07</td>
+<td style="text-align: left;">08</td>
+<td style="text-align: right;">461</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Charlotte Amalie High School</td>
+<td style="text-align: right;">780003000005</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">8 and 9 ESTATE THOMAS</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">09</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: right;">1076</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ivanna Eudora Kean High School</td>
+<td style="text-align: right;">780003000015</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">1 and 2 ESTate NAZARETH</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">09</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: right;">738</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Jane E. Tuitt Elementary School</td>
+<td style="text-align: right;">780003000018</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">19 LEVOKI STRAEDE</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">KG</td>
+<td style="text-align: left;">04</td>
+<td style="text-align: right;">154</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Joseph Gomez Elementary School</td>
+<td style="text-align: right;">780003000019</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">142 ANNAS RETREAT</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">05</td>
+<td style="text-align: right;">462</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Joseph Sibilly Elementary School</td>
+<td style="text-align: right;">780003000020</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">14 15 16 ESTATE ELIZABETH</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">05</td>
+<td style="text-align: right;">226</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Julius E. Sprauve School</td>
+<td style="text-align: right;">780003000022</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">14 18 ESTATE ENIGHED</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">08</td>
+<td style="text-align: right;">225</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lockhart Elementary School</td>
+<td style="text-align: right;">780003000024</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">41 ESTATE THOMAS</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">KG</td>
+<td style="text-align: left;">08</td>
+<td style="text-align: right;">977</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ulla F. Muller Elementary School</td>
+<td style="text-align: right;">780003000026</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">7B ESTATE CONTANT</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">05</td>
+<td style="text-align: right;">401</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Yvonne E. Milliner-Bowsky Elementary School</td>
+<td style="text-align: right;">780003000027</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">15B and 16 ESTATE MANDAHL</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">05</td>
+<td style="text-align: right;">433</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bertha C. Boschulte Middle School</td>
+<td style="text-align: right;">780003000034</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">9 1 and 12A BOVONI</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">06</td>
+<td style="text-align: left;">08</td>
+<td style="text-align: right;">538</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</div>
+</div>
+<p>Let’s say we have a dataset with the following names of schools, and we want to pull in information from NCES.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">sample <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://github.com/drjohnrussell/drjohnrussell.github.io/raw/refs/heads/master/posts/2025-01-17-fuzzyjoin-in-action/data/sample.csv"</span>)</span>
+<span id="cb2-2"></span>
+<span id="cb2-3">sample <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb2-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">kbl</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb2-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">kable_paper</span>()</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="lightable-paper caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Dataset to join</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">schoolname</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">state</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">eulalie rivera</td>
+<td style="text-align: left;">VI</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Joseph Elementary School</td>
+<td style="text-align: left;">VI</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Alfredo Andrews Elementary School</td>
+<td style="text-align: left;">NY</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>Enter the <code>fuzzyjoin</code> package, which allows the data to be messy in many ways, depending on what you need. Some of the ways to join outlined in the package are as follows:</p>
+<ul>
+<li><a href="http://varianceexplained.org/fuzzyjoin/reference/difference_join.html">difference_join</a> - joins that are numeric and within a specified distance</li>
+<li><a href="http://varianceexplained.org/fuzzyjoin/reference/geo_join.html">geo_join</a> - joins that use distances based on latitude and longitude</li>
+<li><a href="http://varianceexplained.org/fuzzyjoin/reference/regex_join.html">regex_join</a> - joins that look for common regex patterns (text and position)</li>
+<li><a href="http://varianceexplained.org/fuzzyjoin/reference/stringdist_join.html">stringdist_join</a> - joins that take into account small differences in the string</li>
+</ul>
+<p>Let’s focus on <code>stringdist_join</code> for special case uses.</p>
+</section>
+<section id="joins-that-ignore-case" class="level2">
+<h2 class="anchored" data-anchor-id="joins-that-ignore-case">Joins that ignore case</h2>
+<p>Joins that ignore case, where you don’t have to mutate using something like the stringr str_to_lower on the data to change it is a big win. We can use it to match <em>eulalie rivera</em>.</p>
+<p>This is what would happen as is:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">sample[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">inner_join</span>(VI,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"schoolname"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">kbl</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">kable_paper</span>()</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="lightable-paper caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>An empty inner join</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">schoolname</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">nces</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">district</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">address</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">state</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">low_grade</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">hi_grade</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>On the other hand, we can use the <code>stringdist_join</code> and set <code>ignore_case</code> to equal TRUE.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">sample[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb4-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stringdist_join</span>(VI,</span>
+<span id="cb4-3">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"schoolname"</span>),</span>
+<span id="cb4-4">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">max_dist=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,</span>
+<span id="cb4-5">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mode=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"inner"</span>,</span>
+<span id="cb4-6">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ignore_case=</span><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb4-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">kbl</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb4-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">kable_paper</span>()</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="lightable-paper caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>A successful join</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">schoolname.x</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">schoolname.y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">nces</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">district</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">address</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">state</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">low_grade</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">hi_grade</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">eulalie rivera</td>
+<td style="text-align: left;">Eulalie Rivera</td>
+<td style="text-align: right;">780000200011</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">ROUTE 1 GROVE PLACE</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">08</td>
+<td style="text-align: right;">645</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="joins-that-take-advantage-of-string-distance" class="level2">
+<h2 class="anchored" data-anchor-id="joins-that-take-advantage-of-string-distance">Joins that take advantage of string distance</h2>
+<p>The way that I’ve taken advantage of this is in dealing with typos or data where someone may have subtly different names for a school (e.g., one has the word <em>school</em> while the other drops it). What is nice about the <code>fuzzyjoin</code> package is that you can do the join. What is less nice is that it requires you to do a line check afterwards, especially when you are loose with the distances.</p>
+<p>Let’s look at the second row, <em>Joseph Elementary School</em>, and have a <code>maximum distance</code> of 8.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">sample[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb5-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stringdist_join</span>(VI,</span>
+<span id="cb5-3">                   <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"schoolname"</span>,</span>
+<span id="cb5-4">                   <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">max_dist=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>,</span>
+<span id="cb5-5">                   <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mode=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"inner"</span>,</span>
+<span id="cb5-6">                   <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ignore_case=</span><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span id="cb5-7">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">distance_col=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"stringdistance"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb5-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">kbl</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb5-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">kable_paper</span>()</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="lightable-paper caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Multiple rows loosely match</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">schoolname.x</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">schoolname.y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">nces</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">district</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">address</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">state</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">low_grade</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">hi_grade</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">total</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">stringdistance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Joseph Elementary School</td>
+<td style="text-align: left;">Joseph Gomez Elementary School</td>
+<td style="text-align: right;">7.80003e+11</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">142 ANNAS RETREAT</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">05</td>
+<td style="text-align: right;">462</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Joseph Elementary School</td>
+<td style="text-align: left;">Joseph Sibilly Elementary School</td>
+<td style="text-align: right;">7.80003e+11</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">14 15 16 ESTATE ELIZABETH</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">05</td>
+<td style="text-align: right;">226</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Joseph Elementary School</td>
+<td style="text-align: left;">Lockhart Elementary School</td>
+<td style="text-align: right;">7.80003e+11</td>
+<td style="text-align: left;">Saint Thomas - Saint John School District</td>
+<td style="text-align: left;">41 ESTATE THOMAS</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">KG</td>
+<td style="text-align: left;">08</td>
+<td style="text-align: right;">977</td>
+<td style="text-align: right;">7</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>You can see the power, and the danger, of the <code>fuzzyjoin</code> package here. It’s amazing that it picks up the two schools that also have Joseph in their name, but it also suggests that you could change a few letters in the beginning and form the name of another school.</p>
+<p>When we used fuzzyjoin, we would arrange the data by the school name and then the distance_col variable so that we could easily do a line check and choose the best match (if available).</p>
+</section>
+<section id="matching-off-of-multiple-columns" class="level2">
+<h2 class="anchored" data-anchor-id="matching-off-of-multiple-columns">Matching off of multiple columns</h2>
+<p>As a side note, it is nice to use the <code>fuzzyjoin</code> package for seeing errors in multiple columns. Here we can see how it works with the third row of the dataset.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">sample[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>,] <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb6-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stringdist_join</span>(VI,</span>
+<span id="cb6-3">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"schoolname"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"state"</span>),</span>
+<span id="cb6-4">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mode=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"inner"</span>,</span>
+<span id="cb6-5">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">max_dist =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>,</span>
+<span id="cb6-6">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ignore_case=</span><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span id="cb6-7">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">distance_col=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"stringdistance"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb6-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">kbl</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb6-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">kable_paper</span>()</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="lightable-paper caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">schoolname.x</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">state.x</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">schoolname.y</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">nces</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">district</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">address</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">state.y</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">low_grade</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">hi_grade</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">total</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">schoolname.stringdistance</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">state.stringdistance</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">stringdistance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Alfredo Andrews Elementary School</td>
+<td style="text-align: left;">NY</td>
+<td style="text-align: left;">Alfredo Andrews Elementary School</td>
+<td style="text-align: right;">780000200002</td>
+<td style="text-align: left;">Saint Croix School District</td>
+<td style="text-align: left;">RFD 1 KINGSHILL</td>
+<td style="text-align: left;">VI</td>
+<td style="text-align: left;">PK</td>
+<td style="text-align: left;">06</td>
+<td style="text-align: right;">495</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">NA</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>What is nice about this is that, in review, you can see easily through the distance_col variable where the changes were found.</p>
+<p>Others have used <code>fuzzyjoin</code> to great effect - I am inspired reading <a href="https://rpubs.com/hellojohncruz/fuzzyjoin">this vignette</a> in particular on geo_joins</p>
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{russell2025,
+  author = {Russell, John},
+  title = {Using Fuzzyjoin to Work with {NCES} Data},
+  date = {2025-01-17},
+  url = {https://drjohnrussell.github.io/posts/2025-01-17-fuzzyjoin-in-action/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-russell2025" class="csl-entry quarto-appendix-citeas">
+Russell, John. 2025. <span>“Using Fuzzyjoin to Work with NCES
+Data.”</span> January 17, 2025. <a href="https://drjohnrussell.github.io/posts/2025-01-17-fuzzyjoin-in-action/">https://drjohnrussell.github.io/posts/2025-01-17-fuzzyjoin-in-action/</a>.
+</div></div></section></div> ]]></description>
+  <category>R</category>
+  <guid>https://www.drjohnrussell.com/posts/2025-01-17-fuzzyjoin-in-action/</guid>
+  <pubDate>Fri, 17 Jan 2025 05:00:00 GMT</pubDate>
+  <media:content url="https://www.drjohnrussell.com/posts/2025-01-17-fuzzyjoin-in-action/img/Virgin_Islands.svg" medium="image" type="image/svg+xml"/>
+</item>
 <item>
   <title>Using gganimate and ggflags to look at democratic progress</title>
   <dc:creator>John Russell</dc:creator>
@@ -1463,6 +2209,83 @@ Democratic Progress.”</span> January 13, 2025. <a href="https://drjohnrussell.
   <guid>https://www.drjohnrussell.com/posts/2025-01-13-gganimate-ggflag/</guid>
   <pubDate>Mon, 13 Jan 2025 05:00:00 GMT</pubDate>
   <media:content url="https://www.drjohnrussell.com/posts/2025-01-13-gganimate-ggflag/img/Europe.png" medium="image" type="image/png" height="144" width="144"/>
+</item>
+<item>
+  <title>Getting back into blogging</title>
+  <dc:creator>John Russell</dc:creator>
+  <link>https://www.drjohnrussell.com/posts/2024-01-04-Map1-2024/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(RSocrata)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse)</span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(sf)</span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linking to GEOS 3.12.2, GDAL 3.9.3, PROJ 9.4.1; sf_use_s2() is TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(jsonlite)</span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'jsonlite'
+
+The following object is masked from 'package:purrr':
+
+    flatten</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_json</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://www.nycgovparks.org/bigapps/DPR_Playgrounds_001.json"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">simplifyVector =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span></code></pre></div>
+</div>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{russell2024,
+  author = {Russell, John},
+  title = {Getting Back into Blogging},
+  date = {2024-12-28},
+  url = {https://drjohnrussell.github.io/posts/2024-12-28-getting-back-online/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-russell2024" class="csl-entry quarto-appendix-citeas">
+Russell, John. 2024. <span>“Getting Back into Blogging.”</span> December
+28, 2024. <a href="https://drjohnrussell.github.io/posts/2024-12-28-getting-back-online/">https://drjohnrussell.github.io/posts/2024-12-28-getting-back-online/</a>.
+</div></div></section></div> ]]></description>
+  <category>Quarto</category>
+  <category>R</category>
+  <guid>https://www.drjohnrussell.com/posts/2024-01-04-Map1-2024/</guid>
+  <pubDate>Sat, 28 Dec 2024 05:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Getting back into blogging</title>

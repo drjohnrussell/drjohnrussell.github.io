@@ -1,9 +1,11 @@
 {
-  "hash": "671a248f2e93e3e8104fb08743acadee",
+  "hash": "7c816865096adf2fa1544e3e29104f73",
   "result": {
     "engine": "knitr",
     "markdown": "---\ntitle: \"Getting back into blogging\"\ndescription: \"Using Quarto as an entrance back into blogging\"\ndate: 12-28-2024\ncategories: [Quarto, R] # self-defined categories\ncitation: \n  url: https://drjohnrussell.github.io/posts/2024-12-28-getting-back-online/ \nimage: https://rstudio.github.io/cheatsheets/html/images/logo-quarto.png\ndraft: true # setting this to `true` will prevent your post from appearing on your listing page until you're ready!\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(RSocrata)\nlibrary(tidyverse)\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.1     ✔ tibble    3.2.1\n✔ lubridate 1.9.4     ✔ tidyr     1.3.1\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors\n```\n\n\n:::\n\n```{.r .cell-code}\nlibrary(sf)\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\nLinking to GEOS 3.12.2, GDAL 3.9.3, PROJ 9.4.1; sf_use_s2() is TRUE\n```\n\n\n:::\n\n```{.r .cell-code}\nlibrary(jsonlite)\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\n\nAttaching package: 'jsonlite'\n\nThe following object is masked from 'package:purrr':\n\n    flatten\n```\n\n\n:::\n\n```{.r .cell-code}\ndata <- read_json(\"https://www.nycgovparks.org/bigapps/DPR_Playgrounds_001.json\", simplifyVector = TRUE)\n```\n:::",
-    "supporting": [],
+    "supporting": [
+      "index_files"
+    ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],

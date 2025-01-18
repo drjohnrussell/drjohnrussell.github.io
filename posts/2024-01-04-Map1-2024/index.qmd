@@ -4,8 +4,7 @@ description: "Using Quarto as an entrance back into blogging"
 date: 12-28-2024
 categories: [Quarto, R] # self-defined categories
 citation: 
-  url: https://drjohnrussell.github.io/posts/2024-12-28-getting-back-online/ 
-image: https://rstudio.github.io/cheatsheets/html/images/logo-quarto.png
+  url: https://drjohnrussell.github.io/posts/2024-12-28-getting-back-online/
 draft: true # setting this to `true` will prevent your post from appearing on your listing page until you're ready!
 ---
 
