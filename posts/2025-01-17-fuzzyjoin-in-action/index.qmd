@@ -19,7 +19,8 @@ draft: false # setting this to `true` will prevent your post from appearing on y
 
 # Tidy data structure, messy data
 
-> Like families, tidy datasets are all alike but every messy dataset is messy in its own way. - *Hadley Wickham*
+> Like families, tidy datasets are all alike but every messy dataset is messy in its own way.   
+>   - *Hadley Wickham*
 
 We often work with datasets where there is a unique identifier that can be used to link or filter the data, typically involving some type of a [join](https://r4ds.hadley.nz/joins.html).
 
@@ -132,6 +133,8 @@ sample[3,] |>
   kable_paper()
 ```
 
-What is nice about this is that, in review, you can see easily through the distance_col variable where the changes were found.
+What is nice about this is that, in review, you can see easily through the distance_col variable where the changes were found. For instance, maybe you want the join to include state, but you want to excluse this example because you know that schools in other states may have the same name; it would just be as simple as adding a `filter` at the end to take out stringdist.state > 0.
+
+### Other notes
 
 Others have used `fuzzyjoin` to great effect - I am inspired reading [this vignette](https://rpubs.com/hellojohncruz/fuzzyjoin) in particular on geo_joins

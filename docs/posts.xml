@@ -24,7 +24,8 @@
 <section id="tidy-data-structure-messy-data" class="level1">
 <h1>Tidy data structure, messy data</h1>
 <blockquote class="blockquote">
-<p>Like families, tidy datasets are all alike but every messy dataset is messy in its own way. - <em>Hadley Wickham</em></p>
+<p>Like families, tidy datasets are all alike but every messy dataset is messy in its own way.<br>
+- <em>Hadley Wickham</em></p>
 </blockquote>
 <p>We often work with datasets where there is a unique identifier that can be used to link or filter the data, typically involving some type of a <a href="https://r4ds.hadley.nz/joins.html">join</a>.</p>
 <p>However, sometimes the identifiers that we wish to use to join are <em>near</em> matches. For instance, maybe you are joining a dataset by names, where one dataset has <strong>John</strong>, and the dataset you are joining has <strong>john</strong>. Or maybe there are text entry errors and it is instead <strong>Jon</strong>.</p>
@@ -734,10 +735,13 @@ font-style: inherit;">kable_paper</span>()</span></code></pre></div>
 
 </div>
 </div>
-<p>What is nice about this is that, in review, you can see easily through the distance_col variable where the changes were found.</p>
+<p>What is nice about this is that, in review, you can see easily through the distance_col variable where the changes were found. For instance, maybe you want the join to include state, but you want to excluse this example because you know that schools in other states may have the same name; it would just be as simple as adding a <code>filter</code> at the end to take out stringdist.state &gt; 0.</p>
+<section id="other-notes" class="level3">
+<h3 class="anchored" data-anchor-id="other-notes">Other notes</h3>
 <p>Others have used <code>fuzzyjoin</code> to great effect - I am inspired reading <a href="https://rpubs.com/hellojohncruz/fuzzyjoin">this vignette</a> in particular on geo_joins</p>
 
 
+</section>
 </section>
 </section>
 
