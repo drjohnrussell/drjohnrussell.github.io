@@ -1,0 +1,120 @@
+---
+title: "Using fuzzyjoin to work with NCES data"
+description: "Demonstrating how fuzzyjoin can help you with messy data through an example using school names within the Virgin Islands"
+date: 01-17-2025
+categories: [R, Data Wrangling] # self-defined categories
+format:
+  html:
+    code-fold: show
+    code-summary: "Code in R"
+    toc: TRUE
+    toc_float: TRUE
+execute:
+  warning: false
+citation: 
+  url: https://drjohnrussell.github.io/posts/2025-01-17-fuzzyjoin-in-action/ 
+image: img/Virgin_Islands.svg
+draft: true # setting this to `true` will prevent your post from appearing on your listing page until you're ready!
+---
+
+library(tidyverse)
+
+
+Elgin <- read_csv("Elgin Russell_sleep.csv") |> 
+  mutate(starttime=mdy_hm(Time),
+         endtime=starttime+minutes(`Duration (min)`))
+## separate the ones that go over multiple days
+
+Viggo <- read_csv("Viggo_sleep.csv") |> 
+  mutate(starttime=mdy_hm(Time),
+         endtime=starttime+minutes(`Duration (min)`))
+
+Elginmultiple <- Elgin |> 
+  filter(day(starttime)!=day(endtime))
+
+
+Viggomultiple <- Viggo |> 
+  filter(day(starttime)!=day(endtime))
+
+Elgin1 <- Elginmultiple |> 
+  mutate(endtime=make_datetime(year(starttime),month(starttime),day(starttime),hour=23,min=59,sec=0))
+Elgin2 <- Elginmultiple |> 
+  mutate(starttime=make_datetime(year(endtime),month(endtime),day(endtime),hour=0,min=0))
+
+Viggo1 <- Viggomultiple |> 
+  mutate(endtime=make_datetime(year(starttime),month(starttime),day(starttime),hour=23,min=59,sec=0))
+Viggo2 <- Viggomultiple |> 
+  mutate(starttime=make_datetime(year(endtime),month(endtime),day(endtime),hour=0,min=0))
+
+
+
+birth <- mdy("05-30-20")
+birthViggo <- mdy("07-28-24")
+
+Elgin <- Elgin |> 
+  filter(day(starttime)==day(endtime)) |> 
+  bind_rows(Elgin1,Elgin2)
+
+Elgin2 <- Elgin |> 
+  mutate(daysold=floor(difftime(starttime,birth,units="weeks")),
+         dayweek=wday(starttime,label=TRUE,abbr=FALSE,week_start=7),
+         starthour=hm(paste0(hour(starttime),":",minute(starttime))),
+         endhour=hm(paste0(hour(endtime),":",minute(endtime))))
+
+
+Viggo <- Viggo |> 
+  filter(day(starttime)==day(endtime)) |> 
+  bind_rows(Viggo1,Viggo2)
+
+Viggo2 <- Viggo |> 
+  mutate(daysold=floor(difftime(starttime,birthViggo,units="weeks")),
+         dayweek=wday(starttime,label=TRUE,abbr=FALSE,week_start=7),
+         starthour=hm(paste0(hour(starttime),":",minute(starttime))),
+         endhour=hm(paste0(hour(endtime),":",minute(endtime))))
+
+
+nursing <- read_csv("Elgin Russell_nursing.csv") |> 
+  mutate(Time=mdy_hm(Time)) |> 
+  select(Time)
+
+milk <- read_csv("Elgin Russell_expressed.csv") |> 
+  mutate(Time=mdy_hm(Time)) |> 
+  select(Time) |> 
+  bind_rows(nursing)
+
+Elginmilk <- milk |> 
+  mutate(daysold=floor(difftime(Time,birth,units="weeks")),
+         dayweek=wday(Time,label=TRUE,abbr=FALSE,week_start=7),
+         hour=hm(paste0(hour(Time),":",minute(Time)))) |> 
+  filter(daysold>20,
+         daysold<30)
+
+
+BREAKS <- c(0:12)*7200
+
+Elgin2 |> 
+  filter(daysold>20,
+         daysold<30) |> 
+  ggplot() +
+  geom_rect(mapping=aes(xmin=as.numeric(dayweek)-.45,
+                                    xmax=as.numeric(dayweek)+.45,
+                                    ymin=starthour,
+                                    ymax=endhour),fill="blue", alpha=.5) +
+  geom_rect(data=Viggo2 |> 
+              filter(daysold>20),
+            mapping=aes(xmin=as.numeric(dayweek)-.45,
+                        xmax=as.numeric(dayweek)+.45,
+                        ymin=starthour,
+                        ymax=endhour),fill="green", alpha=.5) +
+  facet_wrap(~daysold) +
+  geom_point(data=Elginmilk,
+             mapping=aes(x=as.numeric(dayweek),
+                         y=hour),color="pink") +
+  scale_y_time(breaks=BREAKS) +
+  scale_x_continuous(breaks=seq_along(levels(Elgin2$dayweek)), labels=levels(Elgin2$dayweek)) +
+  labs(x="",y="")
+  
+
+round(difftime(today(),mdy("07-28-24"),units="weeks"),0)
+  
+ggsave("Elgin.svg",width=11,height=18,units="in")
