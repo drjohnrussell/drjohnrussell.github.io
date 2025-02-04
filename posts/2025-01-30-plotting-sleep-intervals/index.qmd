@@ -17,10 +17,14 @@ image: img/Virgin_Islands.svg
 draft: true # setting this to `true` will prevent your post from appearing on your listing page until you're ready!
 ---
 
+```{r}
 library(tidyverse)
 
 
-Elgin <- read_csv("Elgin Russell_sleep.csv") |> 
+child <- read_csv("https://github.com/drjohnrussell/drjohnrussell.github.io/raw/refs/heads/master/posts/2025-01-30-plotting-sleep-intervals/data/baby.csv")
+
+```
+|> 
   mutate(starttime=mdy_hm(Time),
          endtime=starttime+minutes(`Duration (min)`))
 ## separate the ones that go over multiple days
