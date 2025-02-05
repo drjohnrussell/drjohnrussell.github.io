@@ -10,7 +10,652 @@
 <atom:link href="https://www.drjohnrussell.com/posts.xml" rel="self" type="application/rss+xml"/>
 <description>John Russell&#39;s Data Science Blog</description>
 <generator>quarto-1.5.57</generator>
-<lastBuildDate>Fri, 17 Jan 2025 05:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 04 Feb 2025 05:00:00 GMT</lastBuildDate>
+<item>
+  <title>Working with Time to battle Baby Amnesia</title>
+  <dc:creator>John Russell</dc:creator>
+  <link>https://www.drjohnrussell.com/posts/2025-02-04-plotting-sleep-intervals/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="battling-first-child-amnesia" class="level1">
+<h1>Battling first child amnesia</h1>
+<p>I am a father of two sons; one 4.5 years old, and the other is but a few months. This may seem weird, but even though I went through everything with my first son… I have complete amnesia about what was normal, what napping schedules were like, and such-like at this age.</p>
+<p>Fortunately, we used a baby tracker, which allowed me to export a csv. What a golden opportunity for some data visualization!</p>
+<p>Let’s just load up <code>tidyverse</code> and take a look…</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse)</span>
+<span id="cb1-2"></span>
+<span id="cb1-3"></span>
+<span id="cb1-4">child <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://github.com/drjohnrussell/drjohnrussell.github.io/raw/refs/heads/master/posts/2025-01-30-plotting-sleep-intervals/data/baby.csv"</span>)</span>
+<span id="cb1-5"></span>
+<span id="cb1-6"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">head</span>(child)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 3
+  Baby       Time              `Duration (min)`
+  &lt;chr&gt;      &lt;chr&gt;                        &lt;dbl&gt;
+1 First-Born 10/23/20 4:30 AM                60
+2 First-Born 10/23/20 6:00 AM                55
+3 First-Born 10/23/20 8:31 AM                39
+4 First-Born 10/23/20 11:13 AM               28
+5 First-Born 10/23/20 3:49 PM                14
+6 First-Born 10/23/20 7:16 PM               298</code></pre>
+</div>
+</div>
+<p>Hmmm, okay. So a few issues to deal with:</p>
+<ul>
+<li>the <code>Time</code> column is character data, instead of <a href="https://r4ds.hadley.nz/datetimes.html">POSIXct</a></li>
+<li>you have durations, instead of start times and end times</li>
+</ul>
+<p>What I would love is a graph of my son’s sleep schedule, by week, that I could match up with our second child. So let’s see what we can do.</p>
+<section id="creating-a-tidy-time-dataframe" class="level2">
+<h2 class="anchored" data-anchor-id="creating-a-tidy-time-dataframe">Creating a tidy time dataframe</h2>
+<p>The first thing to do is make sure that the data is in time. R has many functions, which you adapt to the way that the data looks. Here, the data is in <em>month/day/year hour:minutes</em>, so we can use <code>mdy_hm</code> as the function.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">child <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> child <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">starttime=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mdy_hm</span>(Time)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">select</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>Time)</span>
+<span id="cb3-4">   </span>
+<span id="cb3-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">head</span>(child)         </span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 3
+  Baby       `Duration (min)` starttime          
+  &lt;chr&gt;                 &lt;dbl&gt; &lt;dttm&gt;             
+1 First-Born               60 2020-10-23 04:30:00
+2 First-Born               55 2020-10-23 06:00:00
+3 First-Born               39 2020-10-23 08:31:00
+4 First-Born               28 2020-10-23 11:13:00
+5 First-Born               14 2020-10-23 15:49:00
+6 First-Born              298 2020-10-23 19:16:00</code></pre>
+</div>
+</div>
+<p>We can similarly convert the Duration to minutes and add it to the starttime to get an endtime using the <code>minutes</code> function</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">child <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> child <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb5-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">endtime=</span>starttime<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">minutes</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Duration (min)</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb5-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">select</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Duration (min)</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span>)</span>
+<span id="cb5-4"></span>
+<span id="cb5-5"></span>
+<span id="cb5-6"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">head</span>(child)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 3
+  Baby       starttime           endtime            
+  &lt;chr&gt;      &lt;dttm&gt;              &lt;dttm&gt;             
+1 First-Born 2020-10-23 04:30:00 2020-10-23 05:30:00
+2 First-Born 2020-10-23 06:00:00 2020-10-23 06:55:00
+3 First-Born 2020-10-23 08:31:00 2020-10-23 09:10:00
+4 First-Born 2020-10-23 11:13:00 2020-10-23 11:41:00
+5 First-Born 2020-10-23 15:49:00 2020-10-23 16:03:00
+6 First-Born 2020-10-23 19:16:00 2020-10-24 00:14:00</code></pre>
+</div>
+</div>
+</section>
+<section id="separating-out-sleep-at-night" class="level2">
+<h2 class="anchored" data-anchor-id="separating-out-sleep-at-night">Separating out sleep at night</h2>
+<p>For the graph I’m imagining, where rectangles on a plot where show the time sleeping, my son sleeping through the night will actually be two rectangles; one that goes in the evening until midnight, and then one the following day from midnight until he wakes up.</p>
+<p>This show up in the dataset as ones where the day of <code>starttime</code> and <code>endtime</code> are different.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">childnight <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> child <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb7-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">day</span>(starttime) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">day</span>(endtime))</span>
+<span id="cb7-3"></span>
+<span id="cb7-4"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">## now make these into two different datasets. The evening dataset and the morning dataset</span></span>
+<span id="cb7-5"></span>
+<span id="cb7-6">childevening <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> childnight <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb7-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">endtime=</span></span>
+<span id="cb7-8">           <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">make_datetime</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">year</span>(starttime), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">month</span>(starttime), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">day</span>(starttime), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">hour=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">23</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">min=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">59</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sec=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">59</span>))</span>
+<span id="cb7-9"></span>
+<span id="cb7-10">childmorning <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> childnight <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb7-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">starttime=</span></span>
+<span id="cb7-12">           <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">make_datetime</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">year</span>(endtime), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">month</span>(endtime), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">day</span>(endtime), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">hour=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">min=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sec=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>))</span>
+<span id="cb7-13"></span>
+<span id="cb7-14"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">## now filter them out and bind back in</span></span>
+<span id="cb7-15">child <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> child <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb7-16">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">day</span>(starttime) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">day</span>(endtime)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb7-17">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">bind_rows</span>(childevening,childmorning)</span></code></pre></div>
+</details>
+</div>
+<p>Now we have a dataset! Next problem.</p>
+</section>
+<section id="translating-data-into-weeks-old" class="level2">
+<h2 class="anchored" data-anchor-id="translating-data-into-weeks-old">Translating data into weeks old</h2>
+<p>Because my two sons were not born on the same day (or even the same month), looking at the data by date is not going to be helpful; ideally, I want to look at it in how many weeks old they are.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1">birth <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mdy</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"05-30-20"</span>)</span></code></pre></div>
+</details>
+</div>
+<p>Using this birthdate, I can find the difference in time between the times sleeping and his birth. Using the <code>floor</code> function is akin to rounding down, which will allow me to see how many weeks old the baby was when sleep occurred.</p>
+<p>Ideally, I want these dates converted into what week old, and what day of that week, factored for a plot that goes from midnight to midnight. My son was born on a Sunday, so this can go from Sunday to Saturday.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1">child <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> child <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb9-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>( <span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">## this tells you how many weeks old</span></span>
+<span id="cb9-3">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">weeksold=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">floor</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">difftime</span>(starttime, birth, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">units=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"weeks"</span>)),</span>
+<span id="cb9-4">          <span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">## this translates the dates into days of the week</span></span>
+<span id="cb9-5">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">dayweek=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">wday</span>(starttime,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">label=</span><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>, <span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">##labels over numbers,</span></span>
+<span id="cb9-6">                 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">abbr=</span><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>, <span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">##abbreviated,</span></span>
+<span id="cb9-7">                 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">week_start=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span> <span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">## Sunday</span></span>
+<span id="cb9-8">                 ),</span>
+<span id="cb9-9">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">starthour=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">hm</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste0</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">hour</span>(starttime),<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">":"</span>,<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">minute</span>(starttime))),</span>
+<span id="cb9-10">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">endhour=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">hm</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste0</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">hour</span>(endtime),<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">":"</span>,<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">minute</span>(endtime)))) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb9-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">select</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(starttime,endtime))</span>
+<span id="cb9-12"></span>
+<span id="cb9-13"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">head</span>(child)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  Baby       weeksold dayweek starthour  endhour   
+  &lt;chr&gt;      &lt;drtn&gt;   &lt;ord&gt;   &lt;Period&gt;   &lt;Period&gt;  
+1 First-Born 20 weeks Fri     4H 30M 0S  5H 30M 0S 
+2 First-Born 20 weeks Fri     6H 0M 0S   6H 55M 0S 
+3 First-Born 20 weeks Fri     8H 31M 0S  9H 10M 0S 
+4 First-Born 20 weeks Fri     11H 13M 0S 11H 41M 0S
+5 First-Born 20 weeks Fri     15H 49M 0S 16H 3M 0S 
+6 First-Born 21 weeks Sat     49M 0S     7H 20M 0S </code></pre>
+</div>
+</div>
+<p>Now we are ready to graph!</p>
+</section>
+<section id="graphing" class="level2">
+<h2 class="anchored" data-anchor-id="graphing">Graphing</h2>
+<p><code>geom_rect</code> does not work well with categorical data, so we will use the fact that factors have numerical orders underneath them to graph.</p>
+<p>This creates a funny first graph.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1">child <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb11-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(weeksold <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%in%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">21</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">29</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb11-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb11-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_rect</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mapping=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xmin=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(dayweek)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>.<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>,</span>
+<span id="cb11-5">                        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xmax=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(dayweek)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span>.<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>,</span>
+<span id="cb11-6">                        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ymin=</span>starthour,</span>
+<span id="cb11-7">                        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ymax=</span>endhour),</span>
+<span id="cb11-8">            <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"blue"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha=</span>.<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb11-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">facet_wrap</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span>weeksold)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.drjohnrussell.com/posts/2025-02-04-plotting-sleep-intervals/index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>A plot with numbers on each side…</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Notice that the y axis is in seconds since midnight, and that the x axis is in days since Sunday. Let’s work with our scales to make these right</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1">BREAKS <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7200</span> <span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">## there are 3600 seconds in an hour, so this should make breaks every 2 hours</span></span>
+<span id="cb12-2"></span>
+<span id="cb12-3">child <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb12-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(weeksold <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%in%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">21</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">29</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb12-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb12-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_rect</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mapping=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xmin=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(dayweek)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>.<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>,</span>
+<span id="cb12-7">                        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xmax=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(dayweek)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span>.<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>,</span>
+<span id="cb12-8">                        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ymin=</span>starthour,</span>
+<span id="cb12-9">                        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ymax=</span>endhour),</span>
+<span id="cb12-10">            <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"blue"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha=</span>.<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb12-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">facet_wrap</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span>weeksold) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb12-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_y_time</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">breaks=</span>BREAKS) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb12-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_x_continuous</span>(</span>
+<span id="cb12-14">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">breaks=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq_along</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">levels</span>(child<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>dayweek)),</span>
+<span id="cb12-15">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labels=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">levels</span>(child<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>dayweek)</span>
+<span id="cb12-16">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb12-17">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sleep Schedule by Weeks Old, Weeks 21-29"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb12-18">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_light</span>()</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.drjohnrussell.com/posts/2025-02-04-plotting-sleep-intervals/index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>A final plot</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A graph to be proud of, and a reminder that my first son was a far better sleeper at night than my current…</p>
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{russell2025,
+  author = {Russell, John},
+  title = {Working with {Time} to Battle {Baby} {Amnesia}},
+  date = {2025-02-04},
+  url = {https://drjohnrussell.github.io/posts/2025-02-04-plotting-sleep-intervals/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-russell2025" class="csl-entry quarto-appendix-citeas">
+Russell, John. 2025. <span>“Working with Time to Battle Baby
+Amnesia.”</span> February 4, 2025. <a href="https://drjohnrussell.github.io/posts/2025-02-04-plotting-sleep-intervals/">https://drjohnrussell.github.io/posts/2025-02-04-plotting-sleep-intervals/</a>.
+</div></div></section></div> ]]></description>
+  <category>R</category>
+  <category>Data Wrangling</category>
+  <category>Time</category>
+  <guid>https://www.drjohnrussell.com/posts/2025-02-04-plotting-sleep-intervals/</guid>
+  <pubDate>Tue, 04 Feb 2025 05:00:00 GMT</pubDate>
+  <media:content url="https://www.drjohnrussell.com/posts/2025-02-04-plotting-sleep-intervals/img/sleep.png" medium="image" type="image/png" height="77" width="144"/>
+</item>
 <item>
   <title>Using fuzzyjoin to work with NCES data</title>
   <dc:creator>John Russell</dc:creator>
