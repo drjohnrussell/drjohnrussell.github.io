@@ -28,7 +28,7 @@
 <p>This year, I recreated the exercises in R. My favorite is on recreating the Hertzsprung-Russell diagram. In class, they recreate it using an exoplanet database, but below, we recreate using a slightly larger catalog of stars that includes stars that we haven’t yet found exoplanets around.</p>
 <section id="loading-the-data-and-finding-the-right-margins" class="level2">
 <h2 class="anchored" data-anchor-id="loading-the-data-and-finding-the-right-margins">Loading the data and finding the right margins</h2>
-<p>The dataset is a bit large, so I’m afraid you will need to download it yourself. I used the latest version of the HYG (Hipparcos, Yale, Gliese) Stellar database, as kept <a href="https://codeberg.org/astronexus/hyg">here</a>. In glancing at the data, it looks like stars have a maximum distance that is creating a lot of outliers, so if you are recreating your graph using this dataset, please use the same filter in my code.</p>
+<p>The dataset is a bit large, so I’m afraid you will need to download it yourself. I used the latest version of the HYG (Hipparcos, Yale, Gliese) Stellar database, as kept <a href="https://codeberg.org/astronexus/hyg">here</a>. In glancing at the data, it looks like stars have a maximum distance that is creating a lot of outliers, so if you are recreating your graph using this dataset, please use the same filter in my code (I also filtered out variable stars, as they don’t have a set luminosity).</p>
 <p>Now let’s graph it. The easiest way to plot an H-R diagram is with the color index, which is also related to surface temperature and spectral type, on the x-axis and the luminosity, which is also related to absolute magnitude<sup>1</sup> on the y axis.</p>
 <div class="cell">
 <details open="" class="code-fold">
@@ -62,14 +62,17 @@ font-style: inherit;">filter</span>(dist <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&lt;</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">100000</span>)</span>
-<span id="cb1-7"></span>
-<span id="cb1-8">p <span class="ot" style="color: #003B4F;
+font-style: inherit;">100000</span>,</span>
+<span id="cb1-7">           <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">is.na</span>(var))</span>
+<span id="cb1-8"></span>
+<span id="cb1-9">p <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span>stars <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span> </span>
-<span id="cb1-9">  <span class="fu" style="color: #4758AB;
+<span id="cb1-10">  <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
@@ -80,7 +83,7 @@ background-color: null;
 font-style: inherit;">y=</span>lum)) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb1-10">  <span class="fu" style="color: #4758AB;
+<span id="cb1-11">  <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -89,16 +92,16 @@ background-color: null;
 font-style: inherit;">0.02</span>) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb1-11">  <span class="fu" style="color: #4758AB;
+<span id="cb1-12">  <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">scale_y_log10</span>() <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb1-12">  <span class="fu" style="color: #4758AB;
+<span id="cb1-13">  <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">theme_bw</span>()</span>
-<span id="cb1-13"></span>
-<span id="cb1-14">p</span></code></pre></div>
+<span id="cb1-14"></span>
+<span id="cb1-15">p</span></code></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">

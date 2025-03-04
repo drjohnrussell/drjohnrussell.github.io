@@ -27,7 +27,7 @@ This year, I recreated the exercises in R. My favorite is on recreating the Hert
 
 ## Loading the data and finding the right margins
 
-The dataset is a bit large, so I'm afraid you will need to download it yourself. I used the latest version of the HYG (Hipparcos, Yale, Gliese) Stellar database, as kept [here](https://codeberg.org/astronexus/hyg). In glancing at the data, it looks like stars have a maximum distance that is creating a lot of outliers, so if you are recreating your graph using this dataset, please use the same filter in my code.
+The dataset is a bit large, so I'm afraid you will need to download it yourself. I used the latest version of the HYG (Hipparcos, Yale, Gliese) Stellar database, as kept [here](https://codeberg.org/astronexus/hyg). In glancing at the data, it looks like stars have a maximum distance that is creating a lot of outliers, so if you are recreating your graph using this dataset, please use the same filter in my code (I also filtered out variable stars, as they don't have a set luminosity).
 
 Now let's graph it. The easiest way to plot an H-R diagram is with the color index, which is also related to surface temperature and spectral type, on the x-axis and the luminosity, which is also related to absolute magnitude[^1] on the y axis.
 
@@ -40,7 +40,8 @@ library(tidyverse)
 options(scipen = 999)
  
 stars <- read_csv("data/hygdata_v41.csv") |> 
-    filter(dist < 100000)
+    filter(dist < 100000,
+           is.na(var))
 
 p <-stars |> 
   ggplot(aes(x=ci, y=lum)) +

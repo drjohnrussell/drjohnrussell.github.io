@@ -250,7 +250,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This year, I recreated the exercises in R. My favorite is on recreating the Hertzsprung-Russell diagram. In class, they recreate it using an exoplanet database, but below, we recreate using a slightly larger catalog of stars that includes stars that we haven’t yet found exoplanets around.</p>
 <section id="loading-the-data-and-finding-the-right-margins" class="level2">
 <h2 class="anchored" data-anchor-id="loading-the-data-and-finding-the-right-margins">Loading the data and finding the right margins</h2>
-<p>The dataset is a bit large, so I’m afraid you will need to download it yourself. I used the latest version of the HYG (Hipparcos, Yale, Gliese) Stellar database, as kept <a href="https://codeberg.org/astronexus/hyg">here</a>. In glancing at the data, it looks like stars have a maximum distance that is creating a lot of outliers, so if you are recreating your graph using this dataset, please use the same filter in my code.</p>
+<p>The dataset is a bit large, so I’m afraid you will need to download it yourself. I used the latest version of the HYG (Hipparcos, Yale, Gliese) Stellar database, as kept <a href="https://codeberg.org/astronexus/hyg">here</a>. In glancing at the data, it looks like stars have a maximum distance that is creating a lot of outliers, so if you are recreating your graph using this dataset, please use the same filter in my code (I also filtered out variable stars, as they don’t have a set luminosity).</p>
 <p>Now let’s graph it. The easiest way to plot an H-R diagram is with the color index, which is also related to surface temperature and spectral type, on the x-axis and the luminosity, which is also related to absolute magnitude<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> on the y axis.</p>
 <div class="cell">
 <details open="" class="code-fold">
@@ -260,15 +260,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>stars <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/hygdata_v41.csv"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(dist <span class="sc">&lt;</span> <span class="dv">100000</span>)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span>stars <span class="sc">|&gt;</span> </span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>ci, <span class="at">y=</span>lum)) <span class="sc">+</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="fl">0.02</span>) <span class="sc">+</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(dist <span class="sc">&lt;</span> <span class="dv">100000</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>           <span class="fu">is.na</span>(var))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span>stars <span class="sc">|&gt;</span> </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>ci, <span class="at">y=</span>lum)) <span class="sc">+</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="fl">0.02</span>) <span class="sc">+</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
