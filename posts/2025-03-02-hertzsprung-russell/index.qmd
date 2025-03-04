@@ -1,0 +1,88 @@
+---
+title: "Constructing the Hertzsprung-Russell Diagram"
+description: "Using ggExtras to help find the right margins for a famous plot"
+date: 03-02-2025
+categories: [R, Science] # self-defined categories
+format:
+  html:
+    code-fold: show
+    code-summary: "Code in R"
+    toc: TRUE
+    toc_float: TRUE
+execute:
+  warning: false
+citation: 
+  url: https://drjohnrussell.github.io/posts/2025-03-02-hertzsprung-russell/ 
+image: img/HR.png
+draft: false # setting this to `true` will prevent your post from appearing on your listing page until you're ready!
+---
+
+# Recreating the Hertzsprung-Russell Diagram in R
+
+For a few Fridays each year, I teach a course in the American Museum of Natural History's [Masters of Arts in Teaching](https://www.amnh.org/learn-teach/master-arts-teaching/details) program to apply and continue thinking about my work as an Earth Science teacher and a teacher educator. In this course, I co-teach a course of Space Systems with an astrophysicist at the musem. For the last few years, this has been with the incredible [Dr. Jackie Faherty](https://www.jackiefaherty.com/), a museum educator and astrophysicist whose work focuses on the fields of brown dwarfs and exoplanets.
+
+A couple of years ago, the museum received a grant to embed computational thinking in our science education courses. After many discussions around what we believe computational thinking to actually mean, Jackie brought up [glue](https://glueviz.org/), a Python-based app designed for easy exploratory visualizations of large datasets. Thus, she designed a set of exercises that allows students to explore exoplanet databases to understand the differences between exoplanet systems and our own, and touching upon topics such as bias in measurement, calculations of a variable through an easy to approach GUI-interface.
+
+This year, I recreated the exercises in R. My favorite is on recreating the Hertzsprung-Russell diagram. In class, they recreate it using an exoplanet database, but below, we recreate using a slightly larger catalog of stars that includes stars that we haven't yet found exoplanets around.
+
+## Loading the data and finding the right margins
+
+The dataset is a bit large, so I'm afraid you will need to download it yourself. I used the latest version of the HYG (Hipparcos, Yale, Gliese) Stellar database, as kept [here](https://codeberg.org/astronexus/hyg). In glancing at the data, it looks like stars have a maximum distance that is creating a lot of outliers, so if you are recreating your graph using this dataset, please use the same filter in my code.
+
+Now let's graph it. The easiest way to plot an H-R diagram is with the color index, which is also related to surface temperature and spectral type, on the x-axis and the luminosity, which is also related to absolute magnitude[^1] on the y axis.
+
+[^1]: If you are plotting absolute magnitude, remember to add in `scale_y_reverse`, as brighter stars have a lower magnitude.
+
+```{r}
+#| fig-cap: "That looks a bit like an H-R diagram"
+library(tidyverse)
+# let's not work in scientific notation unless we specify it
+options(scipen = 999)
+ 
+stars <- read_csv("data/hygdata_v41.csv") |> 
+    filter(dist < 100000)
+
+p <-stars |> 
+  ggplot(aes(x=ci, y=lum)) +
+  geom_point(size=0.02) +
+  scale_y_log10() +
+  theme_bw()
+
+p
+
+```
+
+I want to use histograms to figure out where the limits of this should be and to get a sense of the distribution. To do that, I will use the excellent `ggExtra` package, where you can add in marginal plots.
+
+```{r}
+library(ggExtra)
+
+ggMarginal(p,
+  type="histogram"
+)
+```
+
+The y-axis looks to be pretty good, but the x axis could probably shrink to a color index with a maximum of 3.
+
+## Getting some color into this plot
+
+Most H-R diagram plots hint at the color of the stars, which we should be able to do as well. Let's try it out with `scale_color_gradient2`, which is designed for divergent palettes, from `RColorBrewer`.
+
+```{r}
+library(RColorBrewer)
+
+stars |> 
+  ggplot(aes(x=ci, y=lum,color=ci)) +
+  geom_point(size=0.02, show.legend=FALSE) +
+  scale_y_log10() +
+  scale_x_continuous(limits=c(-.5,2.25))+
+  scale_color_gradient2(low= "blue", mid="white", high="red",midpoint=0.75) +
+  theme_minimal() +
+  theme(panel.background=element_rect(fill="black"),
+        panel.grid=element_blank()) +
+  labs(title="Hertzsprung-Russell Diagram",
+       y="Luminosity (in comparison to Sun)",
+       x="Color Index (blue magnitude - visual magnitude)")
+```
+
+
