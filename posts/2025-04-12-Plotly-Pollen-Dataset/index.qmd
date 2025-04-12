@@ -1,0 +1,56 @@
+---
+title: "Exploring a 3-D Synthetic Dataset"
+description: "Using plotly to visualize a three-dimensional dataset"
+date: 04-12-2025
+categories: [R] # self-defined categories
+format:
+  html:
+    code-fold: show
+    code-summary: "Code in R"
+    toc: TRUE
+    toc_float: TRUE
+execute:
+  warning: false
+citation: 
+  url: https://drjohnrussell.github.io/posts/2025-04-12-Plotly-Pollen-Dataset/ 
+image: img/plot2.png
+draft: false # setting this to `true` will prevent your post from appearing on your listing page until you're ready!
+---
+
+# Exploring the HistData package
+
+Over on [BlueSky](https://bsky.app/profile/drjohnrussell.com), I have been working through a few challenges. For the months of February and March, I participated in the [DuBois Challenge](https://github.com/ajstarks/dubois-data-portraits/tree/master/challenge/2025), where you take a week to recreate some of the powerful visualizations that came out of the Paris Exposition from W.E.B. Du Bois. My work there, complete with code, can be found in my [github](https://github.com/drjohnrussell/DuboisChallenge/tree/main/2025)
+
+Inspired by this, I've also been doing the [#30DayChartChallenge](https://github.com/30DayChartChallenge/Edition2025), where you make a chart a day on a theme that changes each day. I have taken this as an opportunity to explore Michael Friendly's [HistData](https://friendly.github.io/HistData/) package, which draws from his [excellent book](https://www.hup.harvard.edu/books/9780674975231) with Howard Wainer. I have done posts on [John Snow](https://bsky.app/profile/drjohnrussell.com/post/3lmk6xta7hc2b), the [Trial of the Pyx](https://bsky.app/profile/drjohnrussell.com/post/3lmcdncmrqc2h), [Florence Nightingale](https://bsky.app/profile/drjohnrussell.com/post/3lm55tphhjk26), and others on my [github](https://github.com/drjohnrussell/30DayChartChallenge/tree/main/2025). However, one dataset that a simple plot doesn't do justice to is the [Pollen dataset](https://friendly.github.io/HistData/reference/Pollen.html). This dataset, like `mtcars` and `flights`, are synthetic datasets that were used as data challenges (the other two are now basic datasets for reprexes as well).
+
+This dataset, however, shows the power of `plotly`.
+
+```{r}
+library(tidyverse)
+library(HistData)
+library(plotly)
+
+data("Pollen")
+head(Pollen)
+```
+
+The first three variables are meant to be plotted on the x, y and z axis, where the other variables are meant to describe the grains of pollen. Doing a quick correlation shows that there is at least one strong correlation that can be seen through the use of color, where weight is highly correlated with the x-axis.
+
+```{r}
+res <- cor(Pollen)
+round(res,2)
+```
+
+However, when you plot the dataset, something else shows up. Thankfully, `plotly` allows you to drag a plot around to explore it.
+
+```{r}
+plot_ly(Pollen, x = ~ridge, y = ~nub, z = ~crack)  |> 
+  add_markers(color = ~weight, size=2) |> 
+  layout(title="David Coleman's Synthetic Pollen Dataset")|>
+  config(displayModeBar=FALSE)
+```
+
+Can you see it? Image below to recreate...
+
+![Eureka!](img/plot2.png){width="50%" fig-align="center"}
+
