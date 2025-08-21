@@ -108,7 +108,7 @@ font-style: inherit;">"physical"</span>)</span></code></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading layer `ne_10m_lakes' from data source 
-  `C:\Users\russe\AppData\Local\Temp\Rtmp2dZUJn\ne_10m_lakes.shp' 
+  `C:\Users\russe\AppData\Local\Temp\RtmpWsCsJA\ne_10m_lakes.shp' 
   using driver `ESRI Shapefile'
 Simple feature collection with 1355 features and 41 fields
 Geometry type: MULTIPOLYGON
@@ -138,7 +138,7 @@ font-style: inherit;">"physical"</span>)</span></code></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading layer `ne_10m_rivers_lake_centerlines' from data source 
-  `C:\Users\russe\AppData\Local\Temp\Rtmp2dZUJn\ne_10m_rivers_lake_centerlines.shp' 
+  `C:\Users\russe\AppData\Local\Temp\RtmpWsCsJA\ne_10m_rivers_lake_centerlines.shp' 
   using driver `ESRI Shapefile'
 Simple feature collection with 1473 features and 38 fields
 Geometry type: MULTILINESTRING
