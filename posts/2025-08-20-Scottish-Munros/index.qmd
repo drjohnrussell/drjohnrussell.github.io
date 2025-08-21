@@ -1,0 +1,108 @@
+---
+title: "Tidy Tuesday - Looking at Scottish Munros"
+description: "Converting Coordinate Systems for the tidyverse"
+date: 08-20-2025
+categories: [R, Geography, TidyTuesday] # self-defined categories
+format:
+  html:
+    code-fold: show
+    code-summary: "Code in R"
+    toc: TRUE
+    toc_float: TRUE
+execute:
+  warning: false
+citation: 
+  url: https://drjohnrussell.github.io/posts/2025-08-20-Scottish-Munros/ 
+image: img/scotlandmap.png
+draft: false # setting this to `true` will prevent your post from appearing on your listing page until you're ready!
+---
+
+## Getting back Into It
+
+It's been a while for this website; a lot of my work has been used on projects that can't be easily shared here. That said, I have been at the Edinburgh Fringe this month supporting my wife, and I wanted to use a Tidy Tuesday dataset to refresh some skills.
+
+### Loading necessary packages and the data
+```{r}
+library(tidyverse)
+library(sf)
+library(rnaturalearth)
+library(ggview)
+
+tuesdata <- tidytuesdayR::tt_load(2025, week = 33)
+
+scottish_munros <- tuesdata$scottish_munros
+```
+### Getting a base map of Scotland, with some bodies of water
+
+The first thing we will need is a map of scotland, and to see if we can put any major bodies of water in it. We can use the `rnaturalearth` package for this, with the caveat that bodies of water have to be pretty large for it them to show up!
+
+```{r}
+scotland <- ne_countries(geounit = "scotland", type = "map_units", scale="large")
+
+water <- ne_download(scale=10, type="lakes", category="physical")
+river <- ne_download(scale=10, type="rivers_lake_centerlines", category="physical")
+```
+
+Now that we have rivers and lakes, we can us the `sf` package to provide a filter that just looks for rivers and lakes that are within the scotland shapefile's latitude and longitude.
+
+
+```{r}
+sf_use_s2(FALSE)
+
+waterscotland <- st_filter(water,scotland)
+riverscotland <- st_filter(river, scotland)
+```
+
+### Working across coordinate systems
+
+In the Tidy Tuesday dataset, the Scottish Munros are in British National Grid (OSGB36, or CRS 27700), which is a coordinate system based on meters eastward and northward from a point outside of the Southern and Westernmost point of Britain (ignoring Northern Island).
+
+Because our geometry is standard World Geodetic System, it is easiest to translate to this system (CRS 4326). Finally, we should pull the coordinates for plotting.
+
+```{r}
+projection <- st_as_sf(scottish_munros |> 
+                         filter(!is.na(xcoord),
+                                !is.na(ycoord)),
+                       coords=c("xcoord","ycoord"),
+                       crs = 27700) |> 
+  st_transform(crs=4326) |> 
+  st_coordinates()
+
+scottish_munros <- scottish_munros |> 
+  filter(!is.na(xcoord)) |> 
+  cbind(projection)
+```
+
+### Making our map
+
+We now have everything to make our map. I take advantage of `ggview` for outputting this, with that code in comments.
+
+```{r}
+map <- scotland |> 
+  ggplot() +
+  geom_sf() +
+  geom_sf(data=waterscotland, fill="blue") +
+  geom_sf(data=riverscotland, color="blue") +
+  geom_point(data=scottish_munros |> 
+               filter(!is.na(`2021`)), 
+             aes(x=X, y=Y, color=`2021`),shape="^", size=3) +
+  theme_light() +
+  coord_sf(xlim=c(-10,0)) +
+  scale_color_brewer(palette="Dark2", direction=-1) +
+  labs(color="",
+       title="Munros of Scotland, as classified in 2021",
+       subtitle="Effect of the Great-Glen Fault",
+       caption="TidyTuesday") +
+  theme(legend.position="bottom",
+        legend.margin=margin(0,0,0,0),
+        plot.title.position="plot",
+        axis.title = element_blank(),
+        panel.background = element_rect(fill="lightblue"),
+        legend.key = element_rect(fill = NA))
+
+map
+
+# map + canvas(width=4.5, height=4.5, units="in")
+
+# ggsave(map, width=4.5, height=4.5, units="in", filename="img/scotlandmap.png")
+```
