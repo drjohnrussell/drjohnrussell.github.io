@@ -9,8 +9,607 @@
 <link>https://www.drjohnrussell.com/posts.html</link>
 <atom:link href="https://www.drjohnrussell.com/posts.xml" rel="self" type="application/rss+xml"/>
 <description>John Russell&#39;s Data Science Blog</description>
-<generator>quarto-1.6.42</generator>
-<lastBuildDate>Tue, 19 Aug 2025 23:00:00 GMT</lastBuildDate>
+<generator>quarto-1.7.32</generator>
+<lastBuildDate>Tue, 02 Sep 2025 04:00:00 GMT</lastBuildDate>
+<item>
+  <title>Tidy Tuesday - Frog Distributions in Time and Space</title>
+  <dc:creator>John Russell</dc:creator>
+  <link>https://www.drjohnrussell.com/posts/2025-09-02-time-and-frogs/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="graphical-and-cartographic-distributions" class="level2">
+<h2 class="anchored" data-anchor-id="graphical-and-cartographic-distributions">Graphical and Cartographic Distributions</h2>
+<p>I’m working my way into Tidy Tuesday, and I wanted to do something that combined both spatial and temporal data. The frogID dataset from week 35 of 2025 has both, so let’s take a look.</p>
+<p>This is also my first post using Positron over RStudio, so we’ll see how it goes!</p>
+<section id="loading-necessary-packages-and-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="loading-necessary-packages-and-the-data">Loading necessary packages and the data</h3>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(rnaturalearth)</span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(sf)</span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(patchwork)</span>
+<span id="cb1-5"></span>
+<span id="cb1-6">tuesdata <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> tidytuesdayR<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tt_load</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2025</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">week =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">35</span>)</span>
+<span id="cb1-7">frogID <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> tuesdata<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>frogID_data</span>
+<span id="cb1-8">frognames <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> tuesdata<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>frog_names</span>
+<span id="cb1-9"></span>
+<span id="cb1-10"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">view</span>(frogID)</span>
+<span id="cb1-11"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">view</span>(frognames)</span></code></pre></div>
+</details>
+</div>
+<p>I love how Positron automatically shows distributions of data when you view a dataframe! Looking at the two dataframes, it looks like <code>frogID</code> has the locations and times of observations, while <code>frognames</code> has some additional taxonomic information, which may be nice to join. One weird thing is that the scientific names in <code>frogID</code> have some additional information after the species name, so we’ll need to clean that up a bit.</p>
+</section>
+<section id="joining-the-dataframes-and-cleaning-up-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="joining-the-dataframes-and-cleaning-up-the-data">Joining the dataframes and cleaning up the data</h3>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">frogID <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> frogID <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">left_join</span>(frognames <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb2-3">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">select</span>(scientificName, subfamily,tribe) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-4">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">scientificName =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">word</span>(scientificName, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-5">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">distinct</span>(), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"scientificName"</span>)</span></code></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="distributions-over-space" class="level2">
+<h2 class="anchored" data-anchor-id="distributions-over-space">Distributions over Space</h2>
+<p>The first distribution I want to look at is the spatial distribution of frog observations. The data is all from Australia, so let’s pull a map of Australia and plot the points on it.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># pull the map of australia</span></span>
+<span id="cb3-2">australia <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ne_states</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">country =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"australia"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">returnclass =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"sf"</span>)</span></code></pre></div>
+</details>
+</div>
+<p>From here, it is just a matter of plotting the points on the map. I’ll color the points by tribe, and make them a bit transparent so that we can see areas with more observations.</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">## map the frogs over australia by density</span></span>
+<span id="cb4-2"></span>
+<span id="cb4-3">australia <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb4-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_sf</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lightgrey"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> frogID <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb4-7">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">is.na</span>(tribe)), </span>
+<span id="cb4-8">            <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> decimalLongitude, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> decimalLatitude, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color=</span>tribe), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-9"> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># geom_density_2d(data = frogID, aes(x = decimalLongitude, y = decimalLatitude), alpha = 0.6, contour_var = "count") +</span></span>
+<span id="cb4-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_void</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bottom"</span>,</span>
+<span id="cb4-12">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.text =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Frog Species in Australia"</span>,</span>
+<span id="cb4-14">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subtitle =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Locations of various frog species across Australia"</span>,</span>
+<span id="cb4-15">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">caption =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Tidy Tuesday (2025, Week 35)"</span>,</span>
+<span id="cb4-16">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-17">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">coord_sf</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlim =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">110</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">155</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylim =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>))</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.drjohnrussell.com/posts/2025-09-02-time-and-frogs/index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Unsurprisingly, most of the observations are along the coast, where the climate is probably more hospitable to frogs, but also to citizen scientists (so there may be some bias in the data)!</p>
+</section>
+<section id="look-at-distribution-of-identifications-by-hour-of-day" class="level2">
+<h2 class="anchored" data-anchor-id="look-at-distribution-of-identifications-by-hour-of-day">look at distribution of identifications by hour of day</h2>
+<p>I was also curious about the temporal distribution of frog identifications. The <code>eventTime</code> column has the time of day that the identification was made, so let’s look at that by hour of day.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">day <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> frogID <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">is.na</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">hour</span>(eventTime)), </span>
+<span id="cb5-3">          <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">is.na</span>(tribe)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">hour</span>(eventTime), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> tribe)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_histogram</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">binwidth =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"stack"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Frog Identifications by Hour of Day"</span>,</span>
+<span id="cb5-8">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Hour of Day"</span>,</span>
+<span id="cb5-9">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Number of Identifications"</span>,</span>
+<span id="cb5-10">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>,</span>
+<span id="cb5-11">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">caption =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Tidy Tuesday (2025, Week 35)"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_x_continuous</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">breaks =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">23</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bottom"</span>)</span>
+<span id="cb5-14"></span>
+<span id="cb5-15">day</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://www.drjohnrussell.com/posts/2025-09-02-time-and-frogs/index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Interestingly, there are two peaks in identification, one around 9/10 AM and one around 8 PM. This doesn’t quite match up with dawn and dusk, which are probably the times when frogs are most active, but it may reflect when people are most likely to be out and about looking for frogs.</p>
+</section>
+<section id="look-at-distribution-of-identifications-by-month" class="level2">
+<h2 class="anchored" data-anchor-id="look-at-distribution-of-identifications-by-month">look at distribution of identifications by month</h2>
+<p>Finally, let’s look at the distribution of frog identifications by month. This will give us an idea of when people are most likely to identify frogs.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">month <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> frogID <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb6-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">is.na</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">month</span>(eventDate)), </span>
+<span id="cb6-3">          <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">is.na</span>(tribe)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb6-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">month</span>(eventDate), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> tribe)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_histogram</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">binwidth =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"stack"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Frog Identifications by Month"</span>,</span>
+<span id="cb6-8">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Month"</span>,</span>
+<span id="cb6-9">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Number of Identifications"</span>,</span>
+<span id="cb6-10">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>,</span>
+<span id="cb6-11">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">caption =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Tidy Tuesday (2025, Week 35)"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_x_continuous</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">breaks =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labels =</span> month.abb) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bottom"</span>)</span>
+<span id="cb6-14"></span>
+<span id="cb6-15">month</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://www.drjohnrussell.com/posts/2025-09-02-time-and-frogs/index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Unsurprisingly, the spring and summer months (October to February) have the most identifications, which is probably when frogs are most active and when people are more likely to be outside looking for them.</p>
+</section>
+<section id="combining-the-temporal-plots" class="level2">
+<h2 class="anchored" data-anchor-id="combining-the-temporal-plots">Combining the temporal plots</h2>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code in R</summary>
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">collected <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> (month <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">caption=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> day <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot_layout</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ncol =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">guides =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"collect"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&amp;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bottom"</span>)</span>
+<span id="cb7-2"></span>
+<span id="cb7-3">collected</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.drjohnrussell.com/posts/2025-09-02-time-and-frogs/index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This pulls the two temporal plots together into one figure, which is a bit easier to compare.</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{russell2025,
+  author = {Russell, John},
+  title = {Tidy {Tuesday} - {Frog} {Distributions} in {Time} and
+    {Space}},
+  date = {2025-09-02},
+  url = {https://drjohnrussell.github.io/posts/2025-09-02-time-and-frogs/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-russell2025" class="csl-entry quarto-appendix-citeas">
+Russell, John. 2025. <span>“Tidy Tuesday - Frog Distributions in Time
+and Space.”</span> September 2, 2025. <a href="https://drjohnrussell.github.io/posts/2025-09-02-time-and-frogs/">https://drjohnrussell.github.io/posts/2025-09-02-time-and-frogs/</a>.
+</div></div></section></div> ]]></description>
+  <category>R</category>
+  <category>Geography</category>
+  <category>TidyTuesday</category>
+  <guid>https://www.drjohnrussell.com/posts/2025-09-02-time-and-frogs/</guid>
+  <pubDate>Tue, 02 Sep 2025 04:00:00 GMT</pubDate>
+  <media:content url="https://www.drjohnrussell.com/posts/2025-09-02-time-and-frogs/img/frogs.png" medium="image" type="image/png" height="128" width="144"/>
+</item>
 <item>
   <title>Tidy Tuesday - Looking at Scottish Munros</title>
   <dc:creator>John Russell</dc:creator>
@@ -481,7 +1080,7 @@ Munros.”</span> August 20, 2025. <a href="https://drjohnrussell.github.io/post
   <category>Geography</category>
   <category>TidyTuesday</category>
   <guid>https://www.drjohnrussell.com/posts/2025-08-20-Scottish-Munros/</guid>
-  <pubDate>Tue, 19 Aug 2025 23:00:00 GMT</pubDate>
+  <pubDate>Wed, 20 Aug 2025 04:00:00 GMT</pubDate>
   <media:content url="https://www.drjohnrussell.com/posts/2025-08-20-Scottish-Munros/img/scotlandmap.png" medium="image" type="image/png" height="144" width="144"/>
 </item>
 <item>
@@ -637,7 +1236,7 @@ April 12, 2025. <a href="https://drjohnrussell.github.io/posts/2025-04-12-Plotly
 </div></div></section></div> ]]></description>
   <category>R</category>
   <guid>https://www.drjohnrussell.com/posts/2025-04-12-Plotly-Pollen-Dataset/</guid>
-  <pubDate>Fri, 11 Apr 2025 23:00:00 GMT</pubDate>
+  <pubDate>Sat, 12 Apr 2025 04:00:00 GMT</pubDate>
   <media:content url="https://www.drjohnrussell.com/posts/2025-04-12-Plotly-Pollen-Dataset/img/plot2.png" medium="image" type="image/png" height="98" width="144"/>
 </item>
 <item>
@@ -923,7 +1522,7 @@ Diagram.”</span> March 2, 2025. <a href="https://drjohnrussell.github.io/posts
   <category>R</category>
   <category>Science</category>
   <guid>https://www.drjohnrussell.com/posts/2025-03-02-hertzsprung-russell/</guid>
-  <pubDate>Sun, 02 Mar 2025 00:00:00 GMT</pubDate>
+  <pubDate>Sun, 02 Mar 2025 05:00:00 GMT</pubDate>
   <media:content url="https://www.drjohnrussell.com/posts/2025-03-02-hertzsprung-russell/img/HR.png" medium="image" type="image/png" height="144" width="144"/>
 </item>
 <item>
@@ -1568,7 +2167,7 @@ Amnesia.”</span> February 4, 2025. <a href="https://drjohnrussell.github.io/po
   <category>Data Wrangling</category>
   <category>Time</category>
   <guid>https://www.drjohnrussell.com/posts/2025-02-04-plotting-sleep-intervals/</guid>
-  <pubDate>Tue, 04 Feb 2025 00:00:00 GMT</pubDate>
+  <pubDate>Tue, 04 Feb 2025 05:00:00 GMT</pubDate>
   <media:content url="https://www.drjohnrussell.com/posts/2025-02-04-plotting-sleep-intervals/img/sleep.png" medium="image" type="image/png" height="77" width="144"/>
 </item>
 <item>
@@ -2319,7 +2918,7 @@ Data.”</span> January 17, 2025. <a href="https://drjohnrussell.github.io/posts
   <category>R</category>
   <category>Data Wrangling</category>
   <guid>https://www.drjohnrussell.com/posts/2025-01-17-fuzzyjoin-in-action/</guid>
-  <pubDate>Fri, 17 Jan 2025 00:00:00 GMT</pubDate>
+  <pubDate>Fri, 17 Jan 2025 05:00:00 GMT</pubDate>
   <media:content url="https://www.drjohnrussell.com/posts/2025-01-17-fuzzyjoin-in-action/img/Virgin_Islands.svg" medium="image" type="image/svg+xml"/>
 </item>
 <item>
@@ -3772,7 +4371,7 @@ Democratic Progress.”</span> January 13, 2025. <a href="https://drjohnrussell.
   <category>Geography</category>
   <category>Tidy Tuesday</category>
   <guid>https://www.drjohnrussell.com/posts/2025-01-13-gganimate-ggflag/</guid>
-  <pubDate>Mon, 13 Jan 2025 00:00:00 GMT</pubDate>
+  <pubDate>Mon, 13 Jan 2025 05:00:00 GMT</pubDate>
   <media:content url="https://www.drjohnrussell.com/posts/2025-01-13-gganimate-ggflag/img/Europe.png" medium="image" type="image/png" height="144" width="144"/>
 </item>
 <item>
@@ -3824,7 +4423,7 @@ Russell, John. 2024. <span>“Getting Back into Blogging.”</span> December
   <category>Quarto</category>
   <category>R</category>
   <guid>https://www.drjohnrussell.com/posts/2024-12-28-getting-back-online/</guid>
-  <pubDate>Sat, 28 Dec 2024 00:00:00 GMT</pubDate>
+  <pubDate>Sat, 28 Dec 2024 05:00:00 GMT</pubDate>
   <media:content url="https://www.drjohnrussell.com/posts/2024-12-28-getting-back-online/img/logo-quarto.png" medium="image" type="image/png" height="166" width="144"/>
 </item>
 <item>
@@ -4250,7 +4849,7 @@ March 22, 2022. <a href="https://drjohnrussell.github.io/posts/2022-03-22-divers
   <category>R</category>
   <category>Baseball</category>
   <guid>https://www.drjohnrussell.com/posts/2022-03-22-diversity-baseball/</guid>
-  <pubDate>Tue, 22 Mar 2022 00:00:00 GMT</pubDate>
+  <pubDate>Tue, 22 Mar 2022 04:00:00 GMT</pubDate>
   <media:content url="https://www.drjohnrussell.com/posts/2022-03-22-diversity-baseball/img/1970sMLB.png" medium="image" type="image/png" height="128" width="144"/>
 </item>
 <item>
@@ -4460,7 +5059,7 @@ Russell, John. 2022. <span>“A Bipartite Case (Part 2).”</span> March 16,
   <category>R</category>
   <category>Social Network Analysis</category>
   <guid>https://www.drjohnrussell.com/posts/2022-03-16-bipartite-case-ii/</guid>
-  <pubDate>Wed, 16 Mar 2022 00:00:00 GMT</pubDate>
+  <pubDate>Wed, 16 Mar 2022 04:00:00 GMT</pubDate>
   <media:content url="https://www.drjohnrussell.com/posts/2022-03-16-bipartite-case-ii/img/image003.png" medium="image" type="image/png" height="135" width="144"/>
 </item>
 <item>
@@ -4919,7 +5518,7 @@ Russell, John. 2022. <span>“My Time at MƒA.”</span> February 28, 2022.
 </div></div></section></div> ]]></description>
   <category>R</category>
   <guid>https://www.drjohnrussell.com/posts/2022-02-28-time-at-mfa/</guid>
-  <pubDate>Mon, 28 Feb 2022 00:00:00 GMT</pubDate>
+  <pubDate>Mon, 28 Feb 2022 05:00:00 GMT</pubDate>
   <media:content url="https://www.drjohnrussell.com/posts/2022-02-28-time-at-mfa/img/PDTeam.gif" medium="image" type="image/gif"/>
 </item>
 <item>
@@ -5287,7 +5886,7 @@ Russell, John. 2022. <span>“A Bipartite Case (Part 1).”</span> February
   <category>R</category>
   <category>Social Network Analysis</category>
   <guid>https://www.drjohnrussell.com/posts/2022-02-17-bipartite-case-i/</guid>
-  <pubDate>Thu, 17 Feb 2022 00:00:00 GMT</pubDate>
+  <pubDate>Thu, 17 Feb 2022 05:00:00 GMT</pubDate>
   <media:content url="https://www.drjohnrussell.com/posts/2022-02-17-bipartite-case-i/img/EVu29wuXQAIr1IU.jpeg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
