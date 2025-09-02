@@ -67,7 +67,7 @@ From here, it is just a matter of plotting the points on the map. I'll color the
 
 ## map the frogs over australia by density
 
-australia |> 
+map <- australia |> 
   ggplot() +
   geom_sf(fill = "lightgrey") +
   geom_point(data = frogID |> 
@@ -82,6 +82,8 @@ australia |>
        caption = "Tidy Tuesday (2025, Week 35)",
       color="") +
   coord_sf(xlim = c(110, 155), ylim = c(-45, -10))
+
+map
 ```
 
 Unsurprisingly, most of the observations are along the coast, where the climate is probably more hospitable to frogs, but also to citizen scientists (so there may be some bias in the data)!

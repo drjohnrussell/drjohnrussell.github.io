@@ -153,7 +153,9 @@ font-style: inherit;">"sf"</span>)</span></code></pre></div>
 background-color: null;
 font-style: italic;">## map the frogs over australia by density</span></span>
 <span id="cb4-2"></span>
-<span id="cb4-3">australia <span class="sc" style="color: #5E5E5E;
+<span id="cb4-3">map <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> australia <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span> </span>
 <span id="cb4-4">  <span class="fu" style="color: #4758AB;
@@ -275,7 +277,9 @@ font-style: inherit;">45</span>, <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">10</span>))</span></code></pre></div>
+font-style: inherit;">10</span>))</span>
+<span id="cb4-18"></span>
+<span id="cb4-19">map</span></code></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">

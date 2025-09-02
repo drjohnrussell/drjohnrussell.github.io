@@ -18,8 +18,8 @@ website:
     right:
       - text: "Affiliations"
         menu:
-          - text: EL Education
-            href: https://www.eleducation.org
+          - text: KIPP NYC
+            href: https://kippnyc.org/
           - text: American Museum of Natural History
             href: https://www.amnh.org
           - text: Harvard Strategic Data Fellowship

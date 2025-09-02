@@ -39,8 +39,11 @@ BS in Earth & Planetary Sciences (minor: Physics) | May 2014
 
 ## Experience
 
+KIPP NYC | Senior Director of Data & Assessment
+September 2025 - Present
+
 EL Education | Director of Internal Research  
-July 2022 - present
+July 2022 - August 2025
 
 Math for America | Program Officer, Education Researcher  
 August 2015 - July 2022 
@@ -96,5 +99,7 @@ knitr::include_graphics(here("img/MfA.jpg"))
 :::
 
 ### {{< fa binoculars title="Expanding impact" >}}
-I was really fortunate to be given a long runway at Math for America when they decided to find external evaluators to continue the work I had started, and I used that time to look into a few organizations before ending up at EL Education, a nonprofit that takes a full school approach to student achievement reflective of their founding as a collaboration between Outward Bound and Harvard Graduate School of Education. Here, I do work in internal program evaluation and in improvement science, helping provide informal and formal data tools (measurement and analysis) that align with our mission. It is also here that my work in R has flourished, a big reason I wanted to start this blog up again.
+I was really fortunate to be given a long runway at Math for America when they decided to find external evaluators to continue the work I had started, and I used that time to look into a few organizations before ending up at EL Education, a nonprofit that takes a full school approach to student achievement reflective of their founding as a collaboration between Outward Bound and Harvard Graduate School of Education. There, I did work in internal program evaluation and in improvement science, helping provide informal and formal data tools (measurement and analysis) that align with our mission. It is also here that work in R has flourished, a big reason I wanted to start this blog up again.
+
+In September 2025, I moved to KIPP NYC as their Senior Director of Data & Assessment, where I lead a team that supports data use across the network.
 :::
